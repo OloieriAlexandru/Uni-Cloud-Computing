@@ -107,7 +107,20 @@ function makeSuccessResponse(req, res, obj) {
     return res.end(JSON.stringify(obj));
 }
 
-async function getRandomImage() {
+// https://stackoverflow.com/questions/11725691/how-to-get-a-microtime-in-node-js
+function getCurrentMilliseconds() {
+    let hrTime = process.hrtime();
+    return hrTime[0] * 1000 + hrTime[1] / 1000000;
+}
+
+function addExternalAPICallToMetrics(metricsObj, apiName, latency) {
+    if (!metricsObj.hasOwnProperty('apiMetrics')) {
+        metricsObj.apiMetrics = {};
+    }
+    metricsObj.apiMetrics[apiName] = latency;
+}
+
+async function getRandomImage(metricsObj) {
     let getRandomImageOptions = {
         headers: {
             "x-api-key": config.THE_DOG_API_API_KEY,
@@ -115,6 +128,7 @@ async function getRandomImage() {
         method: "GET",
     };
 
+    let startAt = getCurrentMilliseconds();
     let jsonResult = null;
     for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
         try {
@@ -126,19 +140,22 @@ async function getRandomImage() {
             break;
         } catch (ignored) {}
     }
+    let endAt = getCurrentMilliseconds();
 
     if (jsonResult == null || jsonResult.length == 0) {
         throw internalServerError("Failed to get random image!");
     }
 
+    addExternalAPICallToMetrics(metricsObj, 'random-image', endAt - startAt);
     return jsonResult[0]["url"];
 }
 
-async function getRandomFact() {
+async function getRandomFact(metricsObj) {
     let getRandomFactOptions = {
         method: "GET",
     };
 
+    let startAt = getCurrentMilliseconds();
     let jsonResult = null;
     for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
         try {
@@ -146,29 +163,29 @@ async function getRandomFact() {
             jsonResult = JSON.parse(rawResult);
         } catch (ignored) {}
     }
+    let endAt = getCurrentMilliseconds();
 
     if (jsonResult == null) {
         throw internalServerError("Failed to get random fact!");
     }
 
+    addExternalAPICallToMetrics(metricsObj, 'random-fact', endAt - startAt);
     if (SOME_RANDOM_API_DOWN) {
         return jsonResult['facts'][0];
     }
     return jsonResult['fact'];
 }
 
-async function translate(text, language) {
+async function translate(text, language, metricsObj) {
     let translationOptions = {
         method: "POST",
     };
-    if (language === "en") {
-        return text;
-    }
     let translationBody = {
         q: text,
         target: language
     };
 
+    let startAt = getCurrentMilliseconds();
     let response = null;
     try {
         response = JSON.parse(
@@ -179,11 +196,14 @@ async function translate(text, language) {
             )
         );
     } catch (ignored) {}
+    let endAt = getCurrentMilliseconds();
 
     if (!response || !response["data"] || !response["data"]["translations"] ||
         response["data"]["translations"].length == 0 || !response["data"]["translations"][0]["translatedText"]) {
         throw internalServerError("Failed to translate text!");
     }
+
+    addExternalAPICallToMetrics(metricsObj, 'translate', endAt - startAt);
     return response["data"]["translations"][0]["translatedText"];
 }
 
@@ -243,7 +263,7 @@ class RouteController {
 
     static async getRandomImage(req, res, body, metricsObj) {
         let response = {
-            url: await getRandomImage(),
+            url: await getRandomImage(metricsObj),
         };
         RouteController.addResponseToMetrics(metricsObj, response);
 
@@ -257,8 +277,8 @@ class RouteController {
             );
         }
 
-        let randomFact = await getRandomFact();
-        randomFact = await translate(randomFact, body["lang"]);
+        let randomFact = await getRandomFact(metricsObj);
+        randomFact = await translate(randomFact, body["lang"], metricsObj);
 
         let response = {
             fact: randomFact,
@@ -277,16 +297,16 @@ class RouteController {
         if (body && body.hasOwnProperty("url") && body["url"]) {
             imageUrl = body["url"];
         } else {
-            imageUrl = await getRandomImage();
+            imageUrl = await getRandomImage(metricsObj);
         }
 
         if (body && body.hasOwnProperty("fact") && body["fact"]) {
             imageCaption = body["fact"];
         } else {
-            imageCaption = await getRandomFact();
+            imageCaption = await getRandomFact(metricsObj);
         }
         if (body && body.hasOwnProperty("lang") && ALLOWED_LANGUAGES.includes(body["lang"])) {
-            imageCaption = await translate(imageCaption, body["lang"]);
+            imageCaption = await translate(imageCaption, body["lang"], metricsObj);
             language = body["lang"];
         } else {
             language = "en";
@@ -322,10 +342,16 @@ class RouteController {
             averageLatency: 0.0,
             maxLatency: Number.MIN_SAFE_INTEGER,
             minLatency: Number.MAX_SAFE_INTEGER,
+            averageLatencyForPath: {},
+            maxLatencyForPath: {},
+            minLatencyForPath: {},
+            requestCountForPath: {},
             successfulCount: 0,
             requestPaths: {},
             requestMethods: {},
-            languages: {}
+            languages: {},
+            externalAPILatencies: {},
+            externalAPILatenciesCount: {}
         };
 
         for (let i = 0; i < logs.length; ++i) {
@@ -336,6 +362,21 @@ class RouteController {
 
             if (logs[i].statusCode >= 200 && logs[i].statusCode < 300) {
                 ++response.successfulCount;
+            }
+
+            if (logs[i].request && logs[i].request.path) {
+                let path = logs[i].request.path;
+                if (path in response.averageLatencyForPath) {
+                    response.maxLatencyForPath[path] = Math.max(response.maxLatencyForPath[path], logs[i].latency);
+                    response.minLatencyForPath[path] = Math.min(response.minLatencyForPath[path], logs[i].latency);
+                    response.averageLatencyForPath[path] += logs[i].latency;
+                    ++response.requestCountForPath[path];
+                } else {
+                    response.maxLatencyForPath[path] = logs[i].latency;
+                    response.minLatencyForPath[path] = logs[i].latency;
+                    response.averageLatencyForPath[path] = logs[i].latency;
+                    response.requestCountForPath[path] = 1;
+                }
             }
 
             if (logs[i].request && logs[i].request.path) {
@@ -363,8 +404,26 @@ class RouteController {
                     }
                 }
             }
+
+            if (logs[i].apiMetrics) {
+                Object.keys(logs[i].apiMetrics).forEach(function (key, index) {
+                    if (key in response.externalAPILatencies) {
+                        response.externalAPILatencies[key] += logs[i].apiMetrics[key];
+                        ++response.externalAPILatenciesCount[key];
+                    } else {
+                        response.externalAPILatencies[key] = logs[i].apiMetrics[key];
+                        response.externalAPILatenciesCount[key] = 1;
+                    }
+                });
+            }
         }
         response.averageLatency /= logs.length;
+        Object.keys(response.externalAPILatencies).forEach(function (key, index) {
+            response.externalAPILatencies[key] /= response.externalAPILatenciesCount[key];
+        });
+        Object.keys(response.averageLatencyForPath).forEach(function (key, index) {
+            response.averageLatencyForPath[key] /= response.requestCountForPath[key];
+        });
 
         RouteController.addResponseToMetrics(metricsObj, response);
         return makeSuccessResponse(req, res, response);
