@@ -31,33 +31,11 @@ function getCurrentMilliseconds() {
 
 function addLogToFile(log) {
     return new Promise((resolve, reject) => {
-        fs.readFile(config.LOG_FILE_NAME, function (err, data) {
-            let writtenJson = null;
+        fs.appendFile(config.LOG_FILE_NAME, JSON.stringify(log) + '\n', function (err, data) {
             if (err) {
-                if (err.code == "ENOENT") {
-                    writtenJson = [log];
-                } else {
-                    reject(err);
-                }
+                reject(err);
             }
-            try {
-                if (writtenJson == null) {
-                    writtenJson = JSON.parse(data);
-                    writtenJson.push(log);
-                }
-                fs.writeFile(
-                    config.LOG_FILE_NAME,
-                    JSON.stringify(writtenJson),
-                    function (err, data) {
-                        if (err) {
-                            reject(err);
-                        }
-                        resolve();
-                    }
-                );
-            } catch (error) {
-                reject(error);
-            }
+            resolve();
         });
     });
 }
@@ -112,7 +90,9 @@ http
                 metricsObj["latency"] = endAt - startAt;
                 metricsObj["statusCode"] = res.statusCode;
 
-                await addLogToFile(metricsObj);
+                try {
+                    await addLogToFile(metricsObj);
+                } catch (ignored) {}
             }
         });
     })

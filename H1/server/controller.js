@@ -5,8 +5,17 @@ const requestLib = require("request").defaults({
 const config = require("./config");
 const fs = require('fs');
 
+const SOME_RANDOM_API_DOWN = true;
+
 const URL_RANDOM_IMAGE = "https://api.thedogapi.com/v1/images/search";
-const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog"; // "https://dog-api.kinduff.com/api/facts"
+
+var URL_RANDOM_FACT;
+if (SOME_RANDOM_API_DOWN) {
+    URL_RANDOM_FACT = "https://dog-api.kinduff.com/api/facts";
+} else {
+    URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog";
+}
+
 const URL_CREATE_FACT_IMAGE = "https://memegen.link/custom";
 const URL_TRANSLATE =
     "https://translation.googleapis.com/language/translate/v2";
@@ -28,6 +37,15 @@ function badRequest(message) {
         statusCode: 400,
         statusMessage: "Bad Request",
         message: message,
+    };
+}
+
+function notFound(message) {
+    return {
+        custom: 1,
+        statusCode: 404,
+        statusMessage: "Not Found",
+        message: message
     };
 }
 
@@ -133,17 +151,22 @@ async function getRandomFact() {
         throw internalServerError("Failed to get random fact!");
     }
 
-    return jsonResult["fact"]; // jsonResult['facts'][0];
+    if (SOME_RANDOM_API_DOWN) {
+        return jsonResult['facts'][0];
+    }
+    return jsonResult['fact'];
 }
 
 async function translate(text, language) {
     let translationOptions = {
         method: "POST",
     };
+    if (language === "en") {
+        return text;
+    }
     let translationBody = {
         q: text,
-        target: language,
-        source: "en",
+        target: language
     };
 
     let response = null;
@@ -164,6 +187,7 @@ async function translate(text, language) {
     return response["data"]["translations"][0]["translatedText"];
 }
 
+// https://stackoverflow.com/questions/36122391/parsing-json-data-without-a-comma-separator
 function readLogsJSON() {
     return new Promise((resolve, reject) => {
         fs.readFile(config.LOG_FILE_NAME, function (err, data) {
@@ -171,8 +195,9 @@ function readLogsJSON() {
                 reject(err);
             }
             try {
-                let logsJson = JSON.parse(data);
-                resolve(logsJson);
+                resolve(Buffer.from(data).toString().split('\n').filter(el => el.length > 0).map(function (record) {
+                    return JSON.parse(record);
+                }));
             } catch (error) {
                 reject(error);
             }
@@ -198,7 +223,7 @@ class RouteController {
     }
 
     static addResponseToMetrics(metricsObj, obj) {
-        metricsObj["response"] = obj;
+        metricsObj["response"] = Object.assign({}, obj);
     }
 
     // https://blog.risingstack.com/measuring-http-timings-node-js/
@@ -207,15 +232,13 @@ class RouteController {
             res.statusCode = 200;
             return res.end();
         }
+        RouteController.addRequestToMetrics(metricsObj, req, body);
         for (let route of this.routes) {
             if (req.method && req.url && req.method === route.method && req.url === route.path) {
-                RouteController.addRequestToMetrics(metricsObj, req, body);
                 return route.handler(req, res, body, metricsObj);
             }
         }
-        res.statusCode = 404;
-        res.statusMessage = "Not Found";
-        return res.end("Invalid route path!");
+        throw notFound("Invalid route path!");
     }
 
     static async getRandomImage(req, res, body, metricsObj) {
@@ -235,9 +258,7 @@ class RouteController {
         }
 
         let randomFact = await getRandomFact();
-        if (body["lang"] != "en") {
-            randomFact = await translate(randomFact, body["lang"]);
-        }
+        randomFact = await translate(randomFact, body["lang"]);
 
         let response = {
             fact: randomFact,
@@ -264,7 +285,7 @@ class RouteController {
         } else {
             imageCaption = await getRandomFact();
         }
-        if (body && body.hasOwnProperty("lang") && ALLOWED_LANGUAGES.includes(body["lang"]) && body["lang"] !== "en") {
+        if (body && body.hasOwnProperty("lang") && ALLOWED_LANGUAGES.includes(body["lang"])) {
             imageCaption = await translate(imageCaption, body["lang"]);
             language = body["lang"];
         } else {
@@ -288,7 +309,7 @@ class RouteController {
         return makeSuccessResponse(req, res, response);
     }
 
-    static getMetrics(req, res, body, metricsObj) {
+    static async getMetrics(req, res, body, metricsObj) {
         let logs = null;
         try {
             logs = await readLogsJSON();
@@ -313,27 +334,33 @@ class RouteController {
             response.maxLatency = Math.max(response.maxLatency, logs[i].latency);
             response.minLatency = Math.min(response.minLatency, logs[i].latency);
 
-            if (response.statusCode >= 200 && response.statusCode < 300) {
+            if (logs[i].statusCode >= 200 && logs[i].statusCode < 300) {
                 ++response.successfulCount;
             }
 
-            if (logs.request.path in response.requestPaths) {
-                ++response.requestPaths[logs.request.path];
-            } else {
-                response.requestPaths[logs.request.path] = 1;
-            }
-
-            if (logs.request.method in response.requestMethods) {
-                ++response.requestMethods[logs.request.method];
-            } else {
-                response.requestMethods[logs.request.method] = 1;
-            }
-
-            if (pathWithLanguageInResponse(logs.request.path)) {
-                if (logs.response.lang in response.languages) {
-                    ++response.languages[logs.response.lang];
+            if (logs[i].request && logs[i].request.path) {
+                if (logs[i].request.path in response.requestPaths) {
+                    ++response.requestPaths[logs[i].request.path];
                 } else {
-                    response.languages[logs.response.lang] = 1;
+                    response.requestPaths[logs[i].request.path] = 1;
+                }
+            }
+
+            if (logs[i].request && logs[i].request.method) {
+                if (logs[i].request.method in response.requestMethods) {
+                    ++response.requestMethods[logs[i].request.method];
+                } else {
+                    response.requestMethods[logs[i].request.method] = 1;
+                }
+            }
+
+            if (logs[i].request && logs[i].request.path) {
+                if (pathWithLanguageInResponse(logs[i].request.path)) {
+                    if (logs[i].response.lang in response.languages) {
+                        ++response.languages[logs[i].response.lang];
+                    } else {
+                        response.languages[logs[i].response.lang] = 1;
+                    }
                 }
             }
         }
