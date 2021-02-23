@@ -161,6 +161,7 @@ async function getRandomFact(metricsObj) {
         try {
             let rawResult = await makeRequest(URL_RANDOM_FACT, getRandomFactOptions);
             jsonResult = JSON.parse(rawResult);
+            break;
         } catch (ignored) {}
     }
     let endAt = getCurrentMilliseconds();
