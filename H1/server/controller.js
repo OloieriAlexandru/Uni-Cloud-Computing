@@ -5,7 +5,7 @@ const requestLib = require('request').defaults({
 const config = require('./config');
 
 const URL_RANDOM_IMAGE = "https://api.thedogapi.com/v1/images/search";
-const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog";
+const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog" // "https://dog-api.kinduff.com/api/facts"
 const URL_CREATE_FACT_IMAGE = "https://memegen.link/custom";
 const URL_TRANSLATE = "https://translation.googleapis.com/language/translate/v2";
 const NUMBER_OF_RETRIES = 10;
@@ -129,7 +129,7 @@ async function getRandomFact() {
         throw internalServerError("Failed to get random fact!")
     }
 
-    return jsonResult['fact'];
+    return jsonResult['fact']; // jsonResult['facts'][0];
 }
 
 async function translate(text, language) {
@@ -161,14 +161,28 @@ class RouteController {
         this.routes = routes;
     }
 
-    async solve(req, res, body) {
+    static addRequestToMetrics(metricsObj, req, body) {
+        metricsObj['request'] = {
+            'path': req.url,
+            'method': req.method,
+            'body': body
+        };
+    }
+
+    static addResponseToMetrics(metricsObj, obj) {
+        metricsObj['response'] = obj;
+    }
+
+    // https://blog.risingstack.com/measuring-http-timings-node-js/
+    async solve(req, res, body, metricsObj) {
         if (req.method === 'OPTIONS') {
             res.statusCode = 200;
             return res.end();
         }
         for (let route of this.routes) {
             if (req.method && req.url && req.method === route.method && req.url === route.path) {
-                return route.handler(req, res, body);
+                RouteController.addRequestToMetrics(metricsObj, req, body);
+                return route.handler(req, res, body, metricsObj);
             }
         }
         res.statusCode = 404;
@@ -176,13 +190,16 @@ class RouteController {
         return res.end('Invalid route path!');
     }
 
-    static async getRandomImage(req, res, body) {
-        return makeSuccessResponse(req, res, {
+    static async getRandomImage(req, res, body, metricsObj) {
+        let response = {
             "url": await getRandomImage()
-        });
+        };
+        RouteController.addResponseToMetrics(metricsObj, response);
+
+        return makeSuccessResponse(req, res, response);
     }
 
-    static async getRandomFact(req, res, body) {
+    static async getRandomFact(req, res, body, metricsObj) {
         if (!body || !body.hasOwnProperty('lang') || !ALLOWED_LANGUAGES.includes(body['lang'])) {
             throw badRequest("Expected the body of the request to have an attribute called \"lang\"");
         }
@@ -192,12 +209,15 @@ class RouteController {
             randomFact = await translate(randomFact, body['lang']);
         }
 
-        return makeSuccessResponse(req, res, {
+        let response = {
             'fact': randomFact
-        });
+        };
+        RouteController.addResponseToMetrics(metricsObj, response);
+
+        return makeSuccessResponse(req, res, response);
     }
 
-    static async getFactImage(req, res, body) {
+    static async getFactImage(req, res, body, metricsObj) {
         let imageUrl = null;
         let imageCaption = null;
 
@@ -221,11 +241,15 @@ class RouteController {
         let factImageUrl = `${URL_CREATE_FACT_IMAGE}/${imageCaption}.jpg?alt=${imageUrl}`;
         let imageBase64Content = await downloadImage(factImageUrl);
 
-        return makeSuccessResponse(req, res, {
-            'image': imageBase64Content,
+        let response = {
+            'image': 'base64Str',
             'randomImage': imageUrl,
             'fact': originalImageCaption
-        });
+        }
+        RouteController.addResponseToMetrics(metricsObj, response);
+
+        response['image'] = imageBase64Content;
+        return makeSuccessResponse(req, res, response);
     }
 }
 

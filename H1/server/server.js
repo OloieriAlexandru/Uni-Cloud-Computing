@@ -1,5 +1,6 @@
 const http = require('http');
 const config = require('./config');
+const fs = require('fs');
 
 const RouteController = require('./controller')['RouteController'];
 const Route = require('./controller')['Route'];
@@ -16,6 +17,41 @@ function setCorsOrigin(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
     res.setHeader('Access-Control-Max-Age', 3600);
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
+}
+
+// https://stackoverflow.com/questions/11725691/how-to-get-a-microtime-in-node-js
+function getCurrentMilliseconds() {
+    let hrTime = process.hrtime();
+    return hrTime[0] * 1000 + hrTime[1] / 1000000;
+}
+
+function addLogToFile(log) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(config.LOG_FILE_NAME, function (err, data) {
+            let writtenJson = null;
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    writtenJson = [log]
+                } else {
+                    reject(err);
+                }
+            }
+            try {
+                if (writtenJson == null) {
+                    writtenJson = JSON.parse(data);
+                    writtenJson.push(log);
+                }
+                fs.writeFile(config.LOG_FILE_NAME, JSON.stringify(writtenJson), function (err, data) {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve();
+                });
+            } catch (error) {
+                reject(err);
+            }
+        });
+    });
 }
 
 // https://stackoverflow.com/questions/6968448/where-is-body-in-a-nodejs-http-get-response
@@ -40,22 +76,31 @@ http.createServer(
                     return;
                 }
             }
+            let startAt = getCurrentMilliseconds();
+            let metricsObj = {};
             try {
-                await controller.solve(req, res, jsonBody);
+                await controller.solve(req, res, jsonBody, metricsObj);
             } catch (err) {
                 if (err && err['custom'] == 1) {
                     res.statusCode = err['statusCode'];
                     res.statusMessage = err['statusMessage'];
-                    return res.end(JSON.stringify({
+                    res.end(JSON.stringify({
                         "message": err['message']
                     }));
                 } else {
                     res.statusCode = 500;
                     res.statusMessage = 'Internal Server Error';
-                    return res.end(JSON.stringify({
+                    res.end(JSON.stringify({
                         "message": "Unexpected server error!"
                     }));
                 }
+            } finally {
+                let endAt = getCurrentMilliseconds();
+
+                metricsObj['latency'] = endAt - startAt;
+                metricsObj['statusCode'] = res.statusCode;
+
+                await addLogToFile(metricsObj);
             }
         });
     }
