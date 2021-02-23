@@ -7,6 +7,7 @@ const config = require('./config');
 const URL_RANDOM_IMAGE = "https://api.thedogapi.com/v1/images/search";
 const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog";
 const URL_CREATE_FACT_IMAGE = "https://memegen.link/custom";
+const URL_TRANSLATE = "https://translation.googleapis.com/language/translate/v2";
 const NUMBER_OF_RETRIES = 10;
 
 const ALLOWED_LANGUAGES = [
@@ -19,6 +20,24 @@ class Route {
         this.path = path;
         this.handler = handler;
     }
+}
+
+function badRequest(message) {
+    return {
+        "custom": 1,
+        "statusCode": 400,
+        "statusMessage": "Bad Request",
+        "message": message
+    };
+}
+
+function internalServerError(message) {
+    return {
+        "custom": 1,
+        "statusCode": 500,
+        "statusMessage": "Internal Server Error",
+        "message": message
+    };
 }
 
 // https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
@@ -69,6 +88,50 @@ function makeSuccessResponse(req, res, obj) {
     return res.end(JSON.stringify(obj));
 }
 
+async function getRandomImage() {
+    let getRandomImageOptions = {
+        headers: {
+            'x-api-key': config.THE_DOG_API_API_KEY
+        },
+        method: 'GET'
+    };
+
+    let jsonResult = null;
+    for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
+        try {
+            let rawResult = await makeRequest(URL_RANDOM_IMAGE, getRandomImageOptions);
+            jsonResult = JSON.parse(rawResult);
+            break;
+        } catch (ignored) {}
+    }
+
+    if (jsonResult == null || jsonResult.length == 0) {
+        throw internalServerError("Failed to get random image!")
+    }
+
+    return jsonResult[0]['url'];
+}
+
+async function getRandomFact() {
+    let getRandomFactOptions = {
+        method: 'GET'
+    };
+
+    let jsonResult = null;
+    for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
+        try {
+            let rawResult = await makeRequest(URL_RANDOM_FACT, getRandomFactOptions);
+            jsonResult = JSON.parse(rawResult);
+        } catch (ignored) {}
+    }
+
+    if (jsonResult == null) {
+        throw internalServerError("Failed to get random fact!")
+    }
+
+    return jsonResult['fact'];
+}
+
 async function translate(text, language) {
     let translationOptions = {
         method: 'POST'
@@ -79,8 +142,17 @@ async function translate(text, language) {
         source: "en"
     };
 
-    let response = JSON.parse(await makeRequest(`https://translation.googleapis.com/language/translate/v2?key=${config.TRANSLATE_API_KEY}`,
-        translationOptions, JSON.stringify(translationBody)));
+    let response = null;
+    try {
+        response = JSON.parse(await makeRequest(`${URL_TRANSLATE}?key=${config.TRANSLATE_API_KEY}`,
+            translationOptions, JSON.stringify(translationBody)));
+    } catch (ignored) {}
+
+    if (!response || !response['data'] || !response['data']['translations'] ||
+        response['data']['translations'].length == 0 ||
+        !response['data']['translations'][0]['translatedText']) {
+        throw internalServerError("Failed to translate text!");
+    }
     return response['data']['translations'][0]['translatedText'];
 }
 
@@ -105,66 +177,54 @@ class RouteController {
     }
 
     static async getRandomImage(req, res, body) {
-        let getRandomImageOptions = {
-            headers: {
-                'x-api-key': config.THE_DOG_API_API_KEY
-            },
-            method: 'GET'
-        };
-
-        let jsonResult;
-        for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
-            try {
-                let rawResult = await makeRequest(URL_RANDOM_IMAGE, getRandomImageOptions);
-                jsonResult = JSON.parse(rawResult);
-                break;
-            } catch (ignored) {
-                console.log(ignored);
-            }
-        }
-
         return makeSuccessResponse(req, res, {
-            "url": jsonResult[0]['url']
+            "url": await getRandomImage()
         });
     }
 
     static async getRandomFact(req, res, body) {
         if (!body || !body.hasOwnProperty('lang') || !ALLOWED_LANGUAGES.includes(body['lang'])) {
-            return res.end('error');
+            throw badRequest("Expected the body of the request to have an attribute called \"lang\"");
         }
 
-        let getRandomFactOptions = {
-            method: 'GET'
-        };
-
-        let jsonResult = null;
-        for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
-            try {
-                let rawResult = await makeRequest(URL_RANDOM_FACT, getRandomFactOptions);
-                jsonResult = JSON.parse(rawResult);
-            } catch (ignored) {}
-        }
-
+        let randomFact = await getRandomFact();
         if (body['lang'] != 'en') {
-            jsonResult['fact'] = await translate(jsonResult['fact'], body['lang']);
+            randomFact = await translate(randomFact, body['lang']);
         }
-        return makeSuccessResponse(req, res, jsonResult);
+
+        return makeSuccessResponse(req, res, {
+            'fact': randomFact
+        });
     }
 
     static async getFactImage(req, res, body) {
-        if (!body || !body.hasOwnProperty('url') || !body.hasOwnProperty('fact')) {
-            return res.end('error');
+        let imageUrl = null;
+        let imageCaption = null;
+
+        if (body && body.hasOwnProperty('url') && body['url']) {
+            imageUrl = body['url'];
+        } else {
+            imageUrl = await getRandomImage();
         }
 
-        let imageUrl = body['url'];
-        let imageCaption = body['fact'];
+        if (body && body.hasOwnProperty('fact') && body['fact']) {
+            imageCaption = body['fact'];
+        } else {
+            imageCaption = await getRandomFact();
+        }
+        if (body && body.hasOwnProperty('lang') && ALLOWED_LANGUAGES.includes(body['lang']) && body['lang'] !== 'en') {
+            imageCaption = await translate(imageCaption, body['lang']);
+        }
+        let originalImageCaption = imageCaption;
         imageCaption = encodeURI(imageCaption);
 
         let factImageUrl = `${URL_CREATE_FACT_IMAGE}/${imageCaption}.jpg?alt=${imageUrl}`;
         let imageBase64Content = await downloadImage(factImageUrl);
 
         return makeSuccessResponse(req, res, {
-            'image': imageBase64Content
+            'image': imageBase64Content,
+            'randomImage': imageUrl,
+            'fact': originalImageCaption
         });
     }
 }

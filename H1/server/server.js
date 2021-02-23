@@ -29,8 +29,8 @@ http.createServer(
             data += chunk;
         });
         req.on('end', async () => {
+            let jsonBody = null;
             if (data != '') {
-                let jsonBody;
                 try {
                     jsonBody = JSON.parse(data);
                 } catch (e) {
@@ -39,13 +39,23 @@ http.createServer(
                     res.end('Invalid request body! Expected a valid JSON object!');
                     return;
                 }
-                try {
-                    await controller.solve(req, res, jsonBody);
-                } catch (err) {
-
+            }
+            try {
+                await controller.solve(req, res, jsonBody);
+            } catch (err) {
+                if (err && err['custom'] == 1) {
+                    res.statusCode = err['statusCode'];
+                    res.statusMessage = err['statusMessage'];
+                    return res.end(JSON.stringify({
+                        "message": err['message']
+                    }));
+                } else {
+                    res.statusCode = 500;
+                    res.statusMessage = 'Internal Server Error';
+                    return res.end(JSON.stringify({
+                        "message": "Unexpected server error!"
+                    }));
                 }
-            } else {
-                await controller.solve(req, res, null);
             }
         });
     }

@@ -69,25 +69,22 @@ export class MainPageComponent {
   }
 
   public getFactImage() {
-    if (this.randomImageUrl == null) {
-      this.setErrorMessage('You have to generate a random image first!');
-    } else if (this.randomFact == null) {
-      this.setErrorMessage('You have to generate a random fact first!');
-    } else {
-      let randomFactImageRequest: RandomFactImageRequest = new RandomFactImageRequest(
-        this.randomImageUrl,
-        this.randomFact
-      );
-      this.factsService.buildFactImage(randomFactImageRequest).subscribe(
-        (imageData: RandomFactImageResponse) => {
-          this.randomFactImageUrl = imageData.image;
-          this.clearErrorMessage();
-        },
-        (error) => {
-          this.setErrorMessageFromErrorObject(error);
-        }
-      );
-    }
+    let randomFactImageRequest: RandomFactImageRequest = new RandomFactImageRequest(
+      this.randomImageUrl,
+      this.randomFact,
+      this.selectedLanguage
+    );
+    this.factsService.buildFactImage(randomFactImageRequest).subscribe(
+      (imageData: RandomFactImageResponse) => {
+        this.randomFactImageUrl = imageData.image;
+        this.randomImageUrl = imageData.randomImage;
+        this.randomFact = imageData.fact;
+        this.clearErrorMessage();
+      },
+      (error) => {
+        this.setErrorMessageFromErrorObject(error);
+      }
+    );
   }
 
   private setErrorMessageFromErrorObject(error) {
