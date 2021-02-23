@@ -1,18 +1,18 @@
-const https = require('follow-redirects').https;
-const requestLib = require('request').defaults({
-    encoding: null
+const https = require("follow-redirects").https;
+const requestLib = require("request").defaults({
+    encoding: null,
 });
-const config = require('./config');
+const config = require("./config");
+const fs = require('fs');
 
 const URL_RANDOM_IMAGE = "https://api.thedogapi.com/v1/images/search";
-const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog" // "https://dog-api.kinduff.com/api/facts"
+const URL_RANDOM_FACT = "https://some-random-api.ml/facts/dog"; // "https://dog-api.kinduff.com/api/facts"
 const URL_CREATE_FACT_IMAGE = "https://memegen.link/custom";
-const URL_TRANSLATE = "https://translation.googleapis.com/language/translate/v2";
+const URL_TRANSLATE =
+    "https://translation.googleapis.com/language/translate/v2";
 const NUMBER_OF_RETRIES = 10;
 
-const ALLOWED_LANGUAGES = [
-    'en', 'fr', 'es', 'ro'
-];
+const ALLOWED_LANGUAGES = ["en", "fr", "es", "ro"];
 
 class Route {
     constructor(method, path, handler) {
@@ -24,19 +24,19 @@ class Route {
 
 function badRequest(message) {
     return {
-        "custom": 1,
-        "statusCode": 400,
-        "statusMessage": "Bad Request",
-        "message": message
+        custom: 1,
+        statusCode: 400,
+        statusMessage: "Bad Request",
+        message: message,
     };
 }
 
 function internalServerError(message) {
     return {
-        "custom": 1,
-        "statusCode": 500,
-        "statusMessage": "Internal Server Error",
-        "message": message
+        custom: 1,
+        statusCode: 500,
+        statusMessage: "Internal Server Error",
+        message: message,
     };
 }
 
@@ -44,19 +44,19 @@ function internalServerError(message) {
 // https://stackoverflow.com/questions/41470296/how-to-await-and-return-the-result-of-a-http-request-so-that-multiple-request
 function makeRequest(url, options, body) {
     return new Promise((resolve, reject) => {
-        let req = https.request(url, options, res => {
-            let data = '';
-            res.on('data', (chunk) => {
+        let req = https.request(url, options, (res) => {
+            let data = "";
+            res.on("data", (chunk) => {
                 data += chunk;
             });
-            res.on('end', () => {
+            res.on("end", () => {
                 resolve(data);
             });
-            res.on('error', (err) => {
+            res.on("error", (err) => {
                 reject(err);
             });
         });
-        req.on('error', err => {
+        req.on("error", (err) => {
             reject(err);
         });
         if (body != null) {
@@ -74,7 +74,8 @@ function downloadImage(url) {
                 reject(error);
             }
             if (response.statusCode == 200) {
-                data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(body).toString('base64');
+                data = "data:" + response.headers["content-type"] + ";base64," +
+                    Buffer.from(body).toString("base64");
                 resolve(data);
             }
         });
@@ -83,38 +84,41 @@ function downloadImage(url) {
 
 function makeSuccessResponse(req, res, obj) {
     res.statusCode = 200;
-    res.statusMessage = 'Ok';
-    res.setHeader('Content-Type', 'application/json');
+    res.statusMessage = "Ok";
+    res.setHeader("Content-Type", "application/json");
     return res.end(JSON.stringify(obj));
 }
 
 async function getRandomImage() {
     let getRandomImageOptions = {
         headers: {
-            'x-api-key': config.THE_DOG_API_API_KEY
+            "x-api-key": config.THE_DOG_API_API_KEY,
         },
-        method: 'GET'
+        method: "GET",
     };
 
     let jsonResult = null;
     for (let retryIndex = 1; retryIndex <= NUMBER_OF_RETRIES; ++retryIndex) {
         try {
-            let rawResult = await makeRequest(URL_RANDOM_IMAGE, getRandomImageOptions);
+            let rawResult = await makeRequest(
+                URL_RANDOM_IMAGE,
+                getRandomImageOptions
+            );
             jsonResult = JSON.parse(rawResult);
             break;
         } catch (ignored) {}
     }
 
     if (jsonResult == null || jsonResult.length == 0) {
-        throw internalServerError("Failed to get random image!")
+        throw internalServerError("Failed to get random image!");
     }
 
-    return jsonResult[0]['url'];
+    return jsonResult[0]["url"];
 }
 
 async function getRandomFact() {
     let getRandomFactOptions = {
-        method: 'GET'
+        method: "GET",
     };
 
     let jsonResult = null;
@@ -126,34 +130,58 @@ async function getRandomFact() {
     }
 
     if (jsonResult == null) {
-        throw internalServerError("Failed to get random fact!")
+        throw internalServerError("Failed to get random fact!");
     }
 
-    return jsonResult['fact']; // jsonResult['facts'][0];
+    return jsonResult["fact"]; // jsonResult['facts'][0];
 }
 
 async function translate(text, language) {
     let translationOptions = {
-        method: 'POST'
+        method: "POST",
     };
     let translationBody = {
         q: text,
         target: language,
-        source: "en"
+        source: "en",
     };
 
     let response = null;
     try {
-        response = JSON.parse(await makeRequest(`${URL_TRANSLATE}?key=${config.TRANSLATE_API_KEY}`,
-            translationOptions, JSON.stringify(translationBody)));
+        response = JSON.parse(
+            await makeRequest(
+                `${URL_TRANSLATE}?key=${config.TRANSLATE_API_KEY}`,
+                translationOptions,
+                JSON.stringify(translationBody)
+            )
+        );
     } catch (ignored) {}
 
-    if (!response || !response['data'] || !response['data']['translations'] ||
-        response['data']['translations'].length == 0 ||
-        !response['data']['translations'][0]['translatedText']) {
+    if (!response || !response["data"] || !response["data"]["translations"] ||
+        response["data"]["translations"].length == 0 || !response["data"]["translations"][0]["translatedText"]) {
         throw internalServerError("Failed to translate text!");
     }
-    return response['data']['translations'][0]['translatedText'];
+    return response["data"]["translations"][0]["translatedText"];
+}
+
+function readLogsJSON() {
+    return new Promise((resolve, reject) => {
+        fs.readFile(config.LOG_FILE_NAME, function (err, data) {
+            if (err) {
+                reject(err);
+            }
+            try {
+                let logsJson = JSON.parse(data);
+                resolve(logsJson);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+function pathWithLanguageInResponse(path) {
+    return path === '/api/v1/random-fact' || path === '/api/v1/fact-image';
 }
 
 class RouteController {
@@ -162,20 +190,20 @@ class RouteController {
     }
 
     static addRequestToMetrics(metricsObj, req, body) {
-        metricsObj['request'] = {
-            'path': req.url,
-            'method': req.method,
-            'body': body
+        metricsObj["request"] = {
+            path: req.url,
+            method: req.method,
+            body: body,
         };
     }
 
     static addResponseToMetrics(metricsObj, obj) {
-        metricsObj['response'] = obj;
+        metricsObj["response"] = obj;
     }
 
     // https://blog.risingstack.com/measuring-http-timings-node-js/
     async solve(req, res, body, metricsObj) {
-        if (req.method === 'OPTIONS') {
+        if (req.method === "OPTIONS") {
             res.statusCode = 200;
             return res.end();
         }
@@ -186,13 +214,13 @@ class RouteController {
             }
         }
         res.statusCode = 404;
-        res.statusMessage = 'Not Found';
-        return res.end('Invalid route path!');
+        res.statusMessage = "Not Found";
+        return res.end("Invalid route path!");
     }
 
     static async getRandomImage(req, res, body, metricsObj) {
         let response = {
-            "url": await getRandomImage()
+            url: await getRandomImage(),
         };
         RouteController.addResponseToMetrics(metricsObj, response);
 
@@ -200,17 +228,20 @@ class RouteController {
     }
 
     static async getRandomFact(req, res, body, metricsObj) {
-        if (!body || !body.hasOwnProperty('lang') || !ALLOWED_LANGUAGES.includes(body['lang'])) {
-            throw badRequest("Expected the body of the request to have an attribute called \"lang\"");
+        if (!body || !body.hasOwnProperty("lang") || !ALLOWED_LANGUAGES.includes(body["lang"])) {
+            throw badRequest(
+                'Expected the body of the request to have an attribute called "lang"'
+            );
         }
 
         let randomFact = await getRandomFact();
-        if (body['lang'] != 'en') {
-            randomFact = await translate(randomFact, body['lang']);
+        if (body["lang"] != "en") {
+            randomFact = await translate(randomFact, body["lang"]);
         }
 
         let response = {
-            'fact': randomFact
+            fact: randomFact,
+            lang: body["lang"]
         };
         RouteController.addResponseToMetrics(metricsObj, response);
 
@@ -220,20 +251,24 @@ class RouteController {
     static async getFactImage(req, res, body, metricsObj) {
         let imageUrl = null;
         let imageCaption = null;
+        let language = null;
 
-        if (body && body.hasOwnProperty('url') && body['url']) {
-            imageUrl = body['url'];
+        if (body && body.hasOwnProperty("url") && body["url"]) {
+            imageUrl = body["url"];
         } else {
             imageUrl = await getRandomImage();
         }
 
-        if (body && body.hasOwnProperty('fact') && body['fact']) {
-            imageCaption = body['fact'];
+        if (body && body.hasOwnProperty("fact") && body["fact"]) {
+            imageCaption = body["fact"];
         } else {
             imageCaption = await getRandomFact();
         }
-        if (body && body.hasOwnProperty('lang') && ALLOWED_LANGUAGES.includes(body['lang']) && body['lang'] !== 'en') {
-            imageCaption = await translate(imageCaption, body['lang']);
+        if (body && body.hasOwnProperty("lang") && ALLOWED_LANGUAGES.includes(body["lang"]) && body["lang"] !== "en") {
+            imageCaption = await translate(imageCaption, body["lang"]);
+            language = body["lang"];
+        } else {
+            language = "en";
         }
         let originalImageCaption = imageCaption;
         imageCaption = encodeURI(imageCaption);
@@ -242,18 +277,74 @@ class RouteController {
         let imageBase64Content = await downloadImage(factImageUrl);
 
         let response = {
-            'image': 'base64Str',
-            'randomImage': imageUrl,
-            'fact': originalImageCaption
-        }
+            image: "base64Str",
+            randomImage: imageUrl,
+            fact: originalImageCaption,
+            lang: language
+        };
         RouteController.addResponseToMetrics(metricsObj, response);
 
-        response['image'] = imageBase64Content;
+        response["image"] = imageBase64Content;
+        return makeSuccessResponse(req, res, response);
+    }
+
+    static getMetrics(req, res, body, metricsObj) {
+        let logs = null;
+        try {
+            logs = await readLogsJSON();
+        } catch (err) {
+            throw internalServerError("Failed to read logs file from disk!");
+        }
+
+        let response = {
+            requestsCount: logs.length,
+            averageLatency: 0.0,
+            maxLatency: Number.MIN_SAFE_INTEGER,
+            minLatency: Number.MAX_SAFE_INTEGER,
+            successfulCount: 0,
+            requestPaths: {},
+            requestMethods: {},
+            languages: {}
+        };
+
+        for (let i = 0; i < logs.length; ++i) {
+            response.averageLatency += logs[i].latency;
+
+            response.maxLatency = Math.max(response.maxLatency, logs[i].latency);
+            response.minLatency = Math.min(response.minLatency, logs[i].latency);
+
+            if (response.statusCode >= 200 && response.statusCode < 300) {
+                ++response.successfulCount;
+            }
+
+            if (logs.request.path in response.requestPaths) {
+                ++response.requestPaths[logs.request.path];
+            } else {
+                response.requestPaths[logs.request.path] = 1;
+            }
+
+            if (logs.request.method in response.requestMethods) {
+                ++response.requestMethods[logs.request.method];
+            } else {
+                response.requestMethods[logs.request.method] = 1;
+            }
+
+            if (pathWithLanguageInResponse(logs.request.path)) {
+                if (logs.response.lang in response.languages) {
+                    ++response.languages[logs.response.lang];
+                } else {
+                    response.languages[logs.response.lang] = 1;
+                }
+            }
+        }
+        response.averageLatency /= logs.length;
+
+        RouteController.addResponseToMetrics(metricsObj, response);
         return makeSuccessResponse(req, res, response);
     }
 }
 
 module.exports = {
     Route,
-    RouteController
+    RouteController,
 };

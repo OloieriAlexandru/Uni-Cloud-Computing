@@ -1,22 +1,26 @@
-const http = require('http');
-const config = require('./config');
-const fs = require('fs');
+const http = require("http");
+const config = require("./config");
+const fs = require("fs");
 
-const RouteController = require('./controller')['RouteController'];
-const Route = require('./controller')['Route'];
+const RouteController = require("./controller")["RouteController"];
+const Route = require("./controller")["Route"];
 
 controller = new RouteController([
-    new Route('GET', '/api/v1/random-image', RouteController.getRandomImage),
-    new Route('POST', '/api/v1/random-fact', RouteController.getRandomFact),
-    new Route('POST', '/api/v1/fact-image', RouteController.getFactImage)
+    new Route("GET", "/api/v1/random-image", RouteController.getRandomImage),
+    new Route("POST", "/api/v1/random-fact", RouteController.getRandomFact),
+    new Route("POST", "/api/v1/fact-image", RouteController.getFactImage),
+    new Route("GET", "/api/v1/metrics", RouteController.getMetrics),
 ]);
 
 function setCorsOrigin(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Request-Method', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-    res.setHeader('Access-Control-Max-Age', 3600);
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Request-Method", "*");
+    res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+    res.setHeader("Access-Control-Max-Age", 3600);
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Access-Control-Allow-Headers"
+    );
 }
 
 // https://stackoverflow.com/questions/11725691/how-to-get-a-microtime-in-node-js
@@ -30,8 +34,8 @@ function addLogToFile(log) {
         fs.readFile(config.LOG_FILE_NAME, function (err, data) {
             let writtenJson = null;
             if (err) {
-                if (err.code == 'ENOENT') {
-                    writtenJson = [log]
+                if (err.code == "ENOENT") {
+                    writtenJson = [log];
                 } else {
                     reject(err);
                 }
@@ -41,38 +45,42 @@ function addLogToFile(log) {
                     writtenJson = JSON.parse(data);
                     writtenJson.push(log);
                 }
-                fs.writeFile(config.LOG_FILE_NAME, JSON.stringify(writtenJson), function (err, data) {
-                    if (err) {
-                        reject(err);
+                fs.writeFile(
+                    config.LOG_FILE_NAME,
+                    JSON.stringify(writtenJson),
+                    function (err, data) {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve();
                     }
-                    resolve();
-                });
+                );
             } catch (error) {
-                reject(err);
+                reject(error);
             }
         });
     });
 }
 
 // https://stackoverflow.com/questions/6968448/where-is-body-in-a-nodejs-http-get-response
-http.createServer(
-    function (req, res) {
+http
+    .createServer(function (req, res) {
         setCorsOrigin(req, res);
 
-        let data = '';
+        let data = "";
 
-        req.on('data', chunk => {
+        req.on("data", (chunk) => {
             data += chunk;
         });
-        req.on('end', async () => {
+        req.on("end", async () => {
             let jsonBody = null;
-            if (data != '') {
+            if (data != "") {
                 try {
                     jsonBody = JSON.parse(data);
                 } catch (e) {
                     res.statusCode = 400;
-                    res.statusMessage = 'Bad Request';
-                    res.end('Invalid request body! Expected a valid JSON object!');
+                    res.statusMessage = "Bad Request";
+                    res.end("Invalid request body! Expected a valid JSON object!");
                     return;
                 }
             }
@@ -81,29 +89,33 @@ http.createServer(
             try {
                 await controller.solve(req, res, jsonBody, metricsObj);
             } catch (err) {
-                if (err && err['custom'] == 1) {
-                    res.statusCode = err['statusCode'];
-                    res.statusMessage = err['statusMessage'];
-                    res.end(JSON.stringify({
-                        "message": err['message']
-                    }));
+                if (err && err["custom"] == 1) {
+                    res.statusCode = err["statusCode"];
+                    res.statusMessage = err["statusMessage"];
+                    res.end(
+                        JSON.stringify({
+                            message: err["message"],
+                        })
+                    );
                 } else {
                     res.statusCode = 500;
-                    res.statusMessage = 'Internal Server Error';
-                    res.end(JSON.stringify({
-                        "message": "Unexpected server error!"
-                    }));
+                    res.statusMessage = "Internal Server Error";
+                    res.end(
+                        JSON.stringify({
+                            message: "Unexpected server error!",
+                        })
+                    );
                 }
             } finally {
                 let endAt = getCurrentMilliseconds();
 
-                metricsObj['latency'] = endAt - startAt;
-                metricsObj['statusCode'] = res.statusCode;
+                metricsObj["latency"] = endAt - startAt;
+                metricsObj["statusCode"] = res.statusCode;
 
                 await addLogToFile(metricsObj);
             }
         });
-    }
-).listen(config.PORT, config.HOST);
+    })
+    .listen(config.PORT, config.HOST);
 
 console.log(`Server listening at ${config.HOST}:${config.PORT}`);
