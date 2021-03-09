@@ -62,6 +62,12 @@ class MethodNotAllowedResponse extends GenericResponse {
     }
 }
 
+class NotImplementedResponse extends GenericResponse {
+    constructor() {
+        super('501', 'Not Implemented');
+    }
+}
+
 module.exports = {
     BadRequestResponse,
     UnauthorizedResponse,
@@ -71,5 +77,6 @@ module.exports = {
     CreatedResponse,
     NoContentResponse,
     InternalServerErrorResponse,
-    MethodNotAllowedResponse
+    MethodNotAllowedResponse,
+    NotImplementedResponse
 };

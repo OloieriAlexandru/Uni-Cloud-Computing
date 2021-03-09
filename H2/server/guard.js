@@ -1,6 +1,7 @@
 const BadRequestResponse = require('../Olo.js').BadRequestResponse;
 const UnauthorizedResponse = require('../Olo.js').UnauthorizedResponse;
 const ForbiddenResponse = require('../Olo.js').ForbiddenResponse;
+const NotFoundResponse = require('../Olo.js').NotFoundResponse;
 
 const JwtUtil = require('./jwt-util');
 
@@ -15,7 +16,7 @@ class Guard {
         let postId = req.olo.urlVars['id'];
         let post = await this.postsRepository.getById(postId);
         if (!post) {
-            return new BadRequestResponse({
+            return new NotFoundResponse({
                 message: `Invalid request route! Invalid post id (${postId})`
             });
         }
@@ -53,7 +54,7 @@ class Guard {
         let commentId = req.olo.urlVars['commentId'];
         let comment = await this.commentsRepository.getByIdOnPost(postId, commentId);
         if (!comment) {
-            return new BadRequestResponse({
+            return new NotFoundResponse({
                 message: `Invalid request route! Invalid comment id (${commentId})`
             });
         }

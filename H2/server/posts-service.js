@@ -12,6 +12,9 @@ class PostsService {
 
     async getById(id) {
         let post = await this.repository.getById(id);
+        if (!post) {
+            return post;
+        }
         let postComments = await this.commentsRepository.getAllOnPost(id);
         post.comments = postComments;
         return post;

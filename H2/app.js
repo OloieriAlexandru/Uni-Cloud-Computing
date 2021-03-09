@@ -33,6 +33,7 @@ async function runOlo() {
     olo.post('/api/posts/{id:alphanum}', postsController.createIdSpecified);
     olo.put('/api/posts/{id:alphanum}', postsController.update,
         [guard.isLoggedIn, guard.validPostIdInPath, guard.userIsPostOwner]);
+    olo.patch('/api/posts/{id:alphanum}', postsController.patch);
     olo.delete('/api/posts/{id:alphanum}', postsController.delete,
         [guard.isLoggedIn, guard.validPostIdInPath, guard.userIsPostOwner]);
 

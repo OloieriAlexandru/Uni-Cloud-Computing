@@ -9,5 +9,6 @@ module.exports = {
     OkResponse: require('./response').OkResponse,
     CreatedResponse: require('./response').CreatedResponse,
     NoContentResponse: require('./response').NoContentResponse,
-    MethodNotAllowedResponse: require('./response').MethodNotAllowedResponse
+    MethodNotAllowedResponse: require('./response').MethodNotAllowedResponse,
+    NotImplementedResponse: require('./response').NotImplementedResponse
 };

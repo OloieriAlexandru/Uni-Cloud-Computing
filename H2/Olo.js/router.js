@@ -82,6 +82,7 @@ class Router {
                 return await route.handler(req, res);
             }
         } catch (e) {
+            console.log(e);
             return new InternalServerErrorResponse({
                 'message': 'Unexpected server error occured!'
             });

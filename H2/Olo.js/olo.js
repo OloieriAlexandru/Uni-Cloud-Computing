@@ -27,6 +27,10 @@ class Olo {
         this.method('DELETE', path, handler, guards);
     }
 
+    patch(path, handler, guards) {
+        this.method('PATCH', path, handler, guards);
+    }
+
     startServer(port, hostname, callback) {
         const router = this.router;
 

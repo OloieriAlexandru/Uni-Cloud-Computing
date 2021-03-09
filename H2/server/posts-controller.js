@@ -3,6 +3,7 @@ const NoContentResponse = require('../Olo.js').NoContentResponse;
 const NotFoundResponse = require('../Olo.js').NotFoundResponse;
 const BadRequestResponse = require('../Olo.js').BadRequestResponse;
 const MethodNotAllowedResponse = require('../Olo.js').MethodNotAllowedResponse;
+const NotImplementedResponse = require('../Olo.js').NotImplementedResponse;
 
 const PropertyValidator = require('../Olo.js').PropertyValidator;
 const Validator = require('../Olo.js').Validator;
@@ -62,6 +63,12 @@ class PostsController {
         await this.service.update(updatedPost);
 
         return new NoContentResponse();
+    }
+
+    patch = async (req, res) => {
+        return new NotImplementedResponse({
+            'message': 'This method is not implemented yet!'
+        });
     }
 
     delete = async (req, res) => {
