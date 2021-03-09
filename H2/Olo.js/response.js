@@ -56,6 +56,12 @@ class NoContentResponse extends GenericResponse {
     }
 }
 
+class MethodNotAllowedResponse extends GenericResponse {
+    constructor() {
+        super('405', 'Method Not Allowed');
+    }
+}
+
 module.exports = {
     BadRequestResponse,
     UnauthorizedResponse,
@@ -64,5 +70,6 @@ module.exports = {
     OkResponse,
     CreatedResponse,
     NoContentResponse,
-    InternalServerErrorResponse
+    InternalServerErrorResponse,
+    MethodNotAllowedResponse
 };

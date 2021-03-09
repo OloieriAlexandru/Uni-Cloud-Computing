@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const config = require('../config.js');
 
+// Taken from: https://github.com/CojocariuAlexandru/WEB/blob/master/server/users-microservice/server/jwt-utils.js
+// (Written 100% by me)
 class JwtUtil {
     // https://ciphertrick.com/salt-hash-passwords-using-nodejs-crypto/?fbclid=IwAR0QbqgLOHe-H3PJjmByQ5dukYrraNgH6_FB81ON_ryRqdXRn41MQChvFZ4
     static saltHashPassword(password) {

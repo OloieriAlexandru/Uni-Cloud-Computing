@@ -27,9 +27,13 @@ class CommentsRepository {
     }
 
     async create(newComment) {
-        let inserted = await this.db.collection('comments').insertOne(newComment);
-        newComment._id = inserted.insertedId;
-        return newComment;
+        try {
+            let inserted = await this.db.collection('comments').insertOne(newComment);
+            newComment._id = inserted.insertedId;
+            return newComment;
+        } catch {
+            return null;
+        }
     }
 
     async updateOnPost(postId, updatedPost) {
@@ -53,7 +57,7 @@ class CommentsRepository {
                 _id: ObjectID(commentId),
                 postId: postId
             });
-        } catch {
+        } catch (e) {
             return null;
         }
     }

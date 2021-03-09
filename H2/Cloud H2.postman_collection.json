@@ -181,7 +181,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/api/posts/6046aacd6a68194c8cd7eb70",
+							"raw": "http://localhost:8002/api/posts/6046ac2103a4bb652cbf57eb",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -190,7 +190,7 @@
 							"path": [
 								"api",
 								"posts",
-								"6046aacd6a68194c8cd7eb70"
+								"6046ac2103a4bb652cbf57eb"
 							]
 						}
 					},
@@ -247,6 +247,42 @@
 							"path": [
 								"api",
 								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create - Not allowed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDQ2YTg3Nzk4MDY5MTMxM2NmMmY0OGIiLCJ1c2VybmFtZSI6ImFsZXhvbG9pZXJpLWp3dCIsImlhdCI6MTYxNTI0MzQyMywiZXhwIjoxNjQ2Nzc5NDIzfQ.OVnMmKu_Gbdaqtbt8cF1UPOy-PPljWbpNvjfbL3kXYk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"A random post\",\r\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nibh dolor, hendrerit bibendum tellus a, fermentum sodales lacus. Aliquam consequat, est sed ultrices posuere, nulla enim facilisis ex, ac mattis mi nibh nec enim. Pellentesque ut tincidunt arcu. Vestibulum sollicitudin nibh purus, nec lobortis nisl viverra vel. Proin tristique vestibulum dui a faucibus. Praesent commodo cursus risus, ac lacinia ex interdum eget. Vestibulum in cursus quam. Ut a cursus ligula. Nunc tristique augue id nisl semper varius.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/api/posts/6046aae76a68194c8cd7eb71",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"posts",
+								"6046aae76a68194c8cd7eb71"
 							]
 						}
 					},
@@ -561,7 +597,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8002/api/posts/6046aacd6a68194c8cd7eb70/comments",
+							"raw": "http://localhost:8002/api/posts/6046ac3803a4bb652cbf57ec/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -570,7 +606,7 @@
 							"path": [
 								"api",
 								"posts",
-								"6046aacd6a68194c8cd7eb70",
+								"6046ac3803a4bb652cbf57ec",
 								"comments"
 							]
 						}
@@ -689,7 +725,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"_id\": \"6046ae555223375ff4065df7\",\r\n    \"content\": \"Comment to be updated\",\r\n    \"userId\": \"6046a877980691313cf2f48b\"\r\n}",
+							"raw": "{\r\n    \"_id\": \"6046ae555223375ff4065df7\",\r\n    \"content\": \"Comment to be updated\",\r\n    \"userId\": \"6046a877980691313cf2f48b\",\r\n    \"postId\": \"6046aacd6a68194c8cd7eb70\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -709,6 +745,43 @@
 								"6046aacd6a68194c8cd7eb70",
 								"comments",
 								"6046ae555223375ff4065df7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Collection",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDQ2YTg3Nzk4MDY5MTMxM2NmMmY0OGIiLCJ1c2VybmFtZSI6ImFsZXhvbG9pZXJpLWp3dCIsImlhdCI6MTYxNTI0MzQyMywiZXhwIjoxNjQ2Nzc5NDIzfQ.OVnMmKu_Gbdaqtbt8cF1UPOy-PPljWbpNvjfbL3kXYk"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n    \"_id\": \"6046ae555223375ff4065d00\",\r\n    \"content\": \"Comment to be updated\",\r\n    \"userId\": \"6046a877980691313cf2f48b\",\r\n    \"postId\": \"6046aacd6a68194c8cd7eb70\"\r\n},\r\n{\r\n    \"_id\": \"6046ae555223375ff4065d00\",\r\n    \"content\": \"Comment to be updated\",\r\n    \"userId\": \"6046a877980691313cf2f48b\",\r\n    \"postId\": \"6046aacd6a68194c8cd7eb70\"\r\n}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/api/posts/6046ac3803a4bb652cbf57ec/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"posts",
+								"6046ac3803a4bb652cbf57ec",
+								"comments"
 							]
 						}
 					},
@@ -738,6 +811,34 @@
 								"6046aacd6a68194c8cd7eb70",
 								"comments",
 								"6046b0da279bfc1fc069611b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Collection",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDQ2YTg3Nzk4MDY5MTMxM2NmMmY0OGIiLCJ1c2VybmFtZSI6ImFsZXhvbG9pZXJpLWp3dCIsImlhdCI6MTYxNTI0MzQyMywiZXhwIjoxNjQ2Nzc5NDIzfQ.OVnMmKu_Gbdaqtbt8cF1UPOy-PPljWbpNvjfbL3kXYk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8002/api/posts/6046ac3803a4bb652cbf57ec/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"posts",
+								"6046ac3803a4bb652cbf57ec",
+								"comments"
 							]
 						}
 					},

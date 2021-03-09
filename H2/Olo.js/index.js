@@ -8,5 +8,6 @@ module.exports = {
     NotFoundResponse: require('./response').NotFoundResponse,
     OkResponse: require('./response').OkResponse,
     CreatedResponse: require('./response').CreatedResponse,
-    NoContentResponse: require('./response').NoContentResponse
+    NoContentResponse: require('./response').NoContentResponse,
+    MethodNotAllowedResponse: require('./response').MethodNotAllowedResponse
 };

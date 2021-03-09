@@ -65,7 +65,7 @@ class Router {
                     urlVars: {}
                 };
                 let urlParts = route.pathRegexObj.exec(req.url);
-                console.log(urlParts);
+                // console.log(urlParts);
                 Object.keys(route.pathRegexVarsMap).forEach((regexVar) => {
                     oloJs.urlVars[regexVar] = urlParts[route.pathRegexVarsMap[regexVar]];
                 });

@@ -20,9 +20,13 @@ class PostsRepository {
     }
 
     async create(newPost) {
-        let inserted = await this.db.collection('posts').insertOne(newPost);
-        newPost._id = inserted.insertedId;
-        return newPost;
+        try {
+            let inserted = await this.db.collection('posts').insertOne(newPost);
+            newPost._id = inserted.insertedId;
+            return newPost;
+        } catch {
+            return null;
+        }
     }
 
     async update(updatedPost) {

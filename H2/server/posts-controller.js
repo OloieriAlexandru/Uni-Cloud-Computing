@@ -2,6 +2,7 @@ const OkResponse = require('../Olo.js').OkResponse;
 const NoContentResponse = require('../Olo.js').NoContentResponse;
 const NotFoundResponse = require('../Olo.js').NotFoundResponse;
 const BadRequestResponse = require('../Olo.js').BadRequestResponse;
+const MethodNotAllowedResponse = require('../Olo.js').MethodNotAllowedResponse;
 
 const PropertyValidator = require('../Olo.js').PropertyValidator;
 const Validator = require('../Olo.js').Validator;
@@ -43,6 +44,10 @@ class PostsController {
         return new OkResponse(await this.service.create(createdPost));
     }
 
+    createIdSpecified = async (req, res) => {
+        return new MethodNotAllowedResponse();
+    }
+
     update = async (req, res) => {
         let result = this.validatePost(req.olo.body, true);
         if (result != true) {
@@ -81,7 +86,7 @@ class PostsController {
     }
 
     createComment = async (req, res) => {
-        let result = this.validateComment(req.olo.body, false, false);
+        let result = this.validateComment(req.olo.body, false, false, false);
         if (result != true) {
             return result;
         }
@@ -96,7 +101,7 @@ class PostsController {
     }
 
     updateComment = async (req, res) => {
-        let result = this.validateComment(req.olo.body, true, true);
+        let result = this.validateComment(req.olo.body, true, true, true);
         if (result != true) {
             return result;
         }
@@ -116,7 +121,29 @@ class PostsController {
         await this.service.updateComment(req.olo.urlVars['id'], updatedComment);
         updatedComment._id = req.olo.body['_id'];
 
-        return new OkResponse(updatedComment);
+        return new NoContentResponse();
+    }
+
+    updateComments = async (req, res) => {
+        let result = this.validateCommentsArray(req.olo.body);
+        if (result != true) {
+            return result;
+        }
+
+        result = await this.service.updateComments(req.olo.urlVars['id'], req.olo.body);
+        if (result == null) {
+            return new BadRequestResponse({
+                'message': 'Invalid request body! Could not create the comments, probably there are duplicate id\'s'
+            });
+        }
+
+        return new NoContentResponse();
+    }
+
+    deleteComments = async (req, res) => {
+        let postId = req.olo.urlVars['id'];
+        await this.service.deleteAllComments(postId);
+        return new NoContentResponse();
     }
 
     deleteComment = async (req, res) => {
@@ -125,17 +152,33 @@ class PostsController {
     }
 
     validatePost(body, idRequired) {
-        let id = new PropertyValidator('_id').isOfType('string').isRequired(idRequired);
+        let id = new PropertyValidator('_id').isOfType('string').isRequired(idRequired).hasLengthLimits(24, 24);
         let title = new PropertyValidator('title').isOfType('string');
         let content = new PropertyValidator('content').isOfType('string');
         return new Validator().addProperties([id, title, content]).validate(body);
     }
 
-    validateComment(body, commentIdRequired, userIdRequired) {
-        let id = new PropertyValidator('_id').isOfType('string').isRequired(commentIdRequired);
+    validateComment(body, commentIdRequired, userIdRequired, postIdRequired) {
+        let id = new PropertyValidator('_id').isOfType('string').isRequired(commentIdRequired).hasLengthLimits(24, 24);
         let content = new PropertyValidator('content').isOfType('string');
         let userId = new PropertyValidator('userId').isOfType('string').isRequired(userIdRequired);
-        return new Validator().addProperties([id, content, userId]).validate(body);
+        let postId = new PropertyValidator('postId').isOfType('string').isRequired(postIdRequired);
+        return new Validator().addProperties([id, content, userId, postId]).validate(body);
+    }
+
+    validateCommentsArray(body) {
+        if (!Array.isArray(body)) {
+            return new BadRequestResponse({
+                'message': `Invalid request body! Expected array of comments!`
+            });
+        }
+        for (let i = 0; i < body.length; ++i) {
+            let commentValidation = this.validateComment(body[i], false, true, true);
+            if (commentValidation != true) {
+                return commentValidation;
+            }
+        }
+        return true;
     }
 }
 

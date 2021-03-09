@@ -30,6 +30,7 @@ async function runOlo() {
     olo.get('/api/posts/{id:alphanum}', postsController.getById);
     olo.post('/api/posts', postsController.create,
         [guard.isLoggedIn]);
+    olo.post('/api/posts/{id:alphanum}', postsController.createIdSpecified);
     olo.put('/api/posts/{id:alphanum}', postsController.update,
         [guard.isLoggedIn, guard.validPostIdInPath, guard.userIsPostOwner]);
     olo.delete('/api/posts/{id:alphanum}', postsController.delete,
@@ -43,6 +44,10 @@ async function runOlo() {
         postsController.createComment, [guard.isLoggedIn, guard.validPostIdInPath]);
     olo.put('/api/posts/{id:alphanum}/comments/{commentId:alphanum}',
         postsController.updateComment, [guard.isLoggedIn, guard.validPostIdInPath, guard.validCommentIdInPath]);
+    olo.put('/api/posts/{id:alphanum}/comments',
+        postsController.updateComments, [guard.isLoggedIn, guard.validPostIdInPath, guard.userIsPostOwner]);
+    olo.delete('/api/posts/{id:alphanum}/comments',
+        postsController.deleteComments, [guard.isLoggedIn, guard.validPostIdInPath, guard.userIsPostOwner])
     olo.delete('/api/posts/{id:alphanum}/comments/{commentId:alphanum}',
         postsController.deleteComment, [guard.isLoggedIn, guard.validPostIdInPath,
             guard.validCommentIdInPath, guard.userIsCommentOwner
@@ -56,7 +61,6 @@ async function runOlo() {
     olo.startServer(config.PORT, config.HOSTNAME, () => {
         console.log(`Listening at ${config.HOSTNAME}:${config.PORT}`);
     });
-
 }
 
 runOlo();
