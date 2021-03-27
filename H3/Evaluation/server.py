@@ -30,8 +30,9 @@ def index():
 
 
 @app.route("/api/v1/evaluation", methods=['POST'])
-def create_dir():
+def evaluate_submission():
     try:
+        request_body = request.get_json(force=True)
         if not validate_body(request.json):
             return create_error_message("Invalid request body! Expected a JSON object containing only the evaluation id!")
         evaluation_id = request.json['evaluation_id']

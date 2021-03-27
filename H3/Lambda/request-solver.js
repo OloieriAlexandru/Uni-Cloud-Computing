@@ -43,7 +43,11 @@ module.exports = async (req, res) => {
     let evaluationSourceRepository = new EvaluationSourceRepository();
     await evaluationSourceRepository.create(problemId, evaluationId, requestModel.sourceCode);
 
-    new TaskCreator().createTask(evaluationId);
+    try {
+        await new TaskCreator().createTask(evaluationId);
+    } catch (e) {
+        console.log(e);
+    }
 
     return res.end('Test')
 };
