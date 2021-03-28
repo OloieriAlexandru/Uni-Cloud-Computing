@@ -9,14 +9,11 @@ class EvaluationRepository {
         this.datastore = new Datastore();
     }
 
-    async create(evaluation) {
+    async create(evaluationObj) {
         const evaluationKey = this.datastore.key(GPC_DATASTORE_EVAL_KIND);
         const evaluationToInsert = {
             key: evaluationKey,
-            data: {
-                lang: evaluation.programmingLanguage,
-                problemId: evaluation.problemId
-            }
+            data: evaluationObj
         };
         await this.datastore.save(evaluationToInsert);
         return evaluationToInsert.key.id;

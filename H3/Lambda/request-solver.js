@@ -22,6 +22,22 @@ function validateBody(req, res) {
     return null;
 }
 
+function getCurrentDate() {
+    const toDoubleDigits = (value) => {
+        return ("0" + value).slice(-2);
+    }
+    // https://usefulangle.com/post/187/nodejs-get-date-time
+    let date_ob = new Date();
+    let date = toDoubleDigits(date_ob.getDate());
+    let month = toDoubleDigits(date_ob.getMonth() + 1);
+    let year = date_ob.getFullYear();
+    let hours = toDoubleDigits(date_ob.getHours());
+    let minutes = toDoubleDigits(date_ob.getMinutes());
+    let seconds = toDoubleDigits(date_ob.getSeconds());
+
+    return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+}
+
 module.exports = async (req, res) => {
     let validation = validateBody(req, res)
     if (validation) {
@@ -38,10 +54,17 @@ module.exports = async (req, res) => {
     }
 
     let evaluationRepository = new EvaluationRepository();
-    let evaluationId = await evaluationRepository.create(req.body);
+    let evaluationObj = {
+        'problemId': req.body.problemId,
+        'problemName': problems[0].title,
+        'lang': req.body.programmingLanguage,
+        'submissionDateTime': getCurrentDate(),
+        'status': 'In Queue'
+    }
+    let evaluationId = await evaluationRepository.create(evaluationObj);
 
     let evaluationSourceRepository = new EvaluationSourceRepository();
-    await evaluationSourceRepository.create(problemId, evaluationId, requestModel.sourceCode);
+    await evaluationSourceRepository.create(evaluationId, requestModel.sourceCode);
 
     try {
         await new TaskCreator().createTask(evaluationId);
@@ -49,5 +72,7 @@ module.exports = async (req, res) => {
         console.log(e);
     }
 
-    return res.end('Test')
+    return res.end(JSON.stringify({
+        'evaluationId': evaluationId
+    }))
 };

@@ -14,7 +14,7 @@ class EvaluationSourceRepository {
     }
 
     async create(evaluationId, source) {
-        const newFile = this.bucket.file(evaluationId);
+        const newFile = this.bucket.file(evaluationId + '.cpp');
 
         let fileStream = new Readable();
         fileStream.push(source);
