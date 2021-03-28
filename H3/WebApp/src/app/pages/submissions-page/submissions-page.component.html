@@ -1,0 +1,4 @@
+<div class="submissions-page-wrapper" *ngIf="submissions">
+  <app-submission-card *ngFor="let submission of submissions" [submission]="submission"
+    (submissionSelected)="enterSubmissionDetailsPage($event)"></app-submission-card>
+</div>

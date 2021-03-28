@@ -1,0 +1,7 @@
+<div class="problems-page-wrapper" *ngIf="problems">
+  <header>
+    Problems
+  </header>
+  <app-problem-card *ngFor="let problem of problems" [problem]="problem"
+    (problemSelected)="enterSubmissionPage($event)"></app-problem-card>
+</div>

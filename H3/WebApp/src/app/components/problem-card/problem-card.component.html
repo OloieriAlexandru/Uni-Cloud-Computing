@@ -1,0 +1,13 @@
+<div class="problem-card-wrapper" *ngIf="problem">
+  <header>
+    {{problem.title}}
+  </header>
+  <div class="problem-body">
+    <div class="problem-description">
+      {{problem.description}}
+    </div>
+    <div class="solve-button-wrapper">
+      <button (click)="onProblemSelected()">Solve</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+.problems-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+
+  background-image: url("/assets/background.svg");
+}
+
+app-problem-card {
+  width: 92%;
+
+  &:not(&:first-of-type) {
+    margin-top: 12px;
+  }
+}
+
+header {
+  font-size: 40px;
+  font-weight: 500;
+  height: 52px;
+}

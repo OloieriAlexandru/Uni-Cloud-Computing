@@ -1,0 +1,56 @@
+service: web-app
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+
+- url: /(.+\.js)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.js)
+
+- url: /(.+\.css)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.css)
+
+- url: /(.+\.png)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.png)
+
+- url: /(.+\.jpg)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.jpg)
+
+- url: /(.+\.svg)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.svg)
+
+- url: /favicon.ico
+  static_files: dist/pump-it-up-web-app/favicon.ico
+  upload: dist/pump-it-up-web-app/favicon.ico
+
+- url: /(.+\.json)
+  static_files: dist/pump-it-up-web-app/\1
+  upload: dist/pump-it-up-web-app/(.+\.json)
+
+- url: /(.+)
+  static_files: dist/pump-it-up-web-app/index.html
+  upload: dist/pump-it-up-web-app/index.html
+
+- url: /
+  static_files: dist/pump-it-up-web-app/index.html
+  upload: dist/pump-it-up-web-app/index.html
+
+skip_files:
+  - e2e/
+  - node_modules/
+  - src/
+  - coverage
+  - ^(.*/)?\..*$
+  - ^(.*/)?.*\.json$
+  - ^(.*/)?.*\.md$
+  - ^(.*/)?.*\.yaml$
+  - ^LICENSE
+  - browserslist
+  - .editorconfig
+  - .gitignore

@@ -1,0 +1,20 @@
+<div class="submission-card-wrapper" *ngIf="submission" (click)="onSubmissionSelected()">
+  <div class="submission-id">
+    {{submission.id}}
+  </div>
+  <div class="submission-problem-name">
+    {{submission.problemName}}
+  </div>
+  <div class="submission-lang">
+    {{submission.lang}}
+  </div>
+  <div class="submission-date">
+    {{submission.submissionDateTime}}
+  </div>
+  <div class="submission-verdict">
+    {{submission.verdict}}
+  </div>
+  <div class="submission-status">
+    {{submission.status}}
+  </div>
+</div>
