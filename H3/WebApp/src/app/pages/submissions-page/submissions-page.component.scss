@@ -1,0 +1,73 @@
+.submissions-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 100vh;
+  padding: 20px;
+
+  background-image: url("/assets/background.svg");
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 92%;
+  height: 52px;
+
+  margin-top: 32px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  background-color: rgba($color: #EFEFEF, $alpha: 0.9);
+
+  .submission-id-header {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-problem-name-header {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-lang-header {
+    width: 10%;
+    text-align: center;
+  }
+
+  .submission-date-header {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-verdict-header {
+    width: 10%;
+    text-align: center;
+  }
+
+  .submission-status-header {
+    width: 20%;
+    text-align: center;
+  }
+}
+
+app-submission-card {
+  width: 92%;
+
+  margin-top: 12px;
+}
+
+header {
+  font-size: 40px;
+  font-weight: 500;
+  height: 52px;
+
+  color: #EFEFEF;
+}

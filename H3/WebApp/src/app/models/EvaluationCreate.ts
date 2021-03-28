@@ -5,5 +5,6 @@ export class EvaluationCreate {
 
   constructor(problemId: string) {
     this.problemId = problemId;
+    this.programmingLanguage = 'C++';
   }
 }

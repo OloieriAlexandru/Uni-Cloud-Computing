@@ -11,7 +11,7 @@ import { EvaluationCreate } from 'src/app/models/EvaluationCreate';
   styleUrls: ['./submit-page.component.scss'],
 })
 export class SubmitPageComponent implements OnInit {
-  private problemId: string;
+  public problemId: string;
   public submission: EvaluationCreate;
 
   constructor(
@@ -25,7 +25,12 @@ export class SubmitPageComponent implements OnInit {
   }
 
   public submit(): void {
-    this.submissionService.create(this.submission).subscribe(
+    let submissionToSend: EvaluationCreate = {
+      problemId: this.submission.problemId,
+      programmingLanguage: this.submission.programmingLanguage,
+      sourceCode: this.escapeCharacters(this.submission.sourceCode),
+    };
+    this.submissionService.create(submissionToSend).subscribe(
       (submission) => {
         console.log(submission);
         this.submission = new EvaluationCreate(this.problemId);
@@ -34,5 +39,12 @@ export class SubmitPageComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  private escapeCharacters(s: string): string {
+    s = s.replace(/\n/, '\\n');
+    s = s.replace(/\t/, '\\t');
+    s = s.replace(/\r/, '\\r');
+    return s;
   }
 }

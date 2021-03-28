@@ -28,6 +28,10 @@ const routes: Routes = [
     redirectTo: '/problems',
     pathMatch: 'full',
   },
+  {
+    path: '**',
+    redirectTo: '/problems',
+  },
 ];
 
 @NgModule({

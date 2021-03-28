@@ -1,0 +1,47 @@
+.submission-card-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100%;
+  height: 48px;
+
+  font-size: 16px;
+
+  background-color: rgba($color: #FEFEFE, $alpha: 0.75);
+
+  .submission-id {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-problem-name {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-lang {
+    width: 10%;
+    text-align: center;
+  }
+
+  .submission-date {
+    width: 20%;
+    text-align: center;
+  }
+
+  .submission-verdict {
+    width: 10%;
+    text-align: center;
+  }
+
+  .submission-status {
+    width: 20%;
+    text-align: center;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba($color: #FEFEFE, $alpha: 0.9);
+  }
+}
