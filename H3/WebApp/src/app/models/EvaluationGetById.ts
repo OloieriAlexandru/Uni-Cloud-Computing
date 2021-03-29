@@ -1,3 +1,5 @@
+import { TestCaseInfo } from './TestCaseInfo';
+
 export class EvaluationGetById {
   submissionDateTime: string;
   status: string;
@@ -6,4 +8,5 @@ export class EvaluationGetById {
   problemName: string;
   verdict: string;
   id: string;
+  testCasesInfo?: TestCaseInfo[];
 }

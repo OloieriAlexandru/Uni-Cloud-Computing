@@ -98,7 +98,7 @@ def execute_source_code(source_code_executable_path, time_limit, test_case_obj_o
     start_time = time.time()
     time.sleep(time_limit)
     end_time = time.time()
-    test_case_obj_obj['Time'] = end_time - start_time
+    test_case_obj_obj['time'] = end_time - start_time
 
     if p.poll() == None:
         # The process hasn't finished
@@ -138,30 +138,30 @@ def evaluate_source_code(storage_client, test_cases_bucket, evaluation_obj, sour
             storage_client, test_cases_bucket, evaluation_id, outp, file_name_prefix, '.ok')
 
         test_case_obj_obj = {
-            'No': test_case_no,
-            'Message': 'Error',
-            'Score': 0,
-            'Time': 0
+            'no': test_case_no,
+            'message': 'Error',
+            'score': 0,
+            'time': 0
         }
         if execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj) == TIME_LIMIT_EXCEEDED_FLAG:
-            test_case_obj_obj['Message'] = 'Time limit exceeded'
+            test_case_obj_obj['message'] = 'Time limit exceeded'
         else:
             evaluation_stats = evaluate_executable_output(
                 ok_file_path, evaluation_id, file_name_prefix)
             if evaluation_stats == WRONG_ANSWER_FLAG:
-                test_case_obj_obj['Message'] = 'Wrong answer'
+                test_case_obj_obj['message'] = 'Wrong answer'
             elif evaluation_stats == OUTPUT_FILE_MISSING_FLAG:
-                test_case_obj_obj['Message'] = 'Output file missing'
+                test_case_obj_obj['message'] = 'Output file missing'
             elif evaluation_stats == CORRECT_ANSWER_FLAG:
-                test_case_obj_obj['Message'] = 'Okay'
-                test_case_obj_obj['Score'] = score_per_test
+                test_case_obj_obj['message'] = 'Okay'
+                test_case_obj_obj['score'] = score_per_test
                 score += score_per_test
             else:
                 raise "Internal server error!"
         evaluation_info.append(test_case_obj_obj)
         test_case_no += 1
     evaluation_obj['verdict'] = str(score)
-    evaluation_obj['test_cases_status'] = evaluation_info
+    evaluation_obj['testCasesStatus'] = evaluation_info
 
 
 def evaluate(evaluation_id):

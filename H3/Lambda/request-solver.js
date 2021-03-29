@@ -38,7 +38,20 @@ function getCurrentDate() {
     return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 }
 
+function setCorsOrigin(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PATCH, DELETE');
+    res.setHeader('Access-Control-Max-Age', 3600);
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+}
+
 module.exports = async (req, res) => {
+    setCorsOrigin(req, res);
+    if (req.method === 'OPTIONS') {
+        return res.status(204).send('');
+    }
+
     let validation = validateBody(req, res)
     if (validation) {
         return validation;
