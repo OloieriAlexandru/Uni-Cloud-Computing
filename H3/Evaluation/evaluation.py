@@ -1,6 +1,5 @@
 import os
 import subprocess
-import filecmp
 import time
 
 from google.cloud import datastore
@@ -110,6 +109,46 @@ def execute_source_code(time_limit, test_case_obj_obj, evaluation_id):
     return True
 
 
+def compare_files(file_path_1, file_path_2):
+    if not os.path.isfile(file_path_1) or not os.path.isfile(file_path_2):
+        return False
+    file_1 = open(file_path_1)
+    file_2 = open(file_path_2)
+    line_file_1 = file_1.readline()
+    line_file_2 = file_2.readline()
+    while line_file_1 and line_file_2:
+        line_file_1 = line_file_1.strip()
+        line_file_2 = line_file_2.strip()
+
+        if line_file_1 != line_file_2:
+            file_1.close()
+            file_2.close()
+            return False
+
+        line_file_1 = file_1.readline()
+        line_file_2 = file_2.readline()
+
+    while line_file_1:
+        line_file_1 = line_file_1.strip()
+        if line_file_1 != '':
+            file_1.close()
+            file_2.close()
+            return False
+        line_file_1 = file_1.readline()
+    
+    while line_file_2:
+        line_file_2 = line_file_2.strip()
+        if line_file_2 != '':
+            file_1.close()
+            file_2.close()
+            return False
+        line_file_2 = file_2.readline()
+    
+    file_1.close()
+    file_2.close()
+    return True
+
+
 def evaluate_executable_output(ok_file_path, evaluation_id, file_name_prefix):
     out_file_path = '.' + get_delimiter() + WORK_DIRECTORY_PREFIX + \
         get_delimiter() + evaluation_id + get_delimiter() + file_name_prefix + '.out'
@@ -117,7 +156,7 @@ def evaluate_executable_output(ok_file_path, evaluation_id, file_name_prefix):
     if not os.path.exists(out_file_path):
         return OUTPUT_FILE_MISSING_FLAG
 
-    if not filecmp.cmp(ok_file_path, out_file_path, shallow=False):
+    if not compare_files(ok_file_path, out_file_path):
         return WRONG_ANSWER_FLAG
 
     return CORRECT_ANSWER_FLAG
