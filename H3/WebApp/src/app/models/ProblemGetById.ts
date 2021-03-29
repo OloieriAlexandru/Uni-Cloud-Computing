@@ -4,4 +4,5 @@ export class ProblemGetById {
   description: string;
   example: string;
   restrictions: string;
+  file: string;
 }

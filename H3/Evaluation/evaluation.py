@@ -89,12 +89,13 @@ def create_evaluation_file(storage_client, test_cases_bucket, evaluation_id,
     return source_file_in_path
 
 
-def execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj):
+def execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj, evaluation_id):
     command_parts = [
         source_code_executable_path
     ]
+    run_directory = '.' + get_delimiter() + str(evaluation_id)
 
-    p = subprocess.Popen(command_parts, shell=True)
+    p = subprocess.Popen(command_parts, shell=True, cwd=run_directory)
     start_time = time.time()
     time.sleep(time_limit)
     end_time = time.time()
@@ -143,7 +144,7 @@ def evaluate_source_code(storage_client, test_cases_bucket, evaluation_obj, sour
             'score': 0,
             'time': 0
         }
-        if execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj) == TIME_LIMIT_EXCEEDED_FLAG:
+        if execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj, evaluation_id) == TIME_LIMIT_EXCEEDED_FLAG:
             test_case_obj_obj['message'] = 'Time limit exceeded'
         else:
             evaluation_stats = evaluate_executable_output(
