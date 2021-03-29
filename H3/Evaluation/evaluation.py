@@ -96,9 +96,14 @@ def execute_source_code(time_limit, test_case_obj_obj, evaluation_id):
 
     p = subprocess.Popen(command_parts, shell=True, cwd=run_directory)
     start_time = time.time()
-    time.sleep(time_limit)
-    end_time = time.time()
-    test_case_obj_obj['time'] = end_time - start_time
+
+    while True:
+        end_time = time.time()
+        if p.poll() != None:
+            break
+        if end_time - start_time >= 1.0:
+            break
+    test_case_obj_obj['time'] = round(end_time - start_time, 4)
 
     if p.poll() == None:
         # The process hasn't finished
@@ -194,12 +199,14 @@ def evaluate_source_code(storage_client, test_cases_bucket, evaluation_obj, sour
                 test_case_obj_obj['message'] = 'Output file missing'
             elif evaluation_stats == CORRECT_ANSWER_FLAG:
                 test_case_obj_obj['message'] = 'Okay'
-                test_case_obj_obj['score'] = score_per_test
+                test_case_obj_obj['score'] = round(score_per_test, 2)
                 score += score_per_test
             else:
                 raise "Internal server error!"
         evaluation_info.append(test_case_obj_obj)
         test_case_no += 1
+
+    score = round(score, 2)
     evaluation_obj['verdict'] = str(score)
     evaluation_obj['testCasesStatus'] = evaluation_info
 
