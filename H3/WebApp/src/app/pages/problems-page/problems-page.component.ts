@@ -30,6 +30,6 @@ export class ProblemsPageComponent implements OnInit {
   }
 
   public enterSubmissionPage(problemId) {
-    this.router.navigate(['problems', problemId, 'submit']);
+    this.router.navigate(['problems', problemId]);
   }
 }

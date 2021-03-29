@@ -23,6 +23,11 @@
 
   height: 100%;
   width: 320px;
+
+  &:hover {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.75);
+  }
 }
 
 .buttons-wrapper {

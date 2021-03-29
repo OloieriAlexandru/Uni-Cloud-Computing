@@ -8,5 +8,5 @@ export class EvaluationGetById {
   problemName: string;
   verdict: string;
   id: string;
-  testCasesInfo?: TestCaseInfo[];
+  testCasesStatus?: TestCaseInfo[];
 }

@@ -1,0 +1,94 @@
+.problem-details-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 100%;
+
+  overflow-y: scroll;
+
+  background-image: url("/assets/background.svg");
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  height: 40px;
+  width: 60%;
+
+  margin-top: 24px;
+
+  font-size: 24px;
+
+  .id-container {
+    background-color: white;
+    color: #000;
+
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .title-container {
+    color: #FEFEFE;
+
+    margin-left: 12px;
+  }
+}
+
+.problem-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  width: 72%;
+  height: auto;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  padding: 12px;
+
+  background-color: rgba($color: #eee, $alpha: 0.75);
+
+  border-radius: 15px;
+  -webkit-box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
+  box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
+}
+
+.problem-segment {
+  background-color: #FEFEFE;
+  border: 1px solid blue;
+  border-radius: 15px;
+  padding: 8px;
+
+  margin-top: 12px;
+
+  height: auto;
+
+  .segment-title {
+    font-size: 20px;
+    font-weight: 600;
+
+    border-bottom: 1px solid blue;
+  }
+
+  .segment-content {
+    height: auto;
+  }
+}
+
+.submission-segment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 80px;
+
+  margin-top: 16px;
+}

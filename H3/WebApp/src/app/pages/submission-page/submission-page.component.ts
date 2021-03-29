@@ -14,7 +14,7 @@ import { TestCaseInfo } from 'src/app/models/TestCaseInfo';
 export class SubmissionPageComponent implements OnInit {
   public submission: EvaluationGetById = null;
   public testCasesInfo: TestCaseInfo[] = null;
-  public displayedColumns: string[] = ['No', 'Time', 'Message', 'Score'];
+  public displayedColumns: string[] = ['no', 'time', 'message', 'score'];
 
   constructor(
     private submissionService: SubmissionsService,
@@ -26,8 +26,9 @@ export class SubmissionPageComponent implements OnInit {
     this.submissionService.getById(evaluationId).subscribe(
       (submission: EvaluationGetById) => {
         this.submission = submission;
-        if (this.submission.testCasesInfo != null) {
-          this.testCasesInfo = this.submission.testCasesInfo;
+        if (this.submission.testCasesStatus != null) {
+          this.testCasesInfo = this.submission.testCasesStatus;
+          console.log(this.testCasesInfo);
         }
       },
       (err) => {

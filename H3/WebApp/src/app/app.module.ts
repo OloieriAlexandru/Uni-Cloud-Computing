@@ -12,6 +12,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
 import { GenericService } from './services/generic.service';
 
@@ -22,6 +23,7 @@ import { SubmissionPageComponent } from './pages/submission-page/submission-page
 import { ProblemCardComponent } from './components/problem-card/problem-card.component';
 import { SubmissionCardComponent } from './components/submission-card/submission-card.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ProblemCardComponent,
     SubmissionCardComponent,
     NavbarComponent,
+    ProblemDetailsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatTableModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatCheckboxModule,

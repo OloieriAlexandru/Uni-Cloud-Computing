@@ -1,0 +1,55 @@
+<div class="problem-details-page-wrapper" *ngIf="problem">
+  <header>
+    <div class="id-container">
+      #{{problem.id}}
+    </div>
+    <div class="title-container">
+      {{problem.title}}
+    </div>
+  </header>
+  <div class="problem-body">
+
+    <div class="problem-segment">
+      <div class="segment-title">
+        Description
+      </div>
+      <div class="segment-content">
+        {{problem.description}}
+      </div>
+    </div>
+
+    <div class="problem-segment">
+      <div class="segment-title">
+        Restrictions
+      </div>
+      <div class="segment-content">
+        {{problem.restrictions}}
+      </div>
+    </div>
+
+    <div class="problem-segment">
+      <div class="segment-title">
+        Files
+      </div>
+      <div class="segment-content">
+        {{problem.file}}.in and {{problem.file}}.out
+      </div>
+    </div>
+
+    <div class="problem-segment">
+      <div class="segment-title">
+        Example
+      </div>
+      <div class="segment-content">
+        {{problem.example}}
+      </div>
+    </div>
+
+    <div class="submission-segment">
+      <button mat-raised-button color="secondary" (click)="submitSolution()">
+        Submit solution
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { SubmissionsService } from 'src/app/services/submissions.service';
 
@@ -16,7 +16,8 @@ export class SubmitPageComponent implements OnInit {
 
   constructor(
     private submissionService: SubmissionsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,26 +26,16 @@ export class SubmitPageComponent implements OnInit {
   }
 
   public submit(): void {
-    let submissionToSend: EvaluationCreate = {
-      problemId: this.submission.problemId,
-      programmingLanguage: this.submission.programmingLanguage,
-      sourceCode: this.escapeCharacters(this.submission.sourceCode),
-    };
-    this.submissionService.create(submissionToSend).subscribe(
-      (submission) => {
-        console.log(submission);
-        this.submission = new EvaluationCreate(this.problemId);
+    this.submissionService.create(this.submission).subscribe(
+      (evaluationIdObject) => {
+        this.router.navigate([
+          'submission',
+          evaluationIdObject['evaluationId'],
+        ]);
       },
       (err) => {
         console.log(err);
       }
     );
-  }
-
-  private escapeCharacters(s: string): string {
-    s = s.replace(/\n/, '\\n');
-    s = s.replace(/\t/, '\\t');
-    s = s.replace(/\r/, '\\r');
-    return s;
   }
 }

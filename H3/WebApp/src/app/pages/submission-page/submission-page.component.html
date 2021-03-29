@@ -1,12 +1,14 @@
 <div class="submission-page-wrapper" *ngIf="submission">
+
   <header>
     Submission #{{submission.id}}
   </header>
+
   <div class="details-wrapper">
 
     <div class="details-column">
 
-      <div class="details-row">
+      <div class="details-row" routerLink="/problems/{{submission.problemId}}">
         <div class="detail-left">
           Problem id
         </div>
@@ -15,7 +17,7 @@
         </div>
       </div>
 
-      <div class="details-row">
+      <div class="details-row" routerLink="/problems/{{submission.problemId}}">
         <div class="detail-left">
           Problem name
         </div>
@@ -70,28 +72,28 @@
 
   <table mat-table [dataSource]="testCasesInfo" class="mat-elevation-z8" *ngIf="testCasesInfo">
 
-    <ng-container matColumnDef="No">
+    <ng-container matColumnDef="no">
       <th mat-header-cell *matHeaderCellDef> No. </th>
       <td mat-cell *matCellDef="let element"> {{element.no}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Time">
+    <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef> Time </th>
       <td mat-cell *matCellDef="let element"> {{element.time}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Message">
+    <ng-container matColumnDef="message">
       <th mat-header-cell *matHeaderCellDef> Message </th>
       <td mat-cell *matCellDef="let element"> {{element.message}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Score">
+    <ng-container matColumnDef="score">
       <th mat-header-cell *matHeaderCellDef> Score </th>
       <td mat-cell *matCellDef="let element"> {{element.score}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="test-case-row" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
 </div>

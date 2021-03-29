@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 import { ProblemsPageComponent } from './pages/problems-page/problems-page.component';
 import { SubmissionPageComponent } from './pages/submission-page/submission-page.component';
 import { SubmissionsPageComponent } from './pages/submissions-page/submissions-page.component';
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'problems',
     component: ProblemsPageComponent,
+  },
+  {
+    path: 'problems/:id',
+    component: ProblemDetailsPageComponent,
   },
   {
     path: 'problems/:id/submit',

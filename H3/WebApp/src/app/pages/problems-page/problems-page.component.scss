@@ -8,21 +8,30 @@
   height: 100%;
   padding: 20px;
 
+  overflow-y: scroll;
+
   background-image: url("/assets/background.svg");
 }
 
 app-problem-card {
   width: 92%;
 
-  &:not(&:first-of-type) {
-    margin-top: 12px;
+  margin-top: 12px;
+
+  &:first-of-type {
+    margin-top: 28px;
   }
 }
 
 header {
   font-size: 40px;
   font-weight: 500;
-  height: 52px;
+  height: 60px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   color: #EFEFEF;
 }
