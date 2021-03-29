@@ -198,3 +198,20 @@ mat-icon.success svg,
 mat-icon.wrong svg {
   fill: #000;
 }
+
+// https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: blue;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: blueviolet;
+}

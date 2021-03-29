@@ -1,1 +1,70 @@
-<p>submission-page works!</p>
+<div class="submission-page-wrapper" *ngIf="submission">
+  <header>
+    Submission #{{submission.id}}
+  </header>
+  <div class="details-wrapper">
+
+    <div class="details-column">
+
+      <div class="details-row">
+        <div class="detail-left">
+          Problem id
+        </div>
+        <div class="detail-right">
+          {{submission.id}}
+        </div>
+      </div>
+
+      <div class="details-row">
+        <div class="detail-left">
+          Problem name
+        </div>
+        <div class="detail-right">
+          {{submission.problemName}}
+        </div>
+      </div>
+
+      <div class="details-row">
+        <div class="detail-left">
+          Submission date
+        </div>
+        <div class="detail-right">
+          {{submission.submissionDateTime}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="details-column">
+
+      <div class="details-row">
+        <div class="detail-left">
+          Language
+        </div>
+        <div class="detail-right">
+          {{submission.lang}}
+        </div>
+      </div>
+
+      <div class="details-row">
+        <div class="detail-left">
+          Verdict
+        </div>
+        <div class="detail-right">
+          {{submission.verdict}}
+        </div>
+      </div>
+
+      <div class="details-row">
+        <div class="detail-left">
+          Status
+        </div>
+        <div class="detail-right">
+          {{submission.status}}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

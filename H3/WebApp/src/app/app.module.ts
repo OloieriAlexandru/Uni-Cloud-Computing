@@ -21,6 +21,7 @@ import { SubmissionsPageComponent } from './pages/submissions-page/submissions-p
 import { SubmissionPageComponent } from './pages/submission-page/submission-page.component';
 import { ProblemCardComponent } from './components/problem-card/problem-card.component';
 import { SubmissionCardComponent } from './components/submission-card/submission-card.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SubmissionCardComponent } from './components/submission-card/submission
     SubmissionPageComponent,
     ProblemCardComponent,
     SubmissionCardComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

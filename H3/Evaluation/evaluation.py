@@ -35,7 +35,8 @@ def process_files(files):
 
 
 def create_working_directory(evaluation_id):
-    dir_path = '.' + get_delimiter() + WORK_DIRECTORY_PREFIX + get_delimiter() + evaluation_id
+    dir_path = '.' + get_delimiter() + WORK_DIRECTORY_PREFIX + \
+        get_delimiter() + evaluation_id
     if os.path.exists(dir_path):
         return
     try:
@@ -62,7 +63,8 @@ def download_source_code(storage_client, sources_bucket, evaluation_id):
 
 def compile_source_code(source_code_file_path, evaluation_id):
     source_code_executable_path = '.' + get_delimiter() + \
-        WORK_DIRECTORY_PREFIX + get_delimiter() + evaluation_id + get_delimiter() + evaluation_id + '.exe'
+        WORK_DIRECTORY_PREFIX + get_delimiter() + evaluation_id + get_delimiter() + \
+        evaluation_id + '.exe'
 
     command_parts = [
         'g++',
@@ -79,22 +81,24 @@ def compile_source_code(source_code_file_path, evaluation_id):
 def create_evaluation_file(storage_client, test_cases_bucket, evaluation_id,
                            remote_file_name, file_name_prefix, file_prefix):
     source_file_in_path = '.' + get_delimiter() + WORK_DIRECTORY_PREFIX + \
-        get_delimiter() + evaluation_id + get_delimiter() + file_name_prefix + file_prefix
+        get_delimiter() + evaluation_id + get_delimiter() + \
+        file_name_prefix + file_prefix
 
     download_file_from_storage(storage_client, test_cases_bucket,
                                remote_file_name, source_file_in_path)
     return source_file_in_path
 
 
-def execute_source_code(source_code_executable_path, time_limit):
+def execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj):
     command_parts = [
         source_code_executable_path
     ]
 
     p = subprocess.Popen(command_parts, shell=True)
-    print('Process started: {}'.format(time.time()))
+    start_time = time.time()
     time.sleep(time_limit)
-    print('Process finished: {}'.format(time.time()))
+    end_time = time.time()
+    test_case_obj_obj['Time'] = end_time - start_time
 
     if p.poll() == None:
         # The process hasn't finished
@@ -124,30 +128,40 @@ def evaluate_source_code(storage_client, test_cases_bucket, evaluation_obj, sour
     score = 0.0
     score_per_test = 100.0 / \
         (min(len(input_file_names), len(output_file_names)))
+
+    evaluation_info = []
+    test_case_no = 0
     for (inp, outp) in zip(input_file_names, output_file_names):
         create_evaluation_file(
             storage_client, test_cases_bucket, evaluation_id, inp, file_name_prefix, '.in')
         ok_file_path = create_evaluation_file(
             storage_client, test_cases_bucket, evaluation_id, outp, file_name_prefix, '.ok')
 
-        if execute_source_code(source_code_executable_path, time_limit) == TIME_LIMIT_EXCEEDED_FLAG:
-            # Time limit exceeded
-            pass
+        test_case_obj_obj = {
+            'No': test_case_no,
+            'Message': 'Error',
+            'Score': 0,
+            'Time': 0
+        }
+        if execute_source_code(source_code_executable_path, time_limit, test_case_obj_obj) == TIME_LIMIT_EXCEEDED_FLAG:
+            test_case_obj_obj['Message'] = 'Time limit exceeded'
         else:
             evaluation_stats = evaluate_executable_output(
                 ok_file_path, evaluation_id, file_name_prefix)
             if evaluation_stats == WRONG_ANSWER_FLAG:
-                # Wrong answer
-                pass
+                test_case_obj_obj['Message'] = 'Wrong answer'
             elif evaluation_stats == OUTPUT_FILE_MISSING_FLAG:
-                # Output file missing
-                pass
+                test_case_obj_obj['Message'] = 'Output file missing'
             elif evaluation_stats == CORRECT_ANSWER_FLAG:
-                # Correct answer
+                test_case_obj_obj['Message'] = 'Okay'
+                test_case_obj_obj['Score'] = score_per_test
                 score += score_per_test
             else:
                 raise "Internal server error!"
+        evaluation_info.append(test_case_obj_obj)
+        test_case_no += 1
     evaluation_obj['verdict'] = str(score)
+    evaluation_obj['test_cases_status'] = evaluation_info
 
 
 def evaluate(evaluation_id):

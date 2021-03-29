@@ -23,6 +23,7 @@ export class SubmissionPageComponent implements OnInit {
     this.submissionService.getById(evaluationId).subscribe(
       (submission: EvaluationGetById) => {
         this.submission = submission;
+        console.log(this.submission);
       },
       (err) => {
         console.log(err);
