@@ -13,6 +13,7 @@ import { EvaluationCreate } from 'src/app/models/EvaluationCreate';
 export class SubmitPageComponent implements OnInit {
   public problemId: string;
   public submission: EvaluationCreate;
+  private submitted: boolean = false;
 
   constructor(
     private submissionService: SubmissionsService,
@@ -26,14 +27,20 @@ export class SubmitPageComponent implements OnInit {
   }
 
   public submit(): void {
+    if (this.submitted) {
+      return;
+    }
+    this.submitted = true;
     this.submissionService.create(this.submission).subscribe(
       (evaluationIdObject) => {
+        this.submitted = false;
         this.router.navigate([
           'submission',
           evaluationIdObject['evaluationId'],
         ]);
       },
       (err) => {
+        this.submitted = false;
         console.log(err);
       }
     );

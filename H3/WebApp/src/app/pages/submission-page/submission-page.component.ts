@@ -28,7 +28,6 @@ export class SubmissionPageComponent implements OnInit {
         this.submission = submission;
         if (this.submission.testCasesStatus != null) {
           this.testCasesInfo = this.submission.testCasesStatus;
-          console.log(this.testCasesInfo);
         }
       },
       (err) => {

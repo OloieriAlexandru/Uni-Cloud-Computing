@@ -13,6 +13,18 @@
   background-image: url("/assets/background.svg");
 }
 
+.submissions-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 40px;
+  font-weight: 500;
+
+  color: #EFEFEF;
+}
+
 .table-header {
   display: flex;
   flex-direction: row;
@@ -20,8 +32,8 @@
   align-items: center;
 
   width: 92%;
-  height: 52px;
-
+  padding: 20px 0;
+  
   margin-top: 32px;
 
   font-size: 20px;
@@ -62,14 +74,7 @@
 
 app-submission-card {
   width: 92%;
+  height: auto;
 
   margin-top: 12px;
-}
-
-header {
-  font-size: 40px;
-  font-weight: 500;
-  height: 52px;
-
-  color: #EFEFEF;
 }
