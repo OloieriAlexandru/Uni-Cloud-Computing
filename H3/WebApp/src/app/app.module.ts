@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@Angular/forms';
+import { HttpClientModule} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
-
+import * as M from 'materialize-css/dist/js/materialize';
 import { GenericService } from './services/generic.service';
 
 import { ProblemsPageComponent } from './pages/problems-page/problems-page.component';
@@ -24,6 +24,12 @@ import { ProblemCardComponent } from './components/problem-card/problem-card.com
 import { SubmissionCardComponent } from './components/submission-card/submission-card.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenFunc() {
+  return localStorage.getItem("access_token");
+}
 
 @NgModule({
   declarations: [
@@ -36,6 +42,7 @@ import { ProblemDetailsPageComponent } from './pages/problem-details-page/proble
     SubmissionCardComponent,
     NavbarComponent,
     ProblemDetailsPageComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -49,8 +56,15 @@ import { ProblemDetailsPageComponent } from './pages/problem-details-page/proble
     BrowserAnimationsModule,
     MatIconModule,
     MatCheckboxModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenFunc,
+          allowedDomains: ["localhost"],
+        disallowedRoutes: [],
+      },
+    }),
   ],
-  providers: [GenericService],
+  providers: [GenericService, { provide: 'M', useValue: M }],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
