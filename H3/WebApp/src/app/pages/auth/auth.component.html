@@ -1,0 +1,65 @@
+<div class="auth-wrapper">
+  <div class="double-widget">
+    <div class="register-widget">
+      <div class="title">
+        Join us <span>to explore more</span>
+      </div>
+      <hr>
+      <div class="subtitle">
+        Join the platform!
+      </div>
+      <div class="register-form">
+        <div class="row">
+          <form action="col s12">
+            <div class="message">
+              Enter your details
+            </div>
+            <div class="form-row">
+              <div>
+                <input class="full-width-input" id="email-register" type="text" [(ngModel)]="newUser.email"
+                  [ngModelOptions]="{standalone: true}" placeholder="Email">
+              </div>
+            </div>
+            <div class="input-field col s12">
+              <input id="username-register" type="text" [(ngModel)]="newUser.username"
+                [ngModelOptions]="{standalone: true}" placeholder="Username">
+            </div>
+            <div class="input-field col s12">
+              <input id="password-register" type="password" [(ngModel)]="newUser.password"
+                [ngModelOptions]="{standalone: true}" placeholder="Password">
+            </div>
+            <div>
+              <button class="mat-raised-button" color="primary" (click)="register()">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="login-widget">
+      <div class="title">
+        Already <span>got an account?</span>
+      </div>
+      <hr>
+      <div class="subtitle">
+        Then you know what's good. Just sign in!
+      </div>
+      <div class="login-form">
+        <div class="row">
+          <form class="col s12">
+            <div class="input-field col s12">
+              <input id="login-email" type="text" [(ngModel)]="userCredentials.email"
+                [ngModelOptions]="{standalone: true}" placeholder="Email">
+            </div>
+            <div class="input-field col s12">
+              <input id="login-password" type="password" [(ngModel)]="userCredentials.password"
+                [ngModelOptions]="{standalone: true}" placeholder="Password">
+            </div>
+            <div>
+              <button class="mat-raised-button" color="primary" (click)="signIn()">Sign in</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

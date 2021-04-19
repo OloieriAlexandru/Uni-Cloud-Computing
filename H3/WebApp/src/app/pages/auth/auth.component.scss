@@ -1,0 +1,218 @@
+$login-widget-color: #000;
+$register-widget-color: #eceff1;
+
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+
+  background-image: url("/assets/auth-page-blue.svg");
+}
+
+.double-widget {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 1000px;
+  height: 563px;
+
+  background-image: url("/assets/auth-page-white.svg");
+  -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+
+  padding: 24px;
+}
+
+.register-widget,
+.login-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 48%;
+  height: 100%;
+
+  .title {
+    font-size: 26px;
+
+    span {
+      font-weight: 800;
+    }
+  }
+
+  .subtitle {
+    text-align: center;
+  }
+
+  hr {
+    width: 92px;
+    border-top: 2px solid;
+  }
+}
+
+.register-widget {
+
+  .title,
+  .subtitle,
+  hr {
+    color: #fff;
+  }
+}
+
+.login-widget {
+
+  .title,
+  .subtitle,
+  hr {
+    color: #000;
+  }
+}
+
+.login-form {
+  .input-field label {
+    color: $login-widget-color;
+  }
+
+  .input-field input[type=text]:focus+label,
+  .input-field input[type=password]:focus+label {
+    color: $login-widget-color;
+  }
+
+  .input-field input[type=text]:focus,
+  .input-field input[type=password]:focus {
+    border-bottom: 1px solid $login-widget-color;
+    box-shadow: 0 1px 0 0 $login-widget-color;
+  }
+
+  .input-field input[type=text].valid,
+  .input-field input[type=text].valid {
+    border-bottom: 1px solid $login-widget-color;
+    box-shadow: 0 1px 0 0 $login-widget-color;
+  }
+
+  .input-field input[type=text].invalid,
+  .input-field input[type=text].invalid {
+    border-bottom: 1px solid $login-widget-color;
+    box-shadow: 0 1px 0 0 $login-widget-color;
+  }
+
+  .input-field .prefix.active {
+    color: $login-widget-color;
+  }
+
+  [type="checkbox"]+span:not(.lever):before,
+  [type="checkbox"]:not(.filled-in)+span:not(.lever):after {
+    border: 2px solid #0d47a1;
+  }
+
+  [type="checkbox"]:checked+span:not(.lever):before {
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+  }
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .message {
+    color: $register-widget-color;
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .input-field {
+    input {
+      color: $register-widget-color;
+    }
+  }
+
+  .input-field label {
+    color: $register-widget-color;
+  }
+
+  .input-field input[type=text]:focus+label,
+  .input-field input[type=password]:focus+label {
+    color: $register-widget-color;
+  }
+
+  .input-field input[type=text]:focus,
+  .input-field input[type=password]:focus {
+    border-bottom: 1px solid $register-widget-color;
+    box-shadow: 0 1px 0 0 $register-widget-color;
+  }
+
+  .input-field input[type=text].valid,
+  .input-field input[type=text].valid {
+    border-bottom: 1px solid $register-widget-color;
+    box-shadow: 0 1px 0 0 $register-widget-color;
+  }
+
+  .input-field input[type=text].invalid,
+  .input-field input[type=text].invalid {
+    border-bottom: 1px solid $register-widget-color;
+    box-shadow: 0 1px 0 0 $register-widget-color;
+  }
+
+  .input-field .prefix.active {
+    color: $register-widget-color;
+  }
+
+  [type="checkbox"]+span:not(.lever):before,
+  [type="checkbox"]:not(.filled-in)+span:not(.lever):after {
+    border: 2px solid $register-widget-color;
+  }
+
+  [type="checkbox"]:checked+span:not(.lever):before {
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+  }
+
+  .btn {
+    color: $login-widget-color;
+  }
+}
+
+.login-form,
+.register-form {
+  width: 360px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-top: 16px;
+
+    .form-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  div {
+    &.input-field {
+      margin-top: 4px;
+    }
+
+    margin-top: 8px;
+  }
+}
+
+.register-widget {
+  background-image: url("/assets/auth-page-blue.svg");
+}
+button{
+  margin-top: 30%;
+}
