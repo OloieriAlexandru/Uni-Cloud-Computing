@@ -4,4 +4,5 @@ export const environment = {
     'https://europe-west6-cloud-homework3-308714.cloudfunctions.net/EvaluationRequestHandlerFunction',
   evaluationsURL: 'https://cloud-homework3-308714.ew.r.appspot.com',
   problemsURL: 'https://cloud-homework3-308714.ew.r.appspot.com',
+  authURL: "https://cloud-auth.azurewebsites.net/"
 };

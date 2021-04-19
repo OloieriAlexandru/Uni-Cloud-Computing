@@ -4,12 +4,11 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-
-  constructor(private authService: AuthService) { }
-  public logout(){
+  constructor(private authService: AuthService) {}
+  public logout() {
     this.authService.logout();
   }
 }
