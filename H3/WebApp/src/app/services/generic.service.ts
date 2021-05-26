@@ -16,6 +16,10 @@ export class GenericService {
     return this.http.post<T>(api + url, data, { headers: this.buildHeaders() });
   }
 
+  public postAlt<T>(api: string, url: string, data?: T): Observable<any> {
+    return this.http.post<any>(api + url, data);
+  }
+
   public delete<T>(api: string, url: string, data?: T): Observable<any> {
     if (data != null) {
       return this.http.delete(api + url, data);

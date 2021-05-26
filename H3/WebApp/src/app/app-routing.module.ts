@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
 import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 import { ProblemsPageComponent } from './pages/problems-page/problems-page.component';
+import { ProblemsUploadPageComponent } from './pages/problems-upload-page/problems-upload-page.component';
 import { SubmissionPageComponent } from './pages/submission-page/submission-page.component';
 import { SubmissionsPageComponent } from './pages/submissions-page/submissions-page.component';
 import { SubmitPageComponent } from './pages/submit-page/submit-page.component';
@@ -13,6 +14,11 @@ const routes: Routes = [
   {
     path: 'problems',
     component: ProblemsPageComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'upload',
+    component: ProblemsUploadPageComponent,
     canActivate: [AuthGuardService],
   },
   {

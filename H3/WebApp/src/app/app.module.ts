@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import  {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 import * as M from 'materialize-css/dist/js/materialize';
 import { GenericService } from './services/generic.service';
 
@@ -26,6 +28,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { ProblemsUploadPageComponent } from './pages/problems-upload-page/problems-upload-page.component';
+import { from } from 'rxjs';
+
+
 
 export function tokenFunc() {
   return localStorage.getItem("access_token");
@@ -42,7 +48,8 @@ export function tokenFunc() {
     SubmissionCardComponent,
     NavbarComponent,
     ProblemDetailsPageComponent,
-    AuthComponent
+    AuthComponent,
+    ProblemsUploadPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +63,9 @@ export function tokenFunc() {
     BrowserAnimationsModule,
     MatIconModule,
     MatCheckboxModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenFunc,
