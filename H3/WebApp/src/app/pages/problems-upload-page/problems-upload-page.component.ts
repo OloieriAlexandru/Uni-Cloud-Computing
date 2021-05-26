@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ProblemNew } from 'src/app/models/ProblemNew';
-
 import { ProblemsService } from 'src/app/services/problems.service';
 
 
@@ -14,6 +14,7 @@ export class ProblemsUploadPageComponent{
   public newProblem: ProblemNew = new ProblemNew();
   public formData: FormData = new FormData();
   constructor(
+    private readonly superM: MatSnackBar,
     @Inject('M') private M: any,
     private problemService: ProblemsService,
     private router: Router
@@ -39,13 +40,10 @@ export class ProblemsUploadPageComponent{
       (res) => {
         this.newProblem = new ProblemNew();
         this.formData = new FormData();
-        this.M.toast({
-          html: 'Problem uploaded successfully!',
-          classes: 'green darken-3',
-        });
+        this.superM.open("🎉🎉 Problem uploaded successfully! ✅", "You beast!", {duration: 5000});
       },
       (err) => {
-        console.log(err);
+        this.superM.open(err, "You beast!", {duration: 5000});
       }
     );
   }

@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import  {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import * as M from 'materialize-css/dist/js/materialize';
 import { GenericService } from './services/generic.service';
 
@@ -66,6 +67,7 @@ export function tokenFunc() {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenFunc,
