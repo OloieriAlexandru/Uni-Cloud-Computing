@@ -29,7 +29,6 @@ export class AuthService {
         if (response && response.accessToken && response.refreshToken) {
           localStorage.setItem('access_token', response.accessToken);
           localStorage.setItem('refresh_token', response.refreshToken);
-          await this.setRole(response.accessToken).toPromise();
           return { status: true };
         }
       }),
@@ -79,7 +78,8 @@ export class AuthService {
     return true;
   }
 
-  public hasRole(roles: UserRoles[]) {
+  public async hasRole(roles: UserRoles[]) {
+    await this.setRole(localStorage.getItem('access_token')).toPromise();
     return roles.indexOf(this.userRole) !== -1;
   }
 
