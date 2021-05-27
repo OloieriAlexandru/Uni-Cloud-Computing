@@ -13,6 +13,7 @@ export class GenericService {
   }
 
   public post<T>(api: string, url: string, data?: T): Observable<T> {
+    console.log("hello")
     return this.http.post<T>(api + url, data, { headers: this.buildHeaders() });
   }
 

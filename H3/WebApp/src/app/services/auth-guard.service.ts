@@ -11,6 +11,13 @@ export class AuthGuardService implements CanActivate {
 
   async canActivate(route, state: RouterStateSnapshot) {
     if (await this.authService.isLoggedIn()) {
+      if (
+        route.data.roles !== undefined &&
+        !this.authService.hasRole(route.data.roles)
+      ) {
+        this.router.navigate(['/']);
+        return false;
+      }
       return true;
     }
 
