@@ -14,11 +14,9 @@
             <div class="message">
               Enter your details
             </div>
-            <div class="form-row">
-              <div>
-                <input class="full-width-input" id="email-register" type="text" [(ngModel)]="newUser.email"
-                  [ngModelOptions]="{standalone: true}" placeholder="Email">
-              </div>
+            <div class="input-field col s12">
+              <input class="full-width-input" id="email-register" type="text" [(ngModel)]="newUser.email"
+                [ngModelOptions]="{standalone: true}" placeholder="Email">
             </div>
             <div class="input-field col s12">
               <input id="username-register" type="text" [(ngModel)]="newUser.username"

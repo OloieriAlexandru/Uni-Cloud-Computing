@@ -5,7 +5,6 @@ import { UserNew } from 'src/app/models/UserNew';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -33,22 +32,48 @@ export class AuthComponent {
         });
       },
       (err) => {
-        console.log(err);
+        if (err && err.error && err.error.errors) {
+          console.log(err.error);
+          this.M.toast({
+            html: err.error.errors[0].msg,
+            classes: 'red darken-3',
+          });
+        } else {
+          this.M.toast({
+            html: 'Error!',
+            classes: 'red darken-3',
+          });
+        }
       }
     );
   }
 
   public signIn() {
-    this.authService.login(this.userCredentials).subscribe((res) => {
-      this.M.toast({
-        html: 'Logging in!',
-        classes: 'green darken-3',
-        displayLength: 2000,
-      });
-      setTimeout(() => {
-        let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-        this.router.navigate([returnUrl || '/app']);
-      }, 2000);
-    });
+    this.authService.login(this.userCredentials).subscribe(
+      (res) => {
+        this.M.toast({
+          html: 'Logging in!',
+          classes: 'green darken-3',
+          displayLength: 2000,
+        });
+        setTimeout(() => {
+          let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          this.router.navigate([returnUrl || '/app']);
+        }, 2000);
+      },
+      (err) => {
+        if (err && err.error && err.error.errors) {
+          this.M.toast({
+            html: err.error.errors[0].msg,
+            classes: 'red darken-3',
+          });
+        } else {
+          this.M.toast({
+            html: 'Error!',
+            classes: 'red darken-3',
+          });
+        }
+      }
+    );
   }
 }

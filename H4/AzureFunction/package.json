@@ -1,0 +1,15 @@
+{
+  "name": "azurefunction",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@google-cloud/datastore": "^6.3.1",
+    "@google-cloud/storage": "^5.8.4",
+    "@google-cloud/tasks": "^2.3.0",
+    "joi": "^17.4.0"
+  }
+}

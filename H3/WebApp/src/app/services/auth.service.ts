@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 
 import { GenericService } from './generic.service';
@@ -18,7 +19,8 @@ export class AuthService {
 
   constructor(
     private baseService: GenericService,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
+    private router: Router
   ) {}
 
   public login(credentials: UserCredentials) {
@@ -58,7 +60,7 @@ export class AuthService {
     });
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    window.location.reload();
+    this.router.navigate(['auth']);
   }
 
   public async isLoggedIn(): Promise<boolean> {
@@ -86,7 +88,6 @@ export class AuthService {
       .post(this.URL, 'token', { token: localStorage.getItem('refresh_token') })
       .pipe(
         map((response: any): any => {
-          console.log(response);
           if (response && response.accessToken) {
             localStorage.setItem('access_token', response.accessToken);
             return { status: true };
