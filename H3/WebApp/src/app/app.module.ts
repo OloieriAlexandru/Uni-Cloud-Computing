@@ -7,7 +7,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -15,8 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
-import  {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import * as M from 'materialize-css/dist/js/materialize';
 import { GenericService } from './services/generic.service';
@@ -41,8 +40,6 @@ import { ProblemsUploadPageComponent } from './pages/problems-upload-page/proble
 import { from } from 'rxjs';
 import { PendingProblemsPageComponent } from './pages/pending-problems-page/pending-problems-page.component';
 import { PendingProblemDetailsPageComponent } from './pages/pending-problem-details-page/pending-problem-details-page.component';
-
-
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
