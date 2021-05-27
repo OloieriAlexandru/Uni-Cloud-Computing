@@ -12,7 +12,7 @@
     <button mat-raised-button color="primary" routerLink="/upload">
       Upload
     </button>
-    <button mat-raised-button color="primary" routerLink="/pending">
+    <button *ngIf="canViewSubmissions()" mat-raised-button color="primary" routerLink="/pending">
       Problems Submissions
     </button>
     <button class="button waves-effect grey darken-5 btn" (click)="logout()">

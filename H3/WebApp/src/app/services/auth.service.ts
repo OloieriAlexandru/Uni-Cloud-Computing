@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
@@ -9,19 +9,29 @@ import { UserCredentials } from '../models/UserCredentials';
 
 import { environment } from 'src/environments/environment';
 import { UserRoles } from '../models/UserRoles';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnInit {
   private URL = environment.authURL;
-  private userRole: UserRoles | null;
+  private userRole: UserRoles | null = null;
+  private userRoleSubject: BehaviorSubject<UserRoles | null> =
+    new BehaviorSubject(null);
 
   constructor(
     private baseService: GenericService,
     private jwtHelper: JwtHelperService,
     private router: Router
-  ) {}
+  ) { }
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('access_token');
+    if(token !== undefined) {
+      this.setRole(token).subscribe();
+    }
+  }
 
   public login(credentials: UserCredentials) {
     return this.baseService.post(this.URL, 'login', credentials).pipe(
@@ -29,6 +39,7 @@ export class AuthService {
         if (response && response.accessToken && response.refreshToken) {
           localStorage.setItem('access_token', response.accessToken);
           localStorage.setItem('refresh_token', response.refreshToken);
+          await this.setRole(response.accessToken).toPromise();
           return { status: true };
         }
       }),
@@ -38,11 +49,16 @@ export class AuthService {
     );
   }
 
-  private setRole(token) {
+  public getRoleObservable(): Observable<UserRoles | null> {
+    return this.userRoleSubject.asObservable();
+  }
+
+  private setRole(token: string) {
     return this.baseService.post(this.URL, 'roles', { token: token }).pipe(
       map((response: any): any => {
         if (response && response.role) {
           this.userRole = response.role;
+          this.userRoleSubject.next(this.userRole);
         } else {
           this.logout();
         }
@@ -60,6 +76,8 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.router.navigate(['auth']);
+    this.userRole = null;
+    this.userRoleSubject.next(this.userRole);
   }
 
   public async isLoggedIn(): Promise<boolean> {
@@ -71,7 +89,7 @@ export class AuthService {
 
     if (this.jwtHelper.isTokenExpired()) {
       localStorage.removeItem('access_token');
-      const result = await this.getNewAccessToken().toPromise();
+      await this.setNewAccessToken().toPromise();
       return false;
     }
 
@@ -79,17 +97,19 @@ export class AuthService {
   }
 
   public async hasRole(roles: UserRoles[]) {
-    await this.setRole(localStorage.getItem('access_token')).toPromise();
+    if (this.userRole == null)
+      await this.setRole(localStorage.getItem('access_token')).toPromise();
     return roles.indexOf(this.userRole) !== -1;
   }
 
-  public getNewAccessToken() {
+  public setNewAccessToken() {
     return this.baseService
       .post(this.URL, 'token', { token: localStorage.getItem('refresh_token') })
       .pipe(
-        map((response: any): any => {
+        map(async (response: any): Promise<any> => {
           if (response && response.accessToken) {
             localStorage.setItem('access_token', response.accessToken);
+            await this.setRole(response.accessToken).toPromise();
             return { status: true };
           }
           return { status: false };
