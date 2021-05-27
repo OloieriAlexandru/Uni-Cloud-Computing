@@ -43,7 +43,7 @@ export class ProblemsUploadPageComponent{
         this.superM.open("🎉🎉 Problem uploaded successfully! ✅", "You beast!", {duration: 5000});
       },
       (err) => {
-        this.superM.open(err, "You beast!", {duration: 5000});
+        this.superM.open(err.error, "You beast! 💁‍♀️", {duration: 5000});
       }
     );
   }

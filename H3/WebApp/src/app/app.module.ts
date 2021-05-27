@@ -31,6 +31,8 @@ import { AuthComponent } from './pages/auth/auth.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ProblemsUploadPageComponent } from './pages/problems-upload-page/problems-upload-page.component';
 import { from } from 'rxjs';
+import { PendingProblemsPageComponent } from './pages/pending-problems-page/pending-problems-page.component';
+import { PendingProblemDetailsPageComponent } from './pages/pending-problem-details-page/pending-problem-details-page.component';
 
 
 
@@ -51,6 +53,8 @@ export function tokenFunc() {
     ProblemDetailsPageComponent,
     AuthComponent,
     ProblemsUploadPageComponent,
+    PendingProblemsPageComponent,
+    PendingProblemDetailsPageComponent,
   ],
   imports: [
     BrowserModule,

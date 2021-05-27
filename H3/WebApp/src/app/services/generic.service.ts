@@ -32,6 +32,10 @@ export class GenericService {
     return this.http.put(api + url, data, { headers: this.buildHeaders() });
   }
 
+  public patch<T>(api: string, url: string, data: T): Observable<any> {
+    return this.http.patch(api + url, data, { headers: this.buildHeaders() });
+  }
+
   private buildHeaders(): HttpHeaders {
     return new HttpHeaders({ 'Content-Type': 'application/json' });
   }

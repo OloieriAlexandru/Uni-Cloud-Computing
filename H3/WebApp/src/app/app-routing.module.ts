@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './pages/auth/auth.component';
+import { PendingProblemDetailsPageComponent } from './pages/pending-problem-details-page/pending-problem-details-page.component';
+import { PendingProblemsPageComponent } from './pages/pending-problems-page/pending-problems-page.component';
 import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 import { ProblemsPageComponent } from './pages/problems-page/problems-page.component';
 import { ProblemsUploadPageComponent } from './pages/problems-upload-page/problems-upload-page.component';
@@ -14,17 +16,27 @@ const routes: Routes = [
   {
     path: 'problems',
     component: ProblemsPageComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthNotGuardService],
+  },
+  {
+    path: 'pending',
+    component: PendingProblemsPageComponent,
+    canActivate: [AuthNotGuardService],
   },
   {
     path: 'upload',
     component: ProblemsUploadPageComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthNotGuardService],
   },
   {
     path: 'problems/:id',
     component: ProblemDetailsPageComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [AuthNotGuardService],
+  },
+  {
+    path: 'pending/:id',
+    component: PendingProblemDetailsPageComponent,
+    canActivate: [AuthNotGuardService],
   },
   {
     path: 'problems/:id/submit',
