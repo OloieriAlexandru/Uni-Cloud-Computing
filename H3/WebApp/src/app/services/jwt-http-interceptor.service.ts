@@ -20,6 +20,10 @@ export class JwtHttpInterceptorService implements HttpInterceptor {
     const token = localStorage.getItem('access_token');
     let clone: HttpRequest<any>;
 
+    if(request.url.indexOf("upload") > 0) {
+      return next.handle(request);
+    }
+
     if (token) {
       clone = request.clone({
         setHeaders: {
