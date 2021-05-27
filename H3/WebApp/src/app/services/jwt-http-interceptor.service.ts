@@ -4,6 +4,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpHeaders,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -18,29 +19,29 @@ export class JwtHttpInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('access_token');
-    let clone: HttpRequest<any>;
+    let headers = this.accept(this.extractHeaders(request.headers));
 
-    if(request.url.indexOf("upload") > 0) {
-      return next.handle(request);
-    }
+    if (token) headers = this.bearerToken(headers, token);
 
-    if (token) {
-      clone = request.clone({
-        setHeaders: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
-    } else {
-      clone = request.clone({
-        setHeaders: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-    }
+    if (request.url.indexOf('upload') == -1)
+      headers = this.contentType(headers);
+    return next.handle(request.clone({ setHeaders: headers }));
+  }
 
-    return next.handle(clone);
+
+  public extractHeaders(requestHeaders) {
+    let headers = {};
+    requestHeaders.keys().forEach((key) => {
+      headers[key] = requestHeaders[key];
+    });
+  }
+  public accept(headers: any): any {
+    return Object.assign({ Accept: 'application/json' }, headers);
+  }
+  public contentType(headers: any): any {
+    return Object.assign({ 'Content-Type': 'application/json' }, headers);
+  }
+  public bearerToken(headers: any, token: string): any {
+    return Object.assign({ Authorization: 'Bearer ' + token }, headers);
   }
 }
