@@ -26,9 +26,10 @@ export class AuthService implements OnInit {
     private router: Router
   ) { }
 
+  // tslint:disable-next-line: contextual-lifecycle
   ngOnInit(): void {
     const token = localStorage.getItem('access_token');
-    if(token !== undefined) {
+    if (token !== undefined) {
       this.setRole(token).subscribe();
     }
   }
@@ -54,7 +55,7 @@ export class AuthService implements OnInit {
   }
 
   private setRole(token: string) {
-    return this.baseService.post(this.URL, 'roles', { token: token }).pipe(
+    return this.baseService.post(this.URL, 'roles', { token }).pipe(
       map((response: any): any => {
         if (response && response.role) {
           this.userRole = response.role;
@@ -97,8 +98,9 @@ export class AuthService implements OnInit {
   }
 
   public async hasRole(roles: UserRoles[]) {
-    if (this.userRole == null)
+    if (this.userRole == null) {
       await this.setRole(localStorage.getItem('access_token')).toPromise();
+    }
     return roles.indexOf(this.userRole) !== -1;
   }
 

@@ -22,16 +22,16 @@ export class ProblemsService {
   public getAll(): Observable<ProblemGetAll[]> {
     return this.baseService.get<ProblemGetAll[]>(this.URL, '/problems');
   }
-  public getAllPending():Observable<ProblemGetAll[]>{
+  public getAllPending(): Observable<ProblemGetAll[]>{
     return this.baseService.get<ProblemGetAll[]>(this.URL, '/pending');
   }
   public getById(id): Observable<ProblemGetById> {
     return this.baseService.get<ProblemGetById>(this.URL, '/problems/' + id);
   }
-  public upload(newProblem:FormData): Observable<any>{
+  public upload(newProblem: FormData): Observable<any>{
     return this.baseService.postAlt<FormData>(this.URL, '/upload', newProblem);
   }
-  public approve(response: ProblemApproval, id:any): Observable<any>{
-    return this.baseService.patch<ProblemApproval>(this.URL, '/pending/'+id, response);
+  public approve(response: ProblemApproval, id: any): Observable<any>{
+    return this.baseService.patch<ProblemApproval>(this.URL, '/pending/' + id, response);
   }
 }
