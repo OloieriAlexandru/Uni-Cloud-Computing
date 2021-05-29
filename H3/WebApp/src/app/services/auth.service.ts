@@ -12,113 +12,113 @@ import { UserRoles } from '../models/UserRoles';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AuthService implements OnInit {
-  private URL = environment.authURL;
-  private userRole: UserRoles | null = null;
-  private userRoleSubject: BehaviorSubject<UserRoles | null> =
-    new BehaviorSubject(null);
+    private URL = environment.authURL;
+    private userRole: UserRoles | null = null;
+    private userRoleSubject: BehaviorSubject<UserRoles | null> =
+        new BehaviorSubject(null);
 
-  constructor(
-    private baseService: GenericService,
-    private jwtHelper: JwtHelperService,
-    private router: Router
-  ) { }
+    constructor(
+        private baseService: GenericService,
+        private jwtHelper: JwtHelperService,
+        private router: Router
+    ) { }
 
-  // tslint:disable-next-line: contextual-lifecycle
-  ngOnInit(): void {
-    const token = localStorage.getItem('access_token');
-    if (token !== undefined) {
-      this.setRole(token).subscribe();
-    }
-  }
-
-  public login(credentials: UserCredentials) {
-    return this.baseService.post(this.URL, 'login', credentials).pipe(
-      map(async (response: any): Promise<any> => {
-        if (response && response.accessToken && response.refreshToken) {
-          localStorage.setItem('access_token', response.accessToken);
-          localStorage.setItem('refresh_token', response.refreshToken);
-          await this.setRole(response.accessToken).toPromise();
-          return { status: true };
+    // tslint:disable-next-line: contextual-lifecycle
+    ngOnInit(): void {
+        const token = localStorage.getItem('access_token');
+        if (token !== undefined) {
+            this.setRole(token).subscribe();
         }
-      }),
-      catchError((err: any): any => {
-        throw new Error(err.error.message);
-      })
-    );
-  }
+    }
 
-  public getRoleObservable(): Observable<UserRoles | null> {
-    return this.userRoleSubject.asObservable();
-  }
+    public login(credentials: UserCredentials) {
+        return this.baseService.post(this.URL, 'login', credentials).pipe(
+            map(async (response: any): Promise<any> => {
+                if (response && response.accessToken && response.refreshToken) {
+                    localStorage.setItem('access_token', response.accessToken);
+                    localStorage.setItem('refresh_token', response.refreshToken);
+                    await this.setRole(response.accessToken).toPromise();
+                    return { status: true };
+                }
+            }),
+            catchError((err: any): any => {
+                throw new Error(err.error.message);
+            })
+        );
+    }
 
-  private setRole(token: string) {
-    return this.baseService.post(this.URL, 'roles', { token }).pipe(
-      map((response: any): any => {
-        if (response && response.role) {
-          this.userRole = response.role;
-          this.userRoleSubject.next(this.userRole);
-        } else {
-          this.logout();
+    public getRoleObservable(): Observable<UserRoles | null> {
+        return this.userRoleSubject.asObservable();
+    }
+
+    private setRole(token: string) {
+        return this.baseService.post(this.URL, 'roles', { token }).pipe(
+            map((response: any): any => {
+                if (response && response.role) {
+                    this.userRole = response.role;
+                    this.userRoleSubject.next(this.userRole);
+                } else {
+                    this.logout();
+                }
+            }),
+            catchError((err: any): any => {
+                throw new Error(err.error.message);
+            })
+        );
+    }
+
+    public logout() {
+        this.baseService.delete(this.URL, 'logout', {
+            token: localStorage.getItem('refresh_token'),
+        });
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        this.router.navigate(['auth']);
+        this.userRole = null;
+        this.userRoleSubject.next(this.userRole);
+    }
+
+    public async isLoggedIn(): Promise<boolean> {
+        const token: string = this.jwtHelper.tokenGetter();
+
+        if (!token && !localStorage.getItem('refresh_token')) {
+            return false;
         }
-      }),
-      catchError((err: any): any => {
-        throw new Error(err.error.message);
-      })
-    );
-  }
 
-  public logout() {
-    this.baseService.delete(this.URL, 'logout', {
-      token: localStorage.getItem('refresh_token'),
-    });
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    this.router.navigate(['auth']);
-    this.userRole = null;
-    this.userRoleSubject.next(this.userRole);
-  }
+        if (this.jwtHelper.isTokenExpired()) {
+            localStorage.removeItem('access_token');
+            await this.setNewAccessToken().toPromise();
+            return false;
+        }
 
-  public async isLoggedIn(): Promise<boolean> {
-    const token: string = this.jwtHelper.tokenGetter();
-
-    if (!token && !localStorage.getItem('refresh_token')) {
-      return false;
+        return true;
     }
 
-    if (this.jwtHelper.isTokenExpired()) {
-      localStorage.removeItem('access_token');
-      await this.setNewAccessToken().toPromise();
-      return false;
+    public async hasRole(roles: UserRoles[]) {
+        if (this.userRole == null) {
+            await this.setRole(localStorage.getItem('access_token')).toPromise();
+        }
+        return roles.indexOf(this.userRole) !== -1;
     }
 
-    return true;
-  }
-
-  public async hasRole(roles: UserRoles[]) {
-    if (this.userRole == null) {
-      await this.setRole(localStorage.getItem('access_token')).toPromise();
+    public setNewAccessToken() {
+        return this.baseService
+            .post(this.URL, 'token', { token: localStorage.getItem('refresh_token') })
+            .pipe(
+                map(async (response: any): Promise<any> => {
+                    if (response && response.accessToken) {
+                        localStorage.setItem('access_token', response.accessToken);
+                        await this.setRole(response.accessToken).toPromise();
+                        return { status: true };
+                    }
+                    return { status: false };
+                }),
+                catchError((err: any): any => {
+                    return { status: false };
+                })
+            );
     }
-    return roles.indexOf(this.userRole) !== -1;
-  }
-
-  public setNewAccessToken() {
-    return this.baseService
-      .post(this.URL, 'token', { token: localStorage.getItem('refresh_token') })
-      .pipe(
-        map(async (response: any): Promise<any> => {
-          if (response && response.accessToken) {
-            localStorage.setItem('access_token', response.accessToken);
-            await this.setRole(response.accessToken).toPromise();
-            return { status: true };
-          }
-          return { status: false };
-        }),
-        catchError((err: any): any => {
-          return { status: false };
-        })
-      );
-  }
 }

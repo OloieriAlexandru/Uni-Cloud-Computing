@@ -31,14 +31,24 @@
               <textarea matInput placeholder="Ex. 5 1 2 3 4 5.." [(ngModel)]="newProblem.example" name="example"></textarea>
             </mat-form-field>
 
+            <mat-form-field class="indications input">
+              <mat-label>Indications</mat-label>
+              <textarea matInput placeholder="Ex. Listen here dummy" [(ngModel)]="newProblem.indications" name="indications"></textarea>
+            </mat-form-field>
 
+            <mat-form-field class="solution input">
+              <mat-label>Solution</mat-label>
+              <textarea matInput placeholder="Ex. int main(){...}" [(ngModel)]="newProblem.solution" name="solution"></textarea>
+            </mat-form-field>
+
+              <mat-label>In files</mat-label>
               <input type="file" multiple="multiple" accept="file" name="inFiles" id="files-in"
               (change)="handleInFiles($event.target.files)" name="files-in">
 
-
-
+              <mat-label>Out files</mat-label>
               <input type="file" multiple="multiple" accept="file" name="outFiles" id="files-out"
               (change)="handleOutFiles($event.target.files)" name="files-out">
+
 
             <button class="mat-raised-button" color="primary"(click)="upload()">Upload</button>
           </form>
