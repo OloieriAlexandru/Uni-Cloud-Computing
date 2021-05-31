@@ -1,56 +1,92 @@
 <div class="upload-wrapper">
-    <div class="upload-widget">
-          <form>
-            <div class="message">
-              Enter the problem details
-            </div>
-            <mat-form-field class="title input">
-              <mat-label>Problem Title</mat-label>
-              <input matInput placeholder="Ex. Binary Search" [(ngModel)]="newProblem.title" name="title">
-            </mat-form-field>
+  <div class="upload-widget">
+    <form>
+      <div class="message">
+        Enter the problem details
+      </div>
+      <mat-form-field class="title input">
+        <mat-label>Problem Title</mat-label>
+        <input matInput
+          placeholder="Ex. Binary Search"
+          [(ngModel)]="newProblem.title"
+          name="title">
+      </mat-form-field>
 
-            <mat-form-field class="description input">
-              <mat-label>Problem description</mat-label>
-              <textarea matInput placeholder="Ex. Given a sorted array ar..." [(ngModel)]="newProblem.description" name="description">
+      <mat-form-field class="description input">
+        <mat-label>Problem description</mat-label>
+        <textarea matInput
+          placeholder="Ex. Given a sorted array ar..."
+          [(ngModel)]="newProblem.description"
+          name="description">
 
               </textarea>
-            </mat-form-field>
+      </mat-form-field>
 
-            <mat-form-field class="file input">
-              <mat-label>Input/Output files name</mat-label>
-              <input matInput placeholder="Ex. search123" [(ngModel)]="newProblem.file" name="file">
-            </mat-form-field>
+      <mat-form-field class="file input">
+        <mat-label>Input/Output files name</mat-label>
+        <input matInput
+          placeholder="Ex. search123"
+          [(ngModel)]="newProblem.file"
+          name="file">
+      </mat-form-field>
 
-            <mat-form-field class="restrictions input">
-              <mat-label>Restrictions</mat-label>
-              <textarea matInput placeholder="Ex. n <= 100" [(ngModel)]="newProblem.restrictions" name="restrictions"></textarea>
-            </mat-form-field>
+      <mat-form-field class="restrictions input">
+        <mat-label>Restrictions</mat-label>
+        <textarea matInput
+          placeholder="Ex. n <= 100"
+          [(ngModel)]="newProblem.restrictions"
+          name="restrictions"></textarea>
+      </mat-form-field>
 
-            <mat-form-field class="example input">
-              <mat-label>Example</mat-label>
-              <textarea matInput placeholder="Ex. 5 1 2 3 4 5.." [(ngModel)]="newProblem.example" name="example"></textarea>
-            </mat-form-field>
+      <mat-form-field class="example input">
+        <mat-label>Example</mat-label>
+        <textarea matInput
+          placeholder="Ex. 5 1 2 3 4 5.."
+          [(ngModel)]="newProblem.example"
+          name="example"></textarea>
+      </mat-form-field>
 
-            <mat-form-field class="indications input">
-              <mat-label>Indications</mat-label>
-              <textarea matInput placeholder="Ex. Listen here dummy" [(ngModel)]="newProblem.indications" name="indications"></textarea>
-            </mat-form-field>
+      <mat-form-field class="indications input">
+        <mat-label>Indications</mat-label>
+        <textarea matInput
+          placeholder="Ex. Listen here dummy"
+          [(ngModel)]="newProblem.indications"
+          name="indications"></textarea>
+      </mat-form-field>
 
-            <mat-form-field class="solution input">
-              <mat-label>Solution</mat-label>
-              <textarea matInput placeholder="Ex. int main(){...}" [(ngModel)]="newProblem.solution" name="solution"></textarea>
-            </mat-form-field>
+      <mat-form-field class="solution input">
+        <mat-label>Solution</mat-label>
+        <textarea matInput
+          placeholder="Ex. int main(){...}"
+          [(ngModel)]="newProblem.solution"
+          name="solution"></textarea>
+      </mat-form-field>
+      <div class="choose-files-container">
+        <div class="choose-file-field-wrapper">
+          <mat-label>In files</mat-label>
+          <input type="file"
+            multiple="multiple"
+            accept="file"
+            name="inFiles"
+            id="files-in"
+            (change)="handleInFiles($event.target.files)"
+            name="files-in">
+        </div>
+        <div class="choose-file-field-wrapper">
+          <mat-label>Out files</mat-label>
+          <input type="file"
+            multiple="multiple"
+            accept="file"
+            name="outFiles"
+            id="files-out"
+            (change)="handleOutFiles($event.target.files)"
+            name="files-out">
+        </div>
+      </div>
 
-              <mat-label>In files</mat-label>
-              <input type="file" multiple="multiple" accept="file" name="inFiles" id="files-in"
-              (change)="handleInFiles($event.target.files)" name="files-in">
-
-              <mat-label>Out files</mat-label>
-              <input type="file" multiple="multiple" accept="file" name="outFiles" id="files-out"
-              (change)="handleOutFiles($event.target.files)" name="files-out">
-
-
-            <button class="mat-raised-button" color="primary"(click)="upload()">Upload</button>
-          </form>
-    </div>
+      <button class="mat-raised-button"
+        color="primary"
+        (click)="upload()">Upload</button>
+    </form>
+  </div>
 </div>
