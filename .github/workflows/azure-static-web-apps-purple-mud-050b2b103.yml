@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - "/.github/workflows/azure-static-web-apps-purple-mud-050b2b103.yml"
       - "/H3/WebApp"
   pull_request:
     types: [opened, synchronize, reopened, closed]
