@@ -45,7 +45,6 @@
         {{problem.example}}
       </div>
     </div>
-
     <div class="buttons-container">
       <div class="indications-segment">
         <button mat-raised-button
@@ -60,14 +59,18 @@
         </button>
       </div>
 
-      <div class="submission-segment">
+      <div class="approval-segment">
         <button mat-raised-button
           color="primary"
-          (click)="submitSolution()">
-          Submit solution
+          (click)="approveProblem(approvedResponse)">
+          Approve
+        </button>
+        <button mat-raised-button
+          color="secondary"
+          (click)="approveProblem(rejectedResponse)">
+          Reject
         </button>
       </div>
     </div>
-
   </div>
 </div>

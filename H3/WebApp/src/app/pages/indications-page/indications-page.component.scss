@@ -1,4 +1,4 @@
-.problem-details-page-wrapper {
+.indications-page-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,7 @@ header {
   }
 }
 
-.problem-body {
+.indications-body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -59,7 +59,7 @@ header {
   box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
 }
 
-.problem-segment {
+.indications-segment {
   background-color: #fefefe;
   border: 1px solid blue;
   border-radius: 15px;
@@ -78,6 +78,7 @@ header {
 
   .segment-content {
     height: auto;
+    min-height: 60vh;
   }
 }
 
@@ -87,16 +88,10 @@ header {
   width: 100%;
   height: 80px;
   margin-top: 16px;
-  justify-content: space-between;
-  .submission-segment,
-  .indications-segment {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    button {
-      margin: 0px 10px;
-    }
+  justify-content: center;
+  align-content: center;
+  button {
+    margin: 10px 10px;
+    max-height: 50%;
   }
 }
