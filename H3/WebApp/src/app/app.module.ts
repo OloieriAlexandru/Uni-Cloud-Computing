@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 import * as M from 'materialize-css/dist/js/materialize';
 import { GenericService } from './services/generic.service';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -83,6 +84,7 @@ export function tokenFunc() {
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatCardModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenFunc,
