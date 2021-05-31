@@ -1,5 +1,5 @@
 
-Set Key="./evaluator-2_key.pem"
+Set Key="./evaluation-server-vm-2_key.pem"
 
 Cmd /c Icacls %Key% /c /t /Inheritance:d
 
@@ -9,4 +9,4 @@ Cmd /c Icacls %Key% /c /t /Remove Administrator "Authenticated Users" BUILTIN\Ad
 
 Cmd /c Icacls %Key%
 
-ssh -i ./evaluator-2_key.pem azureuser@51.143.233.156
+ssh -i ./evaluation-server-vm-2_key.pem azureuser@20.82.42.242
