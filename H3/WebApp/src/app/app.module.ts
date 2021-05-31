@@ -40,6 +40,9 @@ import { ProblemsUploadPageComponent } from './pages/problems-upload-page/proble
 import { from } from 'rxjs';
 import { PendingProblemsPageComponent } from './pages/pending-problems-page/pending-problems-page.component';
 import { PendingProblemDetailsPageComponent } from './pages/pending-problem-details-page/pending-problem-details-page.component';
+import { SolutionPageComponent } from './pages/solution-page/solution-page.component';
+import { IndicationsPageComponent } from './pages/indications-page/indications-page.component';
+import { PremiumPageComponent } from './pages/premium-page/premium-page.component';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -60,6 +63,9 @@ export function tokenFunc() {
     ProblemsUploadPageComponent,
     PendingProblemsPageComponent,
     PendingProblemDetailsPageComponent,
+    SolutionPageComponent,
+    IndicationsPageComponent,
+    PremiumPageComponent
   ],
   imports: [
     BrowserModule,
@@ -102,4 +108,4 @@ export function tokenFunc() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

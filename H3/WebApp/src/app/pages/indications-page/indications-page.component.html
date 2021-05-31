@@ -1,0 +1,31 @@
+<div class="indications-page-wrapper"
+  *ngIf="indications">
+  <header>
+    <div class="id-container">
+      #{{indications.id}}
+    </div>
+    <div class="title-container">
+      {{indications.title}}
+    </div>
+  </header>
+  <div class="indications-body">
+
+    <div class="indications-segment">
+      <div class="segment-title">
+        Indications
+      </div>
+      <div class="segment-content">
+        {{indications.indications}}
+      </div>
+    </div>
+
+    <div class="buttons-container">
+      <button mat-raised-button
+        color="secondary"
+        (click)="back()">
+        Back
+      </button>
+    </div>
+
+  </div>
+</div>

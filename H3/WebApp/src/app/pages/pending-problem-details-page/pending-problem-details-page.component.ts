@@ -22,8 +22,9 @@ export class PendingProblemDetailsPageComponent implements OnInit {
   constructor(
     private readonly superM: MatSnackBar,
     private route: ActivatedRoute,
+    private router: Router,
     private problemService: ProblemsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.problemId = this.route.snapshot.paramMap.get('id');
@@ -42,8 +43,7 @@ export class PendingProblemDetailsPageComponent implements OnInit {
     this.problemService.approve(response, this.problemId).subscribe(
       (result: any) => {
         this.superM.open(
-          `🎉🎉 Problem ${
-            response.approved === true ? 'approved' : 'rejected'
+          `🎉🎉 Problem ${response.approved === true ? 'approved' : 'rejected'
           } successfully! ✅`,
           'You beast!',
           { duration: 5000 }
@@ -53,5 +53,11 @@ export class PendingProblemDetailsPageComponent implements OnInit {
         this.superM.open('Something went wrong', 'Oopsie', { duration: 5000 });
       }
     );
+  }
+  public getIndications(): void {
+    this.router.navigate(['pending', this.problemId, 'indications']);
+  }
+  public getSolution(): void {
+    this.router.navigate(['pending', this.problemId, 'solution']);
   }
 }

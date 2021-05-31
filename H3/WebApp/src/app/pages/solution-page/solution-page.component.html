@@ -1,0 +1,31 @@
+<div class="solution-page-wrapper"
+  *ngIf="solution">
+  <header>
+    <div class="id-container">
+      #{{solution.id}}
+    </div>
+    <div class="title-container">
+      {{solution.title}}
+    </div>
+  </header>
+  <div class="solution-body">
+
+    <div class="solution-segment">
+      <div class="segment-title">
+        Solution
+      </div>
+      <div class="segment-content">
+        {{solution.solution}}
+      </div>
+    </div>
+
+    <div class="buttons-container">
+      <button mat-raised-button
+        color="secondary"
+        (click)="back()">
+        Back
+      </button>
+    </div>
+
+  </div>
+</div>

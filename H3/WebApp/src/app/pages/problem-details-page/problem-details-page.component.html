@@ -1,4 +1,5 @@
-<div class="problem-details-page-wrapper" *ngIf="problem">
+<div class="problem-details-page-wrapper"
+  *ngIf="problem">
   <header>
     <div class="id-container">
       #{{problem.id}}
@@ -45,10 +46,27 @@
       </div>
     </div>
 
-    <div class="submission-segment">
-      <button mat-raised-button color="secondary" (click)="submitSolution()">
-        Submit solution
-      </button>
+    <div class="buttons-container">
+      <div class="indications-segment">
+        <button mat-raised-button
+          color="secondary"
+          (click)="getIndications()">
+          Indications
+        </button>
+        <button mat-raised-button
+          color="secondary"
+          (click)="getSolution()">
+          Solution
+        </button>
+      </div>
+
+      <div class="submission-segment">
+        <button mat-raised-button
+          color="primary"
+          (click)="submitSolution()">
+          Submit solution
+        </button>
+      </div>
     </div>
 
   </div>
