@@ -12,6 +12,10 @@
 
 https://purple-mud-050b2b103.azurestaticapps.net/
 
+### Authentication Microservice
+
+https://cloud-auth-teddy.azurewebsites.net/
+
 ### Evaluation Servers Load Balancer
 
 http://51.144.2.215:7777/
