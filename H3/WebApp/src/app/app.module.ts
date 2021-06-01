@@ -17,7 +17,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import * as M from 'materialize-css/dist/js/materialize';
+
 import { GenericService } from './services/generic.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ProblemsService } from './services/problems.service';
@@ -37,7 +39,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProblemDetailsPageComponent } from './pages/problem-details-page/problem-details-page.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { ProblemsUploadPageComponent } from './pages/problems-upload-page/problems-upload-page.component';
-import { from } from 'rxjs';
 import { PendingProblemsPageComponent } from './pages/pending-problems-page/pending-problems-page.component';
 import { PendingProblemDetailsPageComponent } from './pages/pending-problem-details-page/pending-problem-details-page.component';
 import { SolutionPageComponent } from './pages/solution-page/solution-page.component';
@@ -65,7 +66,7 @@ export function tokenFunc() {
     PendingProblemDetailsPageComponent,
     SolutionPageComponent,
     IndicationsPageComponent,
-    PremiumPageComponent
+    PremiumPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,4 +109,4 @@ export function tokenFunc() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

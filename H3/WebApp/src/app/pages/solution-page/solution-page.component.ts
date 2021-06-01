@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProblemSolution } from 'src/app/models/ProblemSolution';
 
 import { ProblemsService } from 'src/app/services/problems.service';
+
+import { ProblemSolution } from 'src/app/models/ProblemSolution';
 
 @Component({
   selector: 'app-solution-page',
@@ -18,7 +19,7 @@ export class SolutionPageComponent implements OnInit {
     private problemsService: ProblemsService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.problemId = this.route.snapshot.paramMap.get('id');
@@ -35,5 +36,4 @@ export class SolutionPageComponent implements OnInit {
   back(): void {
     this.router.navigate([this.routeCase, this.problemId]);
   }
-
 }

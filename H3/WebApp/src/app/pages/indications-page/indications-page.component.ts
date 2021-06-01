@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProblemIndications } from 'src/app/models/ProblemIndications';
 
 import { ProblemsService } from 'src/app/services/problems.service';
+
+import { ProblemIndications } from 'src/app/models/ProblemIndications';
 
 @Component({
   selector: 'app-indications-page',
@@ -18,12 +19,12 @@ export class IndicationsPageComponent implements OnInit {
     private problemsService: ProblemsService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.problemId = this.route.snapshot.paramMap.get('id');
     this.routeCase = this.route.snapshot.paramMap.get('case');
-    console.log(this.routeCase)
+    console.log(this.routeCase);
     this.problemsService.getIndications(this.problemId).subscribe(
       (indications: ProblemIndications) => {
         this.indications = indications;

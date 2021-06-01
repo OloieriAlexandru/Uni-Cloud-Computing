@@ -13,8 +13,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./premium-page.component.scss'],
 })
 export class PremiumPageComponent implements OnInit {
-  constructor() {
-  }
-  ngOnInit(): void {
-  }
+  constructor() {}
+  ngOnInit(): void {}
 }

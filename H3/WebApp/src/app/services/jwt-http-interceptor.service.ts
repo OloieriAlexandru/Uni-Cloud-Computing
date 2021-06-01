@@ -4,7 +4,6 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpHeaders,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -12,7 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class JwtHttpInterceptorService implements HttpInterceptor {
-  constructor() { }
+  constructor() {}
 
   intercept(
     request: HttpRequest<any>,
@@ -21,11 +20,14 @@ export class JwtHttpInterceptorService implements HttpInterceptor {
     const token = localStorage.getItem('access_token');
     let headers = this.accept(this.extractHeaders(request.headers));
 
-    if (token) { headers = this.bearerToken(headers, token); }
-    if (request.url.indexOf('upload') == -1) { headers = this.contentType(headers); }
+    if (token) {
+      headers = this.bearerToken(headers, token);
+    }
+    if (request.url.indexOf('upload') == -1) {
+      headers = this.contentType(headers);
+    }
     return next.handle(request.clone({ setHeaders: headers }));
   }
-
 
   public extractHeaders(requestHeaders: any) {
     let headers = {};
