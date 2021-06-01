@@ -23,3 +23,13 @@ http://20.67.122.227:3333/
 ### Evaluation Server 2
 
 http://20.82.42.242:3333/
+
+## Google Cloud URLs
+
+### Problems Microservice
+
+https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com/
+
+### Cloud Functions
+
+https://europe-west1-pump-it-up-314917.cloudfunctions.net/evaluation-submitter-function

@@ -2,8 +2,8 @@ const {
     CloudTasksClient
 } = require('@google-cloud/tasks');
 
-GPC_PROJECT_ID = "cloud-homework3-308714";
-GPC_QUEUE_NAME = "evaluation-queue";
+GPC_PROJECT_ID = "pump-it-up-314917";
+GPC_QUEUE_NAME = "submissions-evaluation-queue";
 GPC_QUEUE_LOCATION = "europe-west1";
 
 class TaskCreator {
@@ -16,7 +16,7 @@ class TaskCreator {
 
         const task = {
             httpRequest: {
-                url: 'http://34.65.167.208:3333/api/v1/evaluation',
+                url: 'http://51.144.2.215:7777/api/v1/evaluation',
                 httpMethod: 'POST',
                 body: Buffer.from(JSON.stringify({
                     evaluation_id: evaluationId
