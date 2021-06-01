@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { SubscriptionPrices } from 'src/app/models/SubscriptionPrices';
+import { PaymentPageComponent } from '../../components/payment-popup/payment.component';
 
-import { ProblemsService } from 'src/app/services/problems.service';
-
-import { ProblemGetById } from 'src/app/models/ProblemGetById';
-import { UserRoles } from 'src/app/models/UserRoles';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-premium-page',
@@ -13,6 +11,19 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./premium-page.component.scss'],
 })
 export class PremiumPageComponent implements OnInit {
-  constructor() {}
-  ngOnInit(): void {}
+  public monthly =  SubscriptionPrices.MONTHLY;
+  public yearly = SubscriptionPrices.YEARLY;
+  constructor(private readonly matDialog: MatDialog) { }
+  ngOnInit(): void { }
+  checkout(amount:SubscriptionPrices) {
+    const dialogRef = this.matDialog.open(PaymentPageComponent, {
+      data: { totalAmount: amount },
+    });
+    dialogRef.afterClosed()
+      .subscribe((result: any) => {
+        if (result) {
+          console.log(result.token.id);
+        }
+      });
+  }
 }

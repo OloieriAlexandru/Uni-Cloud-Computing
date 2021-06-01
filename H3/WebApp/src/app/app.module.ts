@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
+import { StripeModule } from "stripe-angular"
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +45,10 @@ import { PendingProblemDetailsPageComponent } from './pages/pending-problem-deta
 import { SolutionPageComponent } from './pages/solution-page/solution-page.component';
 import { IndicationsPageComponent } from './pages/indications-page/indications-page.component';
 import { PremiumPageComponent } from './pages/premium-page/premium-page.component';
+import { PaymentPageComponent } from './components/payment-popup/payment.component';
+import { environment } from 'src/environments/environment';
+import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SubscriptionPrices } from './models/SubscriptionPrices';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -68,6 +72,7 @@ export function tokenFunc() {
     SolutionPageComponent,
     IndicationsPageComponent,
     PremiumPageComponent,
+    PaymentPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +91,8 @@ export function tokenFunc() {
     MatInputModule,
     MatSnackBarModule,
     MatCardModule,
+    MatDialogModule,
+    StripeModule.forRoot(environment.stripePublicKey),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenFunc,
@@ -108,7 +115,8 @@ export function tokenFunc() {
     AuthNotGuardService,
     JwtHttpInterceptorService,
     UserService,
+
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

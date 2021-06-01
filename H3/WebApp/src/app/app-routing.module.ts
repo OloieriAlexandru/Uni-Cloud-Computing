@@ -19,6 +19,7 @@ import { SubmissionsPageComponent } from './pages/submissions-page/submissions-p
 import { SubmitPageComponent } from './pages/submit-page/submit-page.component';
 
 import { UserRoles } from './models/UserRoles';
+import { PaymentPageComponent } from './components/payment-popup/payment.component';
 
 const routes: Routes = [
   {
@@ -78,6 +79,11 @@ const routes: Routes = [
   {
     path: 'premium',
     component: PremiumPageComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'premium/payment/:subscription',
+    component: PaymentPageComponent,
     canActivate: [AuthGuardService],
   },
   {

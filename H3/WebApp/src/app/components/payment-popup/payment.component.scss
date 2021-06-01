@@ -1,0 +1,30 @@
+.payment-page-wrapper {
+  min-width: 30vw;
+  min-height: 30vh;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    min-height: 30vh;
+
+    #form-field {
+      padding: 10px 0px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      align-content: center;
+      justify-content: space-between;
+      #info-card{
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+      }
+      button{
+        max-width: 50%;
+        align-self: center;
+      }
+    }
+
+  }
+}
