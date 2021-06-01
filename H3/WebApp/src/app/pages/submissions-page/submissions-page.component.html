@@ -1,27 +1,11 @@
-<div class="submissions-page-wrapper" *ngIf="submissions">
-  <div class="submissions-header">
-    Submissions
-  </div>
-  <div class="table-header">
-    <div class="submission-id-header">
-      Id
-    </div>
-    <div class="submission-problem-name-header">
-      Problem
-    </div>
-    <div class="submission-lang-header">
-      Language
-    </div>
-    <div class="submission-date-header">
-      Submission date
-    </div>
-    <div class="submission-verdict-header">
-      Verdict
-    </div>
-    <div class="submission-status-header">
-      Status
-    </div>
-  </div>
+<div class="submissions-page-wrapper" *ngIf="submissions; else noSubmissions">
+  <app-submissions-table-header>
+  </app-submissions-table-header>
+
   <app-submission-card *ngFor="let submission of submissions" [submission]="submission"
     (submissionSelected)="enterSubmissionDetailsPage($event)"></app-submission-card>
 </div>
+
+<ng-template #noSubmissions>
+  <app-loader></app-loader>
+</ng-template>

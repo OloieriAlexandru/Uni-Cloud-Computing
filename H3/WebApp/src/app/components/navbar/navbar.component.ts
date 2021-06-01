@@ -17,8 +17,10 @@ export class NavbarComponent {
   public tokenInfo: JwtRefreshTokenInfo = null;
 
   constructor(private authService: AuthService, private router: Router) {
+    this.authService.initRole();
     this.authService.getRoleObservable().subscribe((newRole) => {
       this.role = newRole;
+      console.log(this.role);
     });
 
     this.tokenInfo = this.authService.getRefreshTokenInfo();

@@ -11,22 +11,35 @@
   background-color: rgba($color: #FEFEFE, $alpha: 0.75);
 
   .submission-id {
-    width: 20%;
+    width: 14%;
     text-align: center;
   }
 
   .submission-problem-name {
-    width: 20%;
+    width: 18%;
     text-align: center;
+
+    &:hover {
+      font-weight: 600;
+    }
+  }
+
+  .submission-user {
+    width: 14%;
+    text-align: center;
+
+    &:hover {
+      font-weight: 600;
+    }
   }
 
   .submission-lang {
-    width: 10%;
+    width: 8%;
     text-align: center;
   }
 
   .submission-date {
-    width: 20%;
+    width: 18%;
     text-align: center;
   }
 
@@ -36,12 +49,18 @@
   }
 
   .submission-status {
-    width: 20%;
+    width: 18%;
     text-align: center;
   }
 
   &:hover {
     cursor: pointer;
     background-color: rgba($color: #FEFEFE, $alpha: 0.9);
+  }
+}
+
+.submission-card-wrapper {
+  &.dark-mode {
+    background-color: rgba($color: #A5C1F0, $alpha: 0.50);
   }
 }

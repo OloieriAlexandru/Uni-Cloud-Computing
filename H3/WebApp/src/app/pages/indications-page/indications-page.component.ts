@@ -24,7 +24,7 @@ export class IndicationsPageComponent implements OnInit {
   ngOnInit(): void {
     this.problemId = this.route.snapshot.paramMap.get('id');
     this.routeCase = this.route.snapshot.paramMap.get('case');
-    console.log(this.routeCase);
+
     this.problemsService.getIndications(this.problemId).subscribe(
       (indications: ProblemIndications) => {
         this.indications = indications;
@@ -34,6 +34,7 @@ export class IndicationsPageComponent implements OnInit {
       }
     );
   }
+
   back(): void {
     this.router.navigate([this.routeCase, this.problemId]);
   }

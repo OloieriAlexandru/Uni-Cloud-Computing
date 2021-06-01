@@ -1,9 +1,12 @@
-<div class="submission-card-wrapper" *ngIf="submission" (click)="onSubmissionSelected()">
+<div class="submission-card-wrapper" *ngIf="submission" (click)="onSubmissionSelected()" [class.dark-mode]="darkMode">
   <div class="submission-id">
     {{submission.id}}
   </div>
-  <div class="submission-problem-name">
+  <div class="submission-problem-name" (click)="onProblemClicked()">
     {{submission.problemName}}
+  </div>
+  <div class="submission-user" (click)="onUserClicked()">
+    {{submission.user}}
   </div>
   <div class="submission-lang">
     {{submission.lang}}

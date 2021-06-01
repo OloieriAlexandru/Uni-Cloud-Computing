@@ -6,4 +6,6 @@ export class EvaluationGetAll {
   problemName: string;
   verdict: string;
   id: string;
+  user: string;
+  userEmail: string;
 }

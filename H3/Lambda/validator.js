@@ -43,7 +43,7 @@ class Validator {
                 'message': 'Invalid Token string!'
             }));
         }
-        if (decodedJwt == null || !decodedJwt.hasOwnProperty('email')) {
+        if (decodedJwt == null || !decodedJwt.hasOwnProperty('email') || !decodedJwt.hasOwnProperty('username')) {
             return res.status(400).end(JSON.stringify({
                 'message': 'Invalid Token object!'
             }));

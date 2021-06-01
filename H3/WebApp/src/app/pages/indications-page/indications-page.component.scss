@@ -85,14 +85,9 @@ header {
 .buttons-container {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 80px;
-  margin-top: 16px;
   justify-content: center;
   align-content: center;
 
-  button {
-    margin: 10px 10px;
-    max-height: 50%;
-  }
+  width: 100%;
+  margin-top: 16px;
 }

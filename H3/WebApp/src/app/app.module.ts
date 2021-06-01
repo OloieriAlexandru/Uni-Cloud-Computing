@@ -52,6 +52,8 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { SubscriptionPrices } from './models/SubscriptionPrices';
 
 import { environment } from 'src/environments/environment';
+import { SubmissionsTableHeaderComponent } from './components/submissions-table-header/submissions-table-header.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -77,6 +79,8 @@ export function tokenFunc() {
     PremiumPageComponent,
     PaymentPageComponent,
     UserProfileComponent,
+    SubmissionsTableHeaderComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,10 @@ export class AuthService implements OnInit {
 
   // tslint:disable-next-line: contextual-lifecycle
   ngOnInit(): void {
+    this.initRole();
+  }
+
+  public initRole() {
     const token = localStorage.getItem('access_token');
     if (token !== undefined) {
       this.setRole(token).subscribe();

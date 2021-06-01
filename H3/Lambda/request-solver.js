@@ -52,7 +52,8 @@ async function solveRequest(req, res, validator, problemRepository, evaluationRe
         'lang': req.body.programmingLanguage,
         'submissionDateTime': Utils.getCurrentDate(),
         'status': 'In Queue',
-        'user': jwt.email
+        'user': jwt.username,
+        'userEmail': jwt.email
     }
     let evaluationId = await evaluationRepository.create(evaluationObj);
 

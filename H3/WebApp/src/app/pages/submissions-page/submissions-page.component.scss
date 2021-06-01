@@ -13,63 +13,10 @@
   background-image: url("/assets/background.svg");
 }
 
-.submissions-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+app-submissions-table-header {
+  width: 100%;
 
-  font-size: 40px;
-  font-weight: 500;
-
-  color: #EFEFEF;
-}
-
-.table-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-
-  width: 92%;
-  padding: 20px 0;
-
-  margin-top: 32px;
-
-  font-size: 20px;
-  font-weight: 600;
-
-  background-color: rgba($color: #EFEFEF, $alpha: 0.9);
-
-  .submission-id-header {
-    width: 20%;
-    text-align: center;
-  }
-
-  .submission-problem-name-header {
-    width: 20%;
-    text-align: center;
-  }
-
-  .submission-lang-header {
-    width: 10%;
-    text-align: center;
-  }
-
-  .submission-date-header {
-    width: 20%;
-    text-align: center;
-  }
-
-  .submission-verdict-header {
-    width: 10%;
-    text-align: center;
-  }
-
-  .submission-status-header {
-    width: 20%;
-    text-align: center;
-  }
+  margin-top: 20px;
 }
 
 app-submission-card {

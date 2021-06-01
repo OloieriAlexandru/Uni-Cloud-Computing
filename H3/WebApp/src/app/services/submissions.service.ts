@@ -49,7 +49,7 @@ export class SubmissionsService {
   ): Observable<EvaluationGetAll[]> {
     return this.baseService.get<EvaluationGetAll[]>(
       this.EVALUATIONS_API_URL,
-      'evaluations/users/' + email + '?page=' + page + '?pageSize=' + pageSize
+      '/evaluations/users/' + email + '?page=' + page + '&pageSize=' + pageSize
     );
   }
 }

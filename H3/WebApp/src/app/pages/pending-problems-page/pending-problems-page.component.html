@@ -1,7 +1,11 @@
-<div class="problems-page-wrapper" *ngIf="problems">
+<div class="problems-page-wrapper" *ngIf="problems; else noProblems">
   <header>
     Awaiting approval
   </header>
   <app-problem-card *ngFor="let problem of problems" [problem]="problem" (problemSelected)="enterApprovingPage($event)">
   </app-problem-card>
 </div>
+
+<ng-template #noProblems>
+  <app-loader></app-loader>
+</ng-template>

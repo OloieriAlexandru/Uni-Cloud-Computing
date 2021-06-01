@@ -1,1 +1,50 @@
-<p>user-profile works!</p>
+<div class="user-profile-wrapper" *ngIf="userProfile; else noUserProfileObj">
+  <div class="user-profile-info">
+
+    <div class="photo-part">
+      <img src="https://i.stack.imgur.com/dr5qp.jpg">
+    </div>
+
+    <div class="info-part">
+
+      <div class="info-part-username">
+        {{userProfile.username}}
+      </div>
+
+      <div class="info-part-item">
+        <div class="info-part-item-header">
+          email
+        </div>
+        <div class="info-part-item-value">
+          {{userProfile.email}}
+        </div>
+      </div>
+
+      <div class="info-part-item">
+        <div class="info-part-item-header">
+          type
+        </div>
+        <div class="info-part-item-value">
+          {{userProfile.role}}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <hr class="user-profile-hr">
+
+  <app-submissions-table-header [headerStr]="getSubmissionsTableHeader()" [darkMode]="true"
+    *ngIf="userProfile.evaluations">
+  </app-submissions-table-header>
+
+  <div class="user-profile-submissions" *ngIf="userProfile.evaluations; else noUserProfileObj">
+    <app-submission-card *ngFor="let submission of userProfile.evaluations" [submission]="submission" [darkMode]="true"
+      (submissionSelected)="enterSubmissionDetailsPage($event)"></app-submission-card>
+  </div>
+</div>
+
+<ng-template #noUserProfileObj>
+  <app-loader></app-loader>
+</ng-template>

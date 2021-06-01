@@ -1,0 +1,85 @@
+.submissions-table-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: auto;
+}
+
+.submissions-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 40px;
+  font-weight: 500;
+
+  color: #EFEFEF;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 92%;
+  padding: 20px 0;
+
+  margin-top: 32px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  background-color: rgba($color: #EFEFEF, $alpha: 0.9);
+
+  .submission-id-header {
+    width: 14%;
+    text-align: center;
+  }
+
+  .submission-problem-name-header {
+    width: 18%;
+    text-align: center;
+  }
+
+  .submission-user-header {
+    width: 14%;
+    text-align: center;
+  }
+
+  .submission-lang-header {
+    width: 8%;
+    text-align: center;
+  }
+
+  .submission-date-header {
+    width: 18%;
+    text-align: center;
+  }
+
+  .submission-verdict-header {
+    width: 10%;
+    text-align: center;
+  }
+
+  .submission-status-header {
+    width: 18%;
+    text-align: center;
+  }
+}
+
+.submissions-table-header-wrapper {
+  &.dark-mode {
+    .submissions-header {
+      color: #000;
+    }
+
+    .table-header {
+      background-color: rgba($color: #3477EB, $alpha: 0.75);
+    }
+  }
+}

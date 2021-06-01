@@ -9,4 +9,6 @@ export class EvaluationGetById {
   verdict: string;
   id: string;
   testCasesStatus?: TestCaseInfo[];
+  user: string;
+  userEmail: string;
 }
