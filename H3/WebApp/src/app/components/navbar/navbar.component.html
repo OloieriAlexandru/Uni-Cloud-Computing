@@ -15,6 +15,9 @@
     <button *ngIf="canViewSubmissions()" mat-raised-button color="primary" routerLink="/pending">
       Problems Submissions
     </button>
+    <div class="image-button" *ngIf="tokenInfo" (click)="viewUserProfile()">
+      <img src="https://lh3.googleusercontent.com/-ZMAf-IAxX4U/AAAAAAAAAAI/AAAAAAAAAAA/YwHQDEzWweg/W96-H96/photo.jpg">
+    </div>
     <button class="button waves-effect grey darken-5 btn" (click)="logout()">
       <i class="material-icons">
         exit_to_app

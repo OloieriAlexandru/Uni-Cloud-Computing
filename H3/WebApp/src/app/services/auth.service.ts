@@ -10,6 +10,7 @@ import { UserCredentials } from '../models/UserCredentials';
 import { UserRoles } from '../models/UserRoles';
 
 import { environment } from 'src/environments/environment';
+import { JwtRefreshTokenInfo } from '../models/JwtRefreshTokenInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -68,6 +69,16 @@ export class AuthService implements OnInit {
         throw new Error(err.error.message);
       })
     );
+  }
+
+  public getRefreshTokenInfo(): JwtRefreshTokenInfo {
+    const token: string = localStorage.getItem('refresh_token');
+
+    if (!token) {
+      return null;
+    }
+
+    return this.jwtHelper.decodeToken<JwtRefreshTokenInfo>(token);
   }
 
   public logout() {

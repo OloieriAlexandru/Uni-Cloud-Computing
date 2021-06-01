@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import * as M from 'materialize-css/dist/js/materialize';
 
@@ -46,9 +47,11 @@ import { SolutionPageComponent } from './pages/solution-page/solution-page.compo
 import { IndicationsPageComponent } from './pages/indications-page/indications-page.component';
 import { PremiumPageComponent } from './pages/premium-page/premium-page.component';
 import { PaymentPageComponent } from './components/payment-popup/payment.component';
-import { environment } from 'src/environments/environment';
-import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+
 import { SubscriptionPrices } from './models/SubscriptionPrices';
+
+import { environment } from 'src/environments/environment';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -73,6 +76,7 @@ export function tokenFunc() {
     IndicationsPageComponent,
     PremiumPageComponent,
     PaymentPageComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

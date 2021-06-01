@@ -1,26 +1,38 @@
 import { Component } from '@angular/core';
-import { UserRoles } from 'src/app/models/UserRoles';
+
 import { AuthService } from 'src/app/services/auth.service';
+
+import { UserRoles } from 'src/app/models/UserRoles';
+import { JwtRefreshTokenInfo } from 'src/app/models/JwtRefreshTokenInfo';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent{
+export class NavbarComponent {
   private role;
-  private roleObservable;
-  constructor(private authService: AuthService) {
-    this.roleObservable = this.authService
-      .getRoleObservable()
-      .subscribe((newRole) => {
-        this.role = newRole;
-      });
+
+  public tokenInfo: JwtRefreshTokenInfo = null;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.getRoleObservable().subscribe((newRole) => {
+      this.role = newRole;
+    });
+
+    this.tokenInfo = this.authService.getRefreshTokenInfo();
   }
+
   public logout() {
     this.authService.logout();
   }
+
   public canViewSubmissions() {
     return [UserRoles.MODERATOR, UserRoles.ADMIN].indexOf(this.role) !== -1;
+  }
+
+  public viewUserProfile() {
+    this.router.navigate(['profile', this.tokenInfo.email]);
   }
 }

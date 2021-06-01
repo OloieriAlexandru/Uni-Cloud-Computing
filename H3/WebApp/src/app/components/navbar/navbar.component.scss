@@ -39,7 +39,23 @@
   height: 100%;
   width: calc(100% - 320px);
 
-  button {
+  button,
+  .image-button {
     margin-right: 8px;
+  }
+}
+
+.image-button {
+  height: 72%;
+
+  img {
+    height: 100%;
+    width: auto;
+
+    border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

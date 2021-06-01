@@ -41,4 +41,15 @@ export class SubmissionsService {
       evaluationSubmission
     );
   }
+
+  public getForUser(
+    email: string,
+    page: string,
+    pageSize: string
+  ): Observable<EvaluationGetAll[]> {
+    return this.baseService.get<EvaluationGetAll[]>(
+      this.EVALUATIONS_API_URL,
+      'evaluations/users/' + email + '?page=' + page + '?pageSize=' + pageSize
+    );
+  }
 }

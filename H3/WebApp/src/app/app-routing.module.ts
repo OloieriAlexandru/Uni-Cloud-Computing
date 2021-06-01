@@ -17,9 +17,10 @@ import { SolutionPageComponent } from './pages/solution-page/solution-page.compo
 import { SubmissionPageComponent } from './pages/submission-page/submission-page.component';
 import { SubmissionsPageComponent } from './pages/submissions-page/submissions-page.component';
 import { SubmitPageComponent } from './pages/submit-page/submit-page.component';
+import { PaymentPageComponent } from './components/payment-popup/payment.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 import { UserRoles } from './models/UserRoles';
-import { PaymentPageComponent } from './components/payment-popup/payment.component';
 
 const routes: Routes = [
   {
@@ -87,11 +88,15 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
+    path: 'profile/:userEmail',
+    component: UserProfileComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'auth',
     component: AuthComponent,
     canActivate: [AuthNotGuardService],
   },
-
   {
     path: '',
     redirectTo: '/problems',
