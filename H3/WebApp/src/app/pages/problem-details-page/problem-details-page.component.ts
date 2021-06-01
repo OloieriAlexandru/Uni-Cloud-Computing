@@ -17,6 +17,7 @@ export class ProblemDetailsPageComponent implements OnInit {
   public problemId: string = null;
   private role: UserRoles;
   private roleObservable;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

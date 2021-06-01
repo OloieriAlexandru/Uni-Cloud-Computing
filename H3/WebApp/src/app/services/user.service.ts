@@ -16,6 +16,6 @@ export class UserService {
   constructor(private baseService: GenericService) {}
 
   public createUser(user: UserNew): Observable<UserNew> {
-    return this.baseService.post<UserNew>(this.URL, 'register', user);
+    return this.baseService.post<UserNew>(this.URL, '/register', user);
   }
 }

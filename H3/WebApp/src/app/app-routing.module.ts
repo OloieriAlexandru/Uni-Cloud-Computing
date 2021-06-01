@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserRoles } from './models/UserRoles';
+
+import { AuthGuardService } from './services/auth-guard.service';
+import { AuthNotGuardService } from './services/auth-not-guard.service';
+
 import { AuthComponent } from './pages/auth/auth.component';
 
 import { IndicationsPageComponent } from './pages/indications-page/indications-page.component';
@@ -14,8 +17,8 @@ import { SolutionPageComponent } from './pages/solution-page/solution-page.compo
 import { SubmissionPageComponent } from './pages/submission-page/submission-page.component';
 import { SubmissionsPageComponent } from './pages/submissions-page/submissions-page.component';
 import { SubmitPageComponent } from './pages/submit-page/submit-page.component';
-import { AuthGuardService } from './services/auth-guard.service';
-import { AuthNotGuardService } from './services/auth-not-guard.service';
+
+import { UserRoles } from './models/UserRoles';
 
 const routes: Routes = [
   {
@@ -27,7 +30,7 @@ const routes: Routes = [
     path: 'pending',
     component: PendingProblemsPageComponent,
     canActivate: [AuthGuardService],
-    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR] }
+    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR] },
   },
   {
     path: 'upload',
@@ -43,7 +46,7 @@ const routes: Routes = [
     path: 'pending/:id',
     component: PendingProblemDetailsPageComponent,
     canActivate: [AuthGuardService],
-    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR] }
+    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR] },
   },
   {
     path: 'problems/:id/submit',
@@ -54,13 +57,13 @@ const routes: Routes = [
     path: ':case/:id/solution',
     component: SolutionPageComponent,
     canActivate: [AuthGuardService],
-    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR, UserRoles.PREMIUM] }
+    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR, UserRoles.PREMIUM] },
   },
   {
     path: ':case/:id/indications',
     component: IndicationsPageComponent,
     canActivate: [AuthGuardService],
-    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR, UserRoles.PREMIUM] }
+    data: { roles: [UserRoles.ADMIN, UserRoles.MODERATOR, UserRoles.PREMIUM] },
   },
   {
     path: 'submissions',
@@ -91,11 +94,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: '/problems',
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
