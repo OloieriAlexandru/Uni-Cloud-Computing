@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({
 
 app.get('/', (req, res) => {
     res.statusCode = 200;
-    res.end("Pump IT Up Payments and Subscriptions microservive");
+    res.end("Pump IT Up Payments and Subscriptions microservice");
 });
 
 const PORT = process.env.PORT || 3334;

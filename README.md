@@ -34,6 +34,10 @@ http://20.82.42.242:3333/
 
 https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com/
 
-### Cloud Functions
+### Payments and Subscriptions Microservice
+
+https://payments-subscriptions-microservice-iwb3smccda-nw.a.run.app/
+
+### Evaluation Submitter Cloud Functions
 
 https://europe-west1-pump-it-up-314917.cloudfunctions.net/evaluation-submitter-function/
