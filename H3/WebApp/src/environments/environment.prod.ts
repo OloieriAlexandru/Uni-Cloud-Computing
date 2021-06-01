@@ -6,5 +6,7 @@ export const environment = {
     'https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com',
   problemsURL:
     'https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com',
-  authURL: 'https://cloud-auth.azurewebsites.net',
+  authURL: 'https://cloud-auth-teddy.azurewebsites.net',
+  stripePublicKey:
+    'pk_test_51IxXTwBMiXaQhLWLoMCXZhyE9UrrPCWBToU0vwmxpUHbgmADsIc1Ow4wQkwVdfDIG7XDjTn4xGcFECC6stNiHF6700jvtLnKJb',
 };
