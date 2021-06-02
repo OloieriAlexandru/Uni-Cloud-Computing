@@ -1,0 +1,11 @@
+{
+  "name": "subscriptions-updater-function",
+  "version": "1.0.0",
+  "description": "the code for a Cloud Function which invalidates the expired subscriptions",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oloieri Alexandru & Irimia Roxana",
+  "license": "ISC"
+}

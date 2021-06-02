@@ -1,19 +1,12 @@
 <div class="payment-page-wrapper">
-  <form (ngSubmit)="createStripeToken()"
-    class="checkout">
+  <form (ngSubmit)="createStripeToken()" class="checkout">
     <label for="card-info">Card Info</label>
     <div id="form-field">
-      <div id="card-info"
-        #cardInfo></div>
-      <button mat-raised-button
-        color="primary"
-        id="submit-button"
-        type="submit">
+      <div id="card-info" #cardInfo></div>
+      <button mat-raised-button color="primary" id="submit-button" type="submit">
         Pay ${{totalAmount}}
       </button>
-      <mat-error id="card-errors"
-        role="alert"
-        *ngIf="cardError">
+      <mat-error id="card-errors" role="alert" *ngIf="cardError">
         <mat-icon style="color: #f44336">cancel</mat-icon>
         &nbsp;{{ cardError }}
       </mat-error>

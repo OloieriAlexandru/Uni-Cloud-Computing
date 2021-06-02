@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { StripeModule } from "stripe-angular"
+import { StripeModule } from 'stripe-angular';
 import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import * as M from 'materialize-css/dist/js/materialize';
 
@@ -29,6 +29,7 @@ import { SubmissionsService } from './services/submissions.service';
 import { AuthNotGuardService } from './services/auth-not-guard.service';
 import { JwtHttpInterceptorService } from './services/jwt-http-interceptor.service';
 import { UserService } from './services/user.service';
+import { PaymentService } from './services/payment.service';
 
 import { AppComponent } from './app.component';
 import { ProblemsPageComponent } from './pages/problems-page/problems-page.component';
@@ -48,13 +49,10 @@ import { IndicationsPageComponent } from './pages/indications-page/indications-p
 import { PremiumPageComponent } from './pages/premium-page/premium-page.component';
 import { PaymentPageComponent } from './components/payment-popup/payment.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-
-import { SubscriptionPrices } from './models/SubscriptionPrices';
-
-import { environment } from 'src/environments/environment';
 import { SubmissionsTableHeaderComponent } from './components/submissions-table-header/submissions-table-header.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import { PaymentService } from './services/payment.service';
+
+import { environment } from 'src/environments/environment';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -82,7 +80,6 @@ export function tokenFunc() {
     UserProfileComponent,
     SubmissionsTableHeaderComponent,
     LoaderComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -126,8 +123,7 @@ export function tokenFunc() {
     JwtHttpInterceptorService,
     UserService,
     PaymentService,
-
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

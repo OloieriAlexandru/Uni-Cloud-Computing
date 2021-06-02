@@ -9,22 +9,24 @@
     min-height: 30vh;
 
     #form-field {
-      padding: 10px 0px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       align-content: center;
       justify-content: space-between;
-      #info-card{
+
+      padding: 10px 0 0;
+
+      #info-card {
         display: flex;
         flex-direction: column;
         align-content: flex-start;
       }
-      button{
+
+      button {
         max-width: 50%;
         align-self: center;
       }
     }
-
   }
 }

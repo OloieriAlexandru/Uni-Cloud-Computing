@@ -22,7 +22,6 @@
 
   background-color: rgba($color: #eee, $alpha: 0.75);
 
-  border-radius: 15px;
   -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
@@ -62,7 +61,19 @@
       margin-right: 16px;
     }
 
-    font-size: 20px;
+    font-size: 16px;
+    width: 60%;
+    min-width: 200px;
+    margin-top: 8px;
+
+    label {
+      width: 28%;
+    }
+
+    select {
+      width: 72%;
+      height: auto;
+    }
   }
 
   .text-area-wrapper {
@@ -72,7 +83,7 @@
     justify-content: center;
 
     width: 80%;
-    margin-top: 12px;
+    margin-top: 4px;
 
     textarea {
       height: 92%;
@@ -82,7 +93,6 @@
   }
 
   button {
-    margin-top: 12px;
     margin-bottom: 8px;
     font-size: 22px;
   }
