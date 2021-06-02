@@ -5,6 +5,7 @@
   align-content: center;
   justify-content: center;
   background-image: url("/assets/auth-page-blue.svg");
+
   .cards-container {
     align-self: center;
     max-width: 80%;
@@ -20,32 +21,38 @@
       min-height: 350px;
       display: flex;
       flex-flow: column;
-      mat-card-header{
+
+      mat-card-header {
         padding: 5% 0;
         border-radius: 2px;
         box-shadow: 0px 10px 13px -7px #0000003a, 5px 5px 15px 5px rgba(0, 0, 0, 0);
       }
+
       mat-card-actions,
       mat-card-content {
         margin: 0px 16px;
       }
+
       mat-card-content {
         padding-top: 5%;
         flex-grow: 1;
       }
-      button{
+
+      button {
         background-color: #00A1FF;
       }
     }
   }
 }
-.monthly-card{
-  mat-card-header{
+
+.monthly-card {
+  mat-card-header {
     background-color: #00b3d285;
   }
 }
-.yearly-card{
-  mat-card-header{
+
+.yearly-card {
+  mat-card-header {
     background-color: #00c4937e;
   }
 }
