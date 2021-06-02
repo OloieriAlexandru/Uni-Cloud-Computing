@@ -4,7 +4,7 @@
   display: flex;
   align-content: center;
   justify-content: center;
-  background-image: url("/assets/auth-page-blue.svg");
+  background-image: url("/assets/background.svg");
 
   .cards-container {
     align-self: center;
@@ -21,6 +21,9 @@
       min-height: 350px;
       display: flex;
       flex-flow: column;
+      -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+      box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
 
       mat-card-header {
         padding: 5% 0;

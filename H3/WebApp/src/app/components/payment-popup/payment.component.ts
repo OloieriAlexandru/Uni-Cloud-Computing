@@ -2,7 +2,6 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnDest
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { JwtRefreshTokenInfo } from "src/app/models/JwtRefreshTokenInfo";
-import { PaymentData } from "src/app/models/PaymentData";
 import { AuthService } from "src/app/services/auth.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { environment } from "src/environments/environment";
@@ -73,10 +72,11 @@ export class PaymentPageComponent implements OnDestroy, AfterViewInit {
     this.paymentService.processPayment({ email: userTokenInfo.email, amount: this.totalAmount, stripeToken: token.id }).subscribe(
       (res) => {
         this.superM.open(
-          '🎉🎉 Payment successful ✅',
+          '🎉🎉 Payment successful, you will be redirected to the login page ✅',
           'Thanks for supporting us!',
           { duration: 5000 }
         );
+        this.authService.logout();
       },
       (err) => {
         console.log(err)

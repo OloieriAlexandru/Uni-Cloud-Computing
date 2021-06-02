@@ -1,3 +1,10 @@
+app-navbar {
+
+  -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+}
+
 .navbar-wrapper {
   display: flex;
   flex-direction: row;
@@ -7,9 +14,7 @@
   height: 68px;
   width: 100%;
 
-  -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
-  box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  z-index: 2;
 }
 
 .title-wrapper {

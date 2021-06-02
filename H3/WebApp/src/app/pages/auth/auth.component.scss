@@ -19,7 +19,7 @@ $register-widget-color: #eceff1;
 
   width: 1000px;
   height: 563px;
-
+  border-radius: 4px;
   background-image: url("/assets/auth-page-white.svg");
   -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
@@ -63,6 +63,7 @@ $register-widget-color: #eceff1;
   hr {
     color: #fff;
   }
+  border-radius: 4px;
 }
 
 .login-widget {

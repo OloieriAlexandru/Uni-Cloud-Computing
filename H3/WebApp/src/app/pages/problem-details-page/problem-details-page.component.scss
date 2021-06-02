@@ -15,22 +15,22 @@
 header {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   height: 40px;
-  width: 60%;
+  width: 72%;
 
   margin-top: 24px;
 
   font-size: 24px;
 
   .id-container {
-    background-color: white;
+    background-color: #fefefe;
     color: #000;
 
     padding: 12px;
-    border-radius: 15px;
+    border-radius: 4px;
   }
 
   .title-container {
@@ -44,7 +44,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
+  border-radius: 4px;
   width: 72%;
   height: auto;
   margin-top: 32px;
@@ -53,16 +53,15 @@ header {
 
   background-color: rgba($color: #eee, $alpha: 0.75);
 
-  border-radius: 15px;
-  -webkit-box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
-  -moz-box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
-  box-shadow: 6px 4px 18px 1px rgba(255, 255, 255, 0.75);
+  -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
 }
 
 .problem-segment {
   background-color: #fefefe;
   border: 1px solid blue;
-  border-radius: 15px;
+  border-radius: 4px;
   padding: 8px;
 
   margin-top: 12px;
