@@ -81,6 +81,7 @@ const routes: Routes = [
     path: 'premium',
     component: PremiumPageComponent,
     canActivate: [AuthGuardService],
+    data: { roles: [UserRoles.BASIC] }
   },
   {
     path: 'premium/payment/:subscription',
@@ -112,4 +113,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
