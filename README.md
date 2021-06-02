@@ -10,7 +10,7 @@
 
 ### Web App
 
-https://purple-mud-050b2b103.azurestaticapps.net/
+https://white-coast-0b7589103.azurestaticapps.net/
 
 ### Authentication Microservice
 
