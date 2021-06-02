@@ -57,7 +57,7 @@ class PaymentsService {
             status: 'active'
         };
         let subscriptionCreateResult = await this.subscriptionsRepository.create(subscriptionObj);
-        if (subscriptionCreateResult) {
+        if (!subscriptionCreateResult) {
             return res.status(500).end(Utils.buildBody('Error while updating the subscription information! Try again later!'));
         }
 
