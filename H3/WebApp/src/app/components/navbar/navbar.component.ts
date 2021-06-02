@@ -20,9 +20,8 @@ export class NavbarComponent {
     this.authService.initRole();
     this.authService.getRoleObservable().subscribe((newRole) => {
       this.role = newRole;
-      console.log(this.role);
+      this.tokenInfo = this.authService.getRefreshTokenInfo();
     });
-
     this.tokenInfo = this.authService.getRefreshTokenInfo();
   }
 
@@ -32,6 +31,9 @@ export class NavbarComponent {
 
   public canViewSubmissions() {
     return [UserRoles.MODERATOR, UserRoles.ADMIN].indexOf(this.role) !== -1;
+  }
+  public canGetPremium() {
+    return this.role==UserRoles.BASIC;
   }
 
   public viewUserProfile() {

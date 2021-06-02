@@ -54,6 +54,7 @@ import { SubscriptionPrices } from './models/SubscriptionPrices';
 import { environment } from 'src/environments/environment';
 import { SubmissionsTableHeaderComponent } from './components/submissions-table-header/submissions-table-header.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { PaymentService } from './services/payment.service';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -81,6 +82,7 @@ export function tokenFunc() {
     UserProfileComponent,
     SubmissionsTableHeaderComponent,
     LoaderComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -123,6 +125,7 @@ export function tokenFunc() {
     AuthNotGuardService,
     JwtHttpInterceptorService,
     UserService,
+    PaymentService,
 
   ],
   bootstrap: [AppComponent],

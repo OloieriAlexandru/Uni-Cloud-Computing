@@ -15,8 +15,11 @@
     <button *ngIf="canViewSubmissions()" mat-raised-button color="primary" routerLink="/pending">
       Problems Submissions
     </button>
+    <button *ngIf="canGetPremium()" mat-raised-button color="primary" routerLink="/premium">
+      Get Premium
+    </button>
     <div class="image-button" *ngIf="tokenInfo" (click)="viewUserProfile()">
-      <img src="https://lh3.googleusercontent.com/-ZMAf-IAxX4U/AAAAAAAAAAI/AAAAAAAAAAA/YwHQDEzWweg/W96-H96/photo.jpg">
+      <img src="https://i.stack.imgur.com/dr5qp.jpg">
     </div>
     <button class="button waves-effect grey darken-5 btn" (click)="logout()">
       <i class="material-icons">
