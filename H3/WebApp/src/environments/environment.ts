@@ -9,7 +9,8 @@ export const environment = {
   problemsURL:
     'https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com',
   authURL: 'https://cloud-auth-teddy.azurewebsites.net',
-  paymentsURL: 'http://localhost:3334',
+  paymentsURL:
+    'https://payments-subscriptions-microservice-iwb3smccda-nw.a.run.app',
   stripePublicKey:
     'pk_test_51IxXTwBMiXaQhLWLoMCXZhyE9UrrPCWBToU0vwmxpUHbgmADsIc1Ow4wQkwVdfDIG7XDjTn4xGcFECC6stNiHF6700jvtLnKJb',
 };
