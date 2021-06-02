@@ -2,7 +2,7 @@ const {
     Datastore
 } = require('@google-cloud/datastore');
 
-GPC_DATASTORE_SUBSCRIPTIONS_KIND = "Evaluation";
+GPC_DATASTORE_SUBSCRIPTIONS_KIND = "Subscription";
 
 class SubscriptionsRepository {
     constructor() {

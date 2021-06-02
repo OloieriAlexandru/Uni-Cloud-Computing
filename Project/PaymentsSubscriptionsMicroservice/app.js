@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,12 +9,17 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(morgan(':method :url :status'));
+app.use(cors());
 
 const server = require('./server');
 
+const CONFIG = require('./config');
+
 var subscriptionsRepository = new server.SubscriptionsRepository();
 
-var paymentsService = new server.PaymentsService(subscriptionsRepository);
+var usersService = new server.UsersService(CONFIG);
+
+var paymentsService = new server.PaymentsService(subscriptionsRepository, usersService, CONFIG);
 var paymentsController = new server.PaymentsController(paymentsService)
 
 app.get('/', (req, res) => {

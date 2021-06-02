@@ -7,8 +7,6 @@ class PaymentsController {
     }
 
     charge = async (req, res) => {
-        Utils.setCorsOrigin(req, res);
-
         let validator = new Validator();
         let bodyValidation = validator.validateChargeBody(req, res);
         if (bodyValidation) {
@@ -25,7 +23,7 @@ class PaymentsController {
             'stripeToken': req.body.stripeToken
         };
         let token = Utils.extractJwt(req, res);
-        let chargeResult = await this.paymentsService.charge(chargeObj, token);
+        let chargeResult = await this.paymentsService.charge(chargeObj, token, req, res);
         if (chargeResult) {
             return chargeResult;
         }
