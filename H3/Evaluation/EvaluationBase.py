@@ -101,7 +101,7 @@ class EvaluationBase:
     def execute(self, test_case_obj_obj):
         self.command_parts = None
         run_directory = self.args.file_utils.get_work_directory()
-        self.execute_lang_init(test_case_obj_obj)
+        self.execute_lang_init()
         if self.command_parts is None:
             raise NotImplementedError(
                 "execute_lang_init should set the self.command_parts object reference!")
