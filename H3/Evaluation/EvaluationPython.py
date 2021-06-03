@@ -21,5 +21,6 @@ class EvaluationPython(EvaluationBase):
 
     def execute_lang_init(self,):
         self.command_parts = [
+            'python3',
             '.' + self.args.file_utils.get_delimiter() + self.args.evaluation_id + '.py'
         ]
