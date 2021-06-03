@@ -136,7 +136,6 @@ class EvaluationBase:
 
     def finish_evaluation(self):
         self.args.evaluation_obj['status'] = 'Completed'
-        print(self.args.evaluation_obj)
         self.args.datastore_client.put(self.args.evaluation_obj)
         return ("The evaluation was completed successfully!", 200)
 
