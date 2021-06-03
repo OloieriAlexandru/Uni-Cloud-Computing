@@ -2,10 +2,21 @@
   "name": "subscriptions-updater-function",
   "version": "1.0.0",
   "description": "the code for a Cloud Function which invalidates the expired subscriptions",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "Oloieri Alexandru & Irimia Roxana",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/datastore": "^6.4.0",
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
