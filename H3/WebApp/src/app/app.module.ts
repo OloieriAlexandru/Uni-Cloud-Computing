@@ -53,6 +53,7 @@ import { SubmissionsTableHeaderComponent } from './components/submissions-table-
 import { LoaderComponent } from './components/loader/loader.component';
 
 import { environment } from 'src/environments/environment';
+import { SnackbarComponent } from './components/snack-bar/snack-bar.component';
 
 export function tokenFunc() {
   return localStorage.getItem('access_token');
@@ -80,6 +81,7 @@ export function tokenFunc() {
     UserProfileComponent,
     SubmissionsTableHeaderComponent,
     LoaderComponent,
+    SnackbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -124,6 +126,6 @@ export function tokenFunc() {
     UserService,
     PaymentService,
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

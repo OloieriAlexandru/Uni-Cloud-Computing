@@ -10,7 +10,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es5",
+    "target": "ES2019",
     "lib": [
       "es2018",
       "dom"
@@ -23,6 +23,6 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
-    "enableIvy": false
+    "enableIvy": true
   }
 }

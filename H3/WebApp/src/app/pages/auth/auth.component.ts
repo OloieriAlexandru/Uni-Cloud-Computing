@@ -4,6 +4,8 @@ import { UserCredentials } from 'src/app/models/UserCredentials';
 import { UserNew } from 'src/app/models/UserNew';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-auth',
@@ -19,31 +21,41 @@ export class AuthComponent {
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private readonly superM: MatSnackBar,
+  ) { }
 
   public register() {
     this.userService.createUser(this.newUser).subscribe(
       (res) => {
         this.newUser = new UserNew();
-        this.M.toast({
-          html: 'User created successfully!',
-          classes: 'green darken-3',
-        });
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000, data:
+              { error: false, message: 'Account successfully created!' },
+            panelClass: 'style-success'
+          }
+        );
       },
       (err) => {
         if (err && err.error && err.error.errors) {
-          console.log(err.error);
-          this.M.toast({
-            html: err.error.errors[0].msg,
-            classes: 'red darken-3',
-          });
-        } else {
-          this.M.toast({
-            html: 'Error!',
-            classes: 'red darken-3',
-          });
+          console.log(err.error.errors);
+          this.superM.openFromComponent(SnackbarComponent,
+            {
+              duration: 5000, data:
+                { error: true, message: err.error.errors[0].msg },
+              panelClass: 'style-error'
+            }
+          );
+          return;
         }
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 50000, data:
+              { error: true, message: err.error ?? 'On no, something went wrong!' },
+            panelClass: 'style-error'
+          }
+        );
       }
     );
   }
@@ -51,11 +63,13 @@ export class AuthComponent {
   public signIn() {
     this.authService.login(this.userCredentials).subscribe(
       (res) => {
-        this.M.toast({
-          html: 'Logging in!',
-          classes: 'green darken-3',
-          displayLength: 2000,
-        });
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000, data:
+              { error: false, message: 'Logging in, get ready!' },
+            panelClass: 'style-success'
+          }
+        );
         setTimeout(() => {
           let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
           this.router.navigate([returnUrl || '/app']);
@@ -63,15 +77,21 @@ export class AuthComponent {
       },
       (err) => {
         if (err && err.error && err.error.errors) {
-          this.M.toast({
-            html: err.error.errors[0].msg,
-            classes: 'red darken-3',
-          });
+          this.superM.openFromComponent(SnackbarComponent,
+            {
+              duration: 5000, data:
+                { error: true, message: err.error.errors[0].msg },
+              panelClass: 'style-error'
+            }
+          );
         } else {
-          this.M.toast({
-            html: 'Error!',
-            classes: 'red darken-3',
-          });
+          this.superM.openFromComponent(SnackbarComponent,
+            {
+              duration: 5000, data:
+                { error: true, message: 'On no, something went wrong!' },
+              panelClass: 'style-error'
+            }
+          );
         }
       }
     );

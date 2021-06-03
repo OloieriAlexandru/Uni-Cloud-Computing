@@ -6,6 +6,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { environment } from "src/environments/environment";
 import { StripeScriptTag } from "stripe-angular";
+import { SnackbarComponent } from "../snack-bar/snack-bar.component";
 
 //followed the tutorial here https://betterprogramming.pub/payments-simplified-stripe-angular-express-4a88bf69f82e
 @Component({
@@ -71,16 +72,24 @@ export class PaymentPageComponent implements OnDestroy, AfterViewInit {
     if (userTokenInfo === null) this.onError(new Error("Cannot get user info"));
     this.paymentService.processPayment({ email: userTokenInfo.email, amount: this.totalAmount, stripeToken: token.id }).subscribe(
       (res) => {
-        this.superM.open(
-          '🎉🎉 Payment successful, you will be redirected to the login page ✅',
-          'Thanks for supporting us!',
-          { duration: 5000 }
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000, data:
+              { error: false, message: 'Payment successful, you will be redirected to the login page' },
+            panelClass: ['style-success']
+          }
         );
+
         this.authService.logout();
       },
       (err) => {
-        console.log(err)
-        this.superM.open('Payment failed', 'Oh no! 💁‍♀️', { duration: 5000 });
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000, data:
+              { error: true, message: 'Oh no! Something went wrong' },
+            panelClass: ['style-error']
+          }
+        );
       }
     );
   }

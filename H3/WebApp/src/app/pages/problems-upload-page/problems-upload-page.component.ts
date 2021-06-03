@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ProblemsService } from 'src/app/services/problems.service';
 
 import { ProblemNew } from 'src/app/models/ProblemNew';
+import { SnackbarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-problems-upload-page',
@@ -19,7 +20,7 @@ export class ProblemsUploadPageComponent {
     @Inject('M') private M: any,
     private problemService: ProblemsService,
     private router: Router
-  ) {}
+  ) { }
 
   handleInFiles(files: FileList) {
     let i;
@@ -36,6 +37,7 @@ export class ProblemsUploadPageComponent {
   }
 
   public upload() {
+
     Object.keys(this.newProblem).forEach((key) =>
       this.formData.append(key, this.newProblem[key])
     );
@@ -43,14 +45,32 @@ export class ProblemsUploadPageComponent {
       (res) => {
         this.newProblem = new ProblemNew();
         this.formData = new FormData();
-        this.superM.open(
-          '🎉🎉 Problem uploaded successfully! ✅',
-          'You beast!',
-          { duration: 5000 }
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000, data: { error: false, message: 'Problem uploaded successfully!' },
+            panelClass: ['style-success']
+          }
         );
       },
       (err) => {
-        this.superM.open(err.error, 'You beast! 💁‍♀️', { duration: 5000 });
+        if (err && err.error && err.error.error) {
+          console.log(err.error);
+          this.superM.openFromComponent(SnackbarComponent,
+            {
+              duration: 5000, data:
+                { error: true, message: err.error.error },
+              panelClass: 'style-error'
+            }
+          );
+          return;
+        }
+        console.log(err.error)
+        this.superM.openFromComponent(SnackbarComponent,
+          {
+            duration: 5000,
+            data: { error: true, message: "Something went wrong" },
+            panelClass: ['style-error']
+          });
       }
     );
   }

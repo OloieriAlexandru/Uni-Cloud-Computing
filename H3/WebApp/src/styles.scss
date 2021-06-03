@@ -215,3 +215,14 @@ mat-icon.wrong svg {
 ::-webkit-scrollbar-thumb:hover {
   background: blueviolet;
 }
+.style-error {
+  background:red;
+}
+.style-success{
+  background: green;
+}
+.style-error, .style-success{
+  -webkit-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
+}
