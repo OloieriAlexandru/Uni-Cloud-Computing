@@ -1,3 +1,5 @@
+import os
+import stat
 
 from EvaluationBase import EvaluationBase
 from EvaluationArgs import EvaluationArgs
@@ -10,6 +12,9 @@ class EvaluationPython(EvaluationBase):
 
     def init_evaluation_lang(self):
         self.python_run_file = self.source_code_path
+
+        st = os.stat(self.python_run_file)
+        os.chmod(self.python_run_file, st.st_mode | stat.S_IEXEC)
 
     def compile_lang(self):
         return True
