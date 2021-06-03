@@ -3,7 +3,7 @@ const {
 } = require('@google-cloud/storage');
 const {
     Readable
-} = require("stream")
+} = require("stream");
 
 GPC_STORAGE_EVALUATIONS_BUCKET = "evaluation-submissions";
 
@@ -13,8 +13,8 @@ class EvaluationSourceRepository {
         this.bucket = this.storage.bucket(GPC_STORAGE_EVALUATIONS_BUCKET);
     }
 
-    async create(evaluationId, source) {
-        const newFile = this.bucket.file(evaluationId + '.cpp');
+    async create(source, sourceName) {
+        const newFile = this.bucket.file(sourceName);
 
         let fileStream = new Readable();
         fileStream.push(source);

@@ -31,6 +31,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     
+    - name: Create users microservice access token file
+      working-directory: ${{ env.working-directory }}
+      run: echo ${{ secrets.PAYMENTS_MICROSERVICE_ACCESS_TOKEN }} > access-token
+
+    - name: Create stripe private key file
+      working-directory: ${{ env.working-directory }}
+      run: echo ${{ secrets.PAYMENTS_MICROSERVICE_STRIPE_PRIVATE_KEY }} > private-key
+
     - name: Build Docker image
       working-directory: ${{ env.working-directory }}
       run: docker build . -t $IMAGE_NAME

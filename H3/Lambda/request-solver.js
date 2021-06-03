@@ -8,13 +8,11 @@ const TaskCreator = require('./task-creator');
 const Utils = require('./utils');
 const Validator = require('./validator');
 
-function setCorsOrigin(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Request-Method', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
-    res.setHeader('Access-Control-Max-Age', 3600);
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-}
+LANGUAGE_TO_EXTENSION = {
+    'C++': '.cpp',
+    'Python': '.py',
+    'C': '.c'
+};
 
 async function solveRequest(req, res, validator, problemRepository, evaluationRepository, evaluationSourceRepository, userSubmissionsRepository) {
     // Validations
@@ -55,15 +53,23 @@ async function solveRequest(req, res, validator, problemRepository, evaluationRe
         'user': jwt.username,
         'userEmail': jwt.email
     }
-    let evaluationId = await evaluationRepository.create(evaluationObj);
+    let createdEvaluation = await evaluationRepository.create(evaluationObj);
+    let evaluationId = createdEvaluation.key.id;
+
+    let sourceName = evaluationId.toString() + LANGUAGE_TO_EXTENSION[req.body.programmingLanguage];
+    createdEvaluation.data.sourceName = sourceName;
+    await evaluationRepository.save(createdEvaluation);
 
     // Evaluation source creation
-    await evaluationSourceRepository.create(evaluationId, requestModel.sourceCode);
+    await evaluationSourceRepository.create(requestModel.sourceCode, sourceName);
 
     // User submission creation
     let userSubmissionsObj = await userSubmissionsRepository.get(jwt.email);
     if (!userSubmissionsObj) {
         userSubmissionsObj = await userSubmissionsRepository.create(jwt.email);
+    }
+    if (!userSubmissionsObj.submissions) {
+        userSubmissionsObj.submissions = [];
     }
     userSubmissionsObj.submissions.push(evaluationId);
     await userSubmissionsRepository.save(userSubmissionsObj);
@@ -77,14 +83,17 @@ async function solveRequest(req, res, validator, problemRepository, evaluationRe
 }
 
 module.exports = async (req, res) => {
-    setCorsOrigin(req, res);
+    Utils.setCorsOrigin(req, res);
 
     if (req.method === 'OPTIONS') {
         return res.status(204).send('');
     }
-
     if (req.method === 'GET') {
         return res.status(200).send('Pump IT Up Evaluation submitter function');
+    }
+    if (req.method !== 'POST') {
+        // Method Not Allowed
+        return res.status(405).send(JSON.stringify({}));
     }
 
     let validator = new Validator();

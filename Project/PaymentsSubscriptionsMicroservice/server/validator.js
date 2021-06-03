@@ -1,18 +1,14 @@
 const jwtDecode = require('jwt-decode');
 
-const chargeModelValidator = require('./charge-model-validator');
+const Utils = require('./utils');
 
-function buildBody(message) {
-    return JSON.stringify({
-        'message': message
-    });
-}
+const chargeModelValidator = require('./charge-model-validator');
 
 class Validator {
 
     validateChargeBody(req, res) {
         if (!req || !req.body) {
-            return res.status(400).end(buildBody('The body is missing!'));
+            return res.status(400).end(Utils.buildBody('The body is missing!'));
         }
         const {
             error,
@@ -28,20 +24,20 @@ class Validator {
     validateAuthorizationHeader(req, res) {
         let headerStr = req.header('Authorization');
         if (!headerStr) {
-            return res.status(400).end(buildBody('Missing Authorization header!'));
+            return res.status(400).end(Utils.buildBody('Missing Authorization header!'));
         }
         if (!headerStr.startsWith('Bearer ')) {
-            return res.status(400).end(buildBody('Invalid Authorization header value!'));
+            return res.status(400).end(Utils.buildBody('Invalid Authorization header value!'));
         }
         let token = headerStr.substring(7);
         let decodedJwt = null;
         try {
             decodedJwt = jwtDecode(token);
         } catch (e) {
-            return res.status(400).end(buildBody('Invalid Token string!'));
+            return res.status(400).end(Utils.buildBody('Invalid Token string!'));
         }
         if (decodedJwt == null || !decodedJwt.hasOwnProperty('email')) {
-            return res.status(400).end(buildBody('Invalid Token object!'));
+            return res.status(400).end(Utils.buildBody('Invalid Token object!'));
         }
         return null;
     }

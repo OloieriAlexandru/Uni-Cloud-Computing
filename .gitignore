@@ -6,3 +6,4 @@
 **/*.pem
 **/gcloud-key.json
 **/.vscode
+**/*.exe

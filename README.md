@@ -38,6 +38,10 @@ https://problems-microservice-dot-pump-it-up-314917.ew.r.appspot.com/
 
 https://payments-subscriptions-microservice-iwb3smccda-nw.a.run.app/
 
-### Evaluation Submitter Cloud Functions
+### Evaluation Submitter Cloud Function
 
 https://europe-west1-pump-it-up-314917.cloudfunctions.net/evaluation-submitter-function/
+
+### Subscriptions Updater Cloud Function
+
+https://europe-west1-pump-it-up-314917.cloudfunctions.net/subscriptions-updater-function/
