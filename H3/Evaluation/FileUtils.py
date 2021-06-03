@@ -9,6 +9,9 @@ class FileUtils:
     def __init__(self, evaluation_id):
         self.evaluation_id = evaluation_id
 
+    def get_platform_type(self):
+        return os.name
+
     def get_python_command(self):
         if os.name == 'nt':
             return 'python'

@@ -20,7 +20,12 @@ class EvaluationPython(EvaluationBase):
         return True
 
     def execute_lang_init(self):
-        self.command_parts = [
-            self.args.file_utils.get_python_command(),
-            self.args.evaluation_id + '.py'
-        ]
+        if self.args.file_utils.get_platform_type() == 'nt':
+            self.command_parts = [
+                self.args.file_utils.get_python_command(),
+                self.args.evaluation_id + '.py'
+            ]
+        else:
+            self.command_parts = [
+                self.args.file_utils.get_python_command() + ' ' + self.args.evaluation_id + '.py'
+            ]
