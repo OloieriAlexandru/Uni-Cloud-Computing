@@ -67,11 +67,10 @@ async function solveRequest(req, res, validator, problemRepository, evaluationRe
     let userSubmissionsObj = await userSubmissionsRepository.get(jwt.email);
     if (!userSubmissionsObj) {
         userSubmissionsObj = await userSubmissionsRepository.create(jwt.email);
+        userSubmissionsObj.data.submissions.push(evaluationId);
+    } else {
+        userSubmissionsObj.submissions.push(evaluationId);
     }
-    if (!userSubmissionsObj.submissions) {
-        userSubmissionsObj.submissions = [];
-    }
-    userSubmissionsObj.submissions.push(evaluationId);
     await userSubmissionsRepository.save(userSubmissionsObj);
 
     // Task creation
