@@ -5,9 +5,9 @@
 
 - Irimia Andreea Roxana IIIA2
 - Oloieri Alexandru IIIA2
-## Demo:
+## Demo link:
 
-https://github.com/OloieriAlexandru/Uni-Cloud-Computing
+https://youtu.be/RnYh3RMZTU0
 
 ## Azure URLs
 
