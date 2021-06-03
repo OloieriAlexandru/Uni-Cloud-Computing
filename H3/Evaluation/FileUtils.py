@@ -9,6 +9,12 @@ class FileUtils:
     def __init__(self, evaluation_id):
         self.evaluation_id = evaluation_id
 
+    def get_python_command(self):
+        if os.name == 'nt':
+            return 'python'
+        else:
+            return 'python3'
+
     def get_work_directory_prefix(self):
         return WORK_DIRECTORY_PREFIX
 

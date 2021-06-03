@@ -106,6 +106,8 @@ class EvaluationBase:
             raise NotImplementedError(
                 "execute_lang_init should set the self.command_parts object reference!")
 
+        print(self.command_parts)
+        print(run_directory)
         p = subprocess.Popen(self.command_parts, shell=True, cwd=run_directory)
         start_time = time.time()
 
