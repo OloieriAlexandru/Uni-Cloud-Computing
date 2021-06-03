@@ -43,7 +43,7 @@ class PaymentsService {
         let subscriptionType = amount == 10 ? "monthly" : "yearly";
         let subscriptionDays = amount == 10 ? 30 : 365;
 
-        let subscriptionStartDate = new Date();
+        let subscriptionStartDate = Utils.getUTCDate(3);
         let subscriptionEndDate = new Date(subscriptionStartDate);
         subscriptionEndDate.setDate(subscriptionEndDate.getDate() + subscriptionDays);
 

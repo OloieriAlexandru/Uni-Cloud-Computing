@@ -27,6 +27,13 @@ class Utils {
 
         return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     }
+
+    static getUTCDate(utc_diff) {
+        let date_ob = new Date();
+        let offset = date_ob.getTimezoneOffset();
+        let add = utc_diff * 60 + offset;
+        return new Date(date_ob.getTime() + add * 60000);
+    }
 }
 
 module.exports = Utils;

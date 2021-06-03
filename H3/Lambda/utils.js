@@ -8,12 +8,20 @@ class Utils {
         return jwtDecode(token);
     }
 
+    static getUTCDate(utc_diff) {
+        let date_ob = new Date();
+        let offset = date_ob.getTimezoneOffset();
+        let add = utc_diff * 60 + offset;
+        return new Date(date_ob.getTime() + add * 60000);
+    }
+
     static getCurrentDate() {
         const toDoubleDigits = (value) => {
             return ("0" + value).slice(-2);
         }
         // https://usefulangle.com/post/187/nodejs-get-date-time
-        let date_ob = new Date();
+        let date_ob = Utils.getUTCDate(3);
+
         let date = toDoubleDigits(date_ob.getDate());
         let month = toDoubleDigits(date_ob.getMonth() + 1);
         let year = date_ob.getFullYear();
