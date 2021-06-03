@@ -55,6 +55,10 @@ header {
 
   width: 50%;
   height: 100%;
+
+  &.large {
+    width: 100%;
+  }
 }
 
 .details-row {
@@ -77,6 +81,12 @@ header {
     margin-left: 4px;
   }
 
+  .detail-mid {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+  }
+
   .detail-left {
     font-weight: 600;
   }
@@ -84,5 +94,11 @@ header {
   &:hover {
     cursor: pointer;
     background-color: rgba($color: #ABABAB, $alpha: 0.96);
+  }
+}
+
+.bold-when-hovered {
+  &:hover {
+    font-weight: 600;
   }
 }

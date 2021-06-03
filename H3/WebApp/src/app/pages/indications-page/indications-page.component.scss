@@ -46,7 +46,7 @@ header {
   justify-content: space-evenly;
 
   width: 72%;
-  height: auto;
+  height: calc(100% - 80px);
   margin-top: 32px;
   margin-bottom: 12px;
   padding: 12px;
@@ -67,7 +67,7 @@ header {
 
   margin-top: 12px;
 
-  height: auto;
+  height: 100%;
 
   .segment-title {
     font-size: 20px;
@@ -78,7 +78,9 @@ header {
 
   .segment-content {
     height: auto;
-    min-height: 60vh;
+    min-height: calc(100% - 40px);
+
+    overflow-y: scroll;
   }
 }
 

@@ -8,7 +8,16 @@
 
     <div class="details-column">
 
-      <div class="details-row" routerLink="/problems/{{submission.problemId}}">
+      <div class="details-row bold-when-hovered" routerLink="/profile/{{submission.userEmail}}">
+        <div class="detail-left">
+          Author
+        </div>
+        <div class="detail-right">
+          {{submission.user}}
+        </div>
+      </div>
+
+      <div class="details-row bold-when-hovered" routerLink="/problems/{{submission.problemId}}">
         <div class="detail-left">
           Problem id
         </div>
@@ -17,7 +26,7 @@
         </div>
       </div>
 
-      <div class="details-row" routerLink="/problems/{{submission.problemId}}">
+      <div class="details-row bold-when-hovered" routerLink="/problems/{{submission.problemId}}">
         <div class="detail-left">
           Problem name
         </div>
@@ -63,6 +72,12 @@
         </div>
         <div class="detail-right">
           {{submission.status}}
+        </div>
+      </div>
+
+      <div class="details-row bold-when-hovered">
+        <div class="detail-mid">
+          View code
         </div>
       </div>
 

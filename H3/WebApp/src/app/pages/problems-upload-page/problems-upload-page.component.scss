@@ -2,11 +2,16 @@ $upload-widget-color: #000;
 
 .upload-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background-image: url("/assets/background.svg");
   width: 100% !important;
-  height: 100vh !important;
+  height: 100% !important;
+
+  overflow-y: scroll;
+
+  padding: 42px 0 28px;
 }
 
 .upload-widget {
@@ -19,7 +24,7 @@ $upload-widget-color: #000;
   box-shadow: 6px 4px 18px 1px rgba(0, 0, 0, 0.75);
   border-radius: 4px;
   width: 60%;
-  height: 95%;
+  // height: 95%;
   padding: 15px;
   justify-content: center;
 }
