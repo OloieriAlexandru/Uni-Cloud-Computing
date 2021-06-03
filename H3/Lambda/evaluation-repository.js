@@ -16,7 +16,11 @@ class EvaluationRepository {
             data: evaluationObj
         };
         await this.datastore.save(evaluationToInsert);
-        return evaluationToInsert.key.id;
+        return evaluationToInsert;
+    }
+
+    async save(evaluationObj) {
+        await this.datastore.save(evaluationObj);
     }
 }
 
